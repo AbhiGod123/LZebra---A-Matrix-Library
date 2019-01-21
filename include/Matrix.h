@@ -164,9 +164,83 @@ public:
 	inline size_t indexmin() const;
 	inline size_t indexmax() const;
 
-	//ITERATORS - WORKS
-	typename std::vector<T>::iterator begin();
-	typename std::vector<T>::iterator end();
+	//ITERATORS CLASSES
+	typedef       T*       iterator;
+	typedef const T* const_iterator;
+
+	typedef       T*       col_iterator;
+	typedef const T* const_col_iterator;
+
+	class const_row_iterator;
+
+	class row_iterator {
+	public:
+		inline row_iterator();
+		inline row_iterator(const row_iterator& X);
+
+		inline T& operator* ();
+
+		inline row_iterator& operator++();
+		inline row_iterator  operator++(int);
+
+		inline row_iterator& operator--();
+		inline row_iterator  operator--(int);
+
+		inline bool operator!=(const       row_iterator& X) const;
+		inline bool operator==(const       row_iterator& X) const;
+		inline bool operator!=(const const_row_iterator& X) const;
+		inline bool operator==(const const_row_iterator& X) const;
+
+		typedef T  value_type;
+		typedef T* pointer;
+		typedef T& reference;
+	};
+
+	class const_row_iterator {
+	public:
+
+		inline const_row_iterator();
+		inline const_row_iterator(const       row_iterator& X);
+		inline const_row_iterator(const const_row_iterator& X);
+
+		inline const T& operator*() const;
+
+		inline const_row_iterator& operator++();
+		inline const_row_iterator  operator++(int);
+
+		inline const_row_iterator& operator--();
+		inline const_row_iterator  operator--(int);
+
+		inline bool operator!=(const       row_iterator& X) const;
+		inline bool operator==(const       row_iterator& X) const;
+		inline bool operator!=(const const_row_iterator& X) const;
+		inline bool operator==(const const_row_iterator& X) const;
+
+		typedef T value_type;
+		typedef const T* pointer;
+		typedef const T& reference;
+	};
+
+	//ITERATOR FUNCTIONS
+	inline       iterator  begin();
+	inline const_iterator  begin() const;
+	inline const_iterator cbegin() const;
+
+	inline       iterator  end();
+	inline const_iterator  end() const;
+	inline const_iterator cend() const;
+
+	inline       col_iterator begin_col(const size_t col_num);
+	inline const_col_iterator begin_col(const size_t col_num) const;
+
+	inline       col_iterator end_col(const size_t col_num);
+	inline const_col_iterator end_col(const size_t col_num) const;
+
+	inline       row_iterator begin_row(const size_t row_num);
+	inline const_row_iterator begin_row(const size_t row_num) const;
+
+	inline       row_iterator end_row(const size_t row_num);
+	inline const_row_iterator end_row(const size_t row_num) const;
 
 	//SWAP
 	inline void swap(Matrix<T>& m);

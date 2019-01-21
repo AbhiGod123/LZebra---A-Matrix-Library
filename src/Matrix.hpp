@@ -867,18 +867,6 @@ inline size_t Matrix<T>::indexmax() const
 }
 
 template<typename T>
-inline typename std::vector<T>::iterator Matrix<T>::begin()
-{
-	return matrix.begin();
-}
-
-template<typename T>
-typename std::vector<T>::iterator Matrix<T>::end()
-{
-	return matrix.end();
-}
-
-template<typename T>
 inline void Matrix<T>::swap(Matrix<T>& m)
 {
 	matrix.swap(m.matrix);
