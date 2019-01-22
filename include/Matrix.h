@@ -192,10 +192,6 @@ public:
 		inline bool operator!=(const const_row_iterator& X) const;
 		inline bool operator==(const const_row_iterator& X) const;
 
-		typedef T value_type;
-		typedef T& reference;
-		typedef typename std::vector<T>::iterator iterator;
-
 		inline void print() const;
 
 		Matrix<T>* mat;
@@ -224,12 +220,8 @@ public:
 		inline bool operator!=(const const_row_iterator& X) const;
 		inline bool operator==(const const_row_iterator& X) const;
 
-		typedef T value_type;
-		typedef T& reference;
-		typedef typename std::vector<T>::iterator iterator;
-
 		Matrix<T>* mat;
-		iterator itr;
+		const_iterator itr;
 		size_t current_row;
 		size_t current_col;
 	};
