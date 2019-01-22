@@ -194,6 +194,10 @@ public:
 		typedef T  value_type;
 		typedef T* pointer;
 		typedef T& reference;
+
+		eT* current_ptr;
+		uword current_row;
+		uword current_col;
 	};
 
 	class const_row_iterator {
@@ -219,6 +223,10 @@ public:
 		typedef T value_type;
 		typedef const T* pointer;
 		typedef const T& reference;
+
+		const eT* current_ptr;
+		uword current_row;
+		uword current_col;
 	};
 
 	//ITERATOR FUNCTIONS
