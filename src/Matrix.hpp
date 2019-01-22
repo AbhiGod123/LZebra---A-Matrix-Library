@@ -88,9 +88,9 @@ template<typename T>
 inline void Matrix<T>::reset()
 {
 	matrix.clear();
-	rows = static_cast<T>(0);
-	cols = static_cast<T>(0);
-	size = static_cast<T>(0);
+	rows = 0;
+	cols = 0;
+	size = 0;
 }
 
 template<typename T>
@@ -122,19 +122,19 @@ inline void Matrix<T>::resize(const size_t in_rows, const size_t in_cols)
 template<typename T>
 inline void Matrix<T>::zeros()
 {
-	this->fill(static_cast<T>(0));
+	this->fill(0);
 }
 
 template<typename T>
 inline void Matrix<T>::row_zeros(const size_t in_rows)
 {
-	this->fill_row(in_rows, static_cast<T>(0));
+	this->fill_row(in_rows, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::col_zeros(const size_t in_cols)
 {
-	this->fill_col(in_cols, static_cast<T>(0));
+	this->fill_col(in_cols, 0);
 }
 
 template<typename T>
@@ -142,26 +142,26 @@ inline void Matrix<T>::zeros(const size_t in_rows, const size_t in_cols)
 {
 	this->set_size(in_rows, in_cols);
 	for (T& i : matrix) {
-		i = static_cast<T>(0);
+		i = 0;
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::ones()
 {
-	this->fill(static_cast<T>(1));
+	this->fill(1);
 }
 
 template<typename T>
 inline void Matrix<T>::row_ones(const size_t in_rows)
 {
-	this->fill_row(in_rows, static_cast<T>(1));
+	this->fill_row(in_rows, 1);
 }
 
 template<typename T>
 inline void Matrix<T>::col_ones(const size_t in_cols)
 {
-	this->fill_col(in_cols, static_cast<T>(1));
+	this->fill_col(in_cols, 1);
 }
 
 template<typename T>
@@ -169,7 +169,7 @@ inline void Matrix<T>::ones(const size_t in_rows, const size_t in_cols)
 {
 	this->set_size(in_rows, in_cols);
 	for (T& i : matrix) {
-		i = static_cast<T>(1);
+		i = 1;
 	}
 }
 
@@ -735,7 +735,7 @@ inline Matrix<T>& Matrix<T>::operator/=(const T val)
 template<typename T>
 inline Matrix<T>& Matrix<T>::operator++()
 {
-	(*this) += static_cast<T>(1);
+	(*this) += 1;
 
 	return *this;
 }
@@ -743,7 +743,7 @@ inline Matrix<T>& Matrix<T>::operator++()
 template<typename T>
 inline Matrix<T>& Matrix<T>::operator--()
 {
-	(*this) -= static_cast<T>(1);
+	(*this) -= 1;
 
 	return *this;
 }
@@ -757,13 +757,13 @@ bool Matrix<T>::is_empty() const
 template<typename T>
 bool Matrix<T>::is_row_vec() const
 {
-	return rows == static_cast<size_t>(1);
+	return rows == 1;
 }
 
 template<typename T>
 bool Matrix<T>::is_col_vec() const
 {
-	return cols == static_cast<size_t>(1);
+	return cols == 1;
 }
 
 template<typename T>
@@ -867,6 +867,288 @@ inline size_t Matrix<T>::indexmax() const
 }
 
 template<typename T>
+inline Matrix<T>::row_iterator::row_iterator() :mat(NULL), itr(NULL), current_col(0), current_row(0)
+{
+
+}
+	
+template<typename T>
+inline Matrix<T>::row_iterator::row_iterator(const row_iterator& X) : mat(X.mat), itr(X.itr), current_col(X.current_col), current_row(X.current_row)
+{
+
+}
+
+template<typename T>
+inline Matrix<T>::row_iterator::row_iterator(Matrix<T>& in_M, const size_t in_col) : mat(&in_M), itr(in_M.begin() + in_col), current_col(in_col), current_row(0)
+{
+
+}
+
+template<typename T>
+inline T & Matrix<T>::row_iterator::operator*()
+{
+	return (*itr);
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator++()
+{
+	current_row++;
+
+	if (current_row == mat->getRows())
+	{
+		current_row = 0;
+		current_col++;
+
+		if (current_col == mat->getCols())
+			current_col = 0;
+
+		itr = mat->begin() + current_col;
+	}
+	else
+	{
+		itr += mat->getCols();
+	}
+
+	return *this;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator++(int)
+{
+	typename Matrix<T>::row_iterator temp(*this);
+
+	++(*this);
+
+	return temp;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator--()
+{
+	current_row--;
+
+	if (current_row == -1) {
+		current_row = mat->getRows() - 1;
+
+		current_col--;
+
+		if (current_col == -1)
+			current_col = mat->getCols() - 1;
+
+		itr = mat->begin() + (current_row * mat->getCols() + current_col);
+	}
+	else {
+		itr -= mat->getCols();
+	}
+
+	return *this;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator--(int)
+{
+	typename Matrix<T>::row_iterator temp(*this);
+
+	--(*this);
+
+	return temp;
+}
+
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator!=(const row_iterator & X) const
+{
+	return itr != X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator==(const row_iterator & X) const
+{
+	return itr == X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator!=(const const_row_iterator & X) const
+{
+	return itr != X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator==(const const_row_iterator & X) const
+{
+	return itr == X.itr;
+}
+
+template<typename T>
+inline void Matrix<T>::row_iterator::print() const
+{
+	std::cout << "itr: " << (*itr) << ' ';
+	std::cout << "row: " << current_row << ' ';
+	std::cout << "col: " << current_col << std::endl;
+}
+
+template<typename T>
+inline Matrix<T>::const_row_iterator::const_row_iterator() :mat(NULL), itr(NULL), current_col(0), current_row(0)
+{
+
+}
+
+template<typename T>
+inline Matrix<T>::const_row_iterator::const_row_iterator(const row_iterator& X) : mat(X.mat), itr(X.itr), current_col(X.current_col), current_row(X.current_row)
+{
+
+}
+
+template<typename T>
+inline Matrix<T>::const_row_iterator::const_row_iterator(const const_row_iterator& X) : mat(X.mat), itr(X.itr), current_col(X.current_col), current_row(X.current_row)
+{
+
+}
+
+template<typename T>
+inline Matrix<T>::const_row_iterator::const_row_iterator(const Matrix<T>& in_M, const size_t in_col) : mat(&in_M), itr(in_M.begin() + in_col), current_col(in_col), current_row(0)
+{
+
+}
+
+template<typename T>
+inline const T & Matrix<T>::const_row_iterator::operator*() const
+{
+	return (*itr);
+}
+
+template<typename T>
+inline typename Matrix<T>::const_row_iterator& Matrix<T>::const_row_iterator::operator++()
+{
+	current_row++;
+
+	if (current_row == mat->getRows())
+	{
+		current_row = 0;
+		current_col++;
+
+		if (current_col == mat->getCols())
+			current_col = 0;
+
+		itr = mat->begin() + current_col;
+	}
+	else
+	{
+		itr += mat->getCols();
+	}
+
+	return *this;
+}
+
+template<typename T>
+inline typename Matrix<T>::const_row_iterator Matrix<T>::const_row_iterator::operator++(int)
+{
+	typename Matrix<T>::const_row_iterator temp(*this);
+
+	++(*this);
+
+	return temp;
+}
+
+template<typename T>
+inline typename Matrix<T>::const_row_iterator& Matrix<T>::const_row_iterator::operator--()
+{
+	current_row--;
+
+	if (current_row == -1) {
+		current_row = mat->getRows() - 1;
+
+		current_col--;
+
+		if (current_col == -1)
+			current_col = mat->getCols() - 1;
+
+		itr = mat->begin() + (current_row * mat->getCols() + current_col);
+	}
+	else {
+		itr -= mat->getCols();
+	}
+
+	return *this;
+}
+
+template<typename T>
+inline typename Matrix<T>::const_row_iterator Matrix<T>::const_row_iterator::operator--(int)
+{
+	typename Matrix<T>::const_row_iterator temp(*this);
+
+	--(*this);
+
+	return temp;
+}
+
+template<typename T>
+inline bool Matrix<T>::const_row_iterator::operator!=(const row_iterator & X) const
+{
+	return itr != X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::const_row_iterator::operator==(const row_iterator & X) const
+{
+	return itr == X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::const_row_iterator::operator!=(const const_row_iterator & X) const
+{
+	return itr != X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::const_row_iterator::operator==(const const_row_iterator & X) const
+{
+	return itr == X.itr;
+}
+
+template<typename T>
+inline void Matrix<T>::const_row_iterator::print() const
+{
+	std::cout << "itr: " << (*itr) << ' ';
+	std::cout << "row: " << current_row << ' ';
+	std::cout << "col: " << current_col << std::endl;
+}
+
+template<typename T>
+inline typename Matrix<T>::iterator Matrix<T>::begin() {
+	return matrix.begin();
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::begin() const
+{
+	return matrix.begin();
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::cbegin() const
+{
+	return matrix.cbegin();
+}
+
+template<typename T>
+inline typename Matrix<T>::iterator Matrix<T>::end() {
+	return matrix.end();
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::end() const
+{
+	return matrix.end();
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::cend() const
+{
+	return matrix.cend();
+}
+
+template<typename T>
 inline void Matrix<T>::swap(Matrix<T>& m)
 {
 	matrix.swap(m.matrix);
@@ -965,49 +1247,49 @@ inline void Matrix<T>::insert_cols(size_t c1, size_t c2, const T val)
 template<typename T>
 inline void Matrix<T>::insert_row_zeros(size_t r1)
 {
-	this->insert_row(r1, static_cast<T>(0));
+	this->insert_row(r1, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_col_zeros(size_t c1)
 {
-	this->insert_col(c1, static_cast<T>(0));
+	this->insert_col(c1, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_row_ones(size_t r1)
 {
-	this->insert_row(r1, static_cast<T>(1));
+	this->insert_row(r1, 1);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_col_ones(size_t c1)
 {
-	this->insert_col(c1, static_cast<T>(1));
+	this->insert_col(c1, 1);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_rows_zeros(size_t r1, size_t r2)
 {
-	this->insert_rows(r1, r2, static_cast<T>(0));
+	this->insert_rows(r1, r2, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_cols_zeros(size_t c1, size_t c2)
 {
-	this->insert_cols(c1, c2, static_cast<T>(0));
+	this->insert_cols(c1, c2, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_rows_ones(size_t r1, size_t r2)
 {
-	this->insert_rows(r1, r2, static_cast<T>(1));
+	this->insert_rows(r1, r2, 1);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_cols_ones(size_t c1, size_t c2)
 {
-	this->insert_cols(c1, c2, static_cast<T>(1));
+	this->insert_cols(c1, c2, 1);
 }
 
 template<typename T>
@@ -1032,6 +1314,7 @@ inline void Matrix<T>::shed_col(size_t c1)
 	typename std::vector<T>::iterator begin = matrix.begin() + c1;
 	typename std::vector<T>::iterator end = begin * rows;
 
+
 	for (size_t i = c1;i < c1 * rows;i += rows) {
 		matrix.erase(i);
 	}
@@ -1055,12 +1338,24 @@ inline std::ostream & operator<<(std::ostream & stream, const Matrix<T>& mat)
 	{
 		for (size_t f = 0;f < mat.getCols();++f)
 		{
-			stream << mat(i, f) << " ";
+			stream << mat(i, f) << ' ';
 		}
 		stream << std::endl;
 	}
 	return stream;
 }
+
+template<typename T>
+inline std::ostream & operator<<(std::ostream & stream, const typename Matrix<T>::row_iterator & m)
+{
+	stream << "itr: " << (*m.itr) << ' ';
+	stream << "row: " << m.current_row << ' ';
+	stream << "col: " << m.current_col << std::endl;
+
+	return stream;
+}
+
+
 
 template<typename T>
 inline void Matrix<T>::print() const
@@ -1069,7 +1364,7 @@ inline void Matrix<T>::print() const
 	{
 		for (size_t f = 0;f < cols;++f)
 		{
-			std::cout << (*this)(i,f) << " ";
+			std::cout << (*this)(i,f) << ' ';
 		}
 		std::cout << std::endl;
 	}
@@ -1198,9 +1493,9 @@ inline Matrix<T>::Matrix(const Matrix<T>& m) : matrix(m.matrix), rows(m.rows), c
 
 template<typename T>
 inline Matrix<T>::Matrix(Matrix<T>&& m) : matrix(std::move(m.matrix)), 
-rows(std::exchange(m.rows, static_cast<size_t>(0))), 
-cols(std::exchange(m.cols, static_cast<size_t>(0))), 
-size(std::exchange(m.size, static_cast<size_t>(0)))
+rows(std::exchange(m.rows, 0)), 
+cols(std::exchange(m.cols, 0)), 
+size(std::exchange(m.size, 0))
 {
 
 }

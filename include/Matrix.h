@@ -164,19 +164,20 @@ public:
 	inline size_t indexmin() const;
 	inline size_t indexmax() const;
 
-	//ITERATORS CLASSES
-	typedef       T*       iterator;
-	typedef const T* const_iterator;
+	//ITERATOR CLASSES
+	typedef typename std::vector<T>::iterator              iterator;
+	typedef typename std::vector<T>::const_iterator  const_iterator;
 
-	typedef       T*       col_iterator;
-	typedef const T* const_col_iterator;
+	typedef typename std::vector<T>::iterator              col_iterator;
+	typedef typename std::vector<T>::const_iterator  const_col_iterator;
 
 	class const_row_iterator;
-
-	class row_iterator {
+	
+	class row_iterator { //iterators through rows and single col
 	public:
 		inline row_iterator();
 		inline row_iterator(const row_iterator& X);
+		inline row_iterator(Matrix<T>& in_M, const size_t in_col);
 
 		inline T& operator* ();
 
@@ -191,17 +192,20 @@ public:
 		inline bool operator!=(const const_row_iterator& X) const;
 		inline bool operator==(const const_row_iterator& X) const;
 
-		typedef T  value_type;
-		typedef T* pointer;
-		typedef T& reference;
+		inline void print() const;
+
+		Matrix<T>* mat;
+		iterator itr;
+		size_t current_col;
+		size_t current_row;
 	};
 
 	class const_row_iterator {
 	public:
-
 		inline const_row_iterator();
 		inline const_row_iterator(const       row_iterator& X);
 		inline const_row_iterator(const const_row_iterator& X);
+		inline const_row_iterator(const Matrix<T>& in_M, const size_t in_row);
 
 		inline const T& operator*() const;
 
@@ -216,9 +220,12 @@ public:
 		inline bool operator!=(const const_row_iterator& X) const;
 		inline bool operator==(const const_row_iterator& X) const;
 
-		typedef T value_type;
-		typedef const T* pointer;
-		typedef const T& reference;
+		inline void print() const;
+
+		const Matrix<T>* mat;
+		const_iterator itr;
+		size_t current_row;
+		size_t current_col;
 	};
 
 	//ITERATOR FUNCTIONS
@@ -294,6 +301,9 @@ public:
 };
 
 template<typename T>
-inline std::ostream& operator<<(std::ostream& o, const Matrix<T>& m); //WORKS
+inline std::ostream& operator<<(std::ostream& o, const Matrix<T>& m); 
+
+template<typename T>
+inline std::ostream& operator<<(std::ostream& o, const typename Matrix<T>::row_iterator& m); 
 
 #endif // !MATRIX
