@@ -1149,6 +1149,54 @@ inline typename Matrix<T>::const_iterator Matrix<T>::cend() const
 }
 
 template<typename T>
+inline typename Matrix<T>::col_iterator Matrix<T>::begin_row(const size_t row_num)
+{
+	return matrix.begin() + (row_num * cols);
+}
+
+template<typename T>
+inline typename Matrix<T>::const_col_iterator Matrix<T>::begin_row(const size_t row_num) const
+{
+	return matrix.begin() + (row_num * cols);
+}
+
+template<typename T>
+inline typename Matrix<T>::col_iterator Matrix<T>::end_row(const size_t row_num)
+{
+	return matrix.begin() + (row_num * cols + cols);
+}
+
+template<typename T>
+inline typename Matrix<T>::const_col_iterator Matrix<T>::end_row(const size_t row_num) const
+{
+	return matrix.begin() + (row_num * cols + cols);
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::begin_col(const size_t col_num)
+{
+	return row_iterator(*this,col_num);
+}
+
+template<typename T>
+inline typename Matrix<T>::const_row_iterator Matrix<T>::begin_col(const size_t col_num) const
+{
+	return const_row_iterator(*this, col_num);
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::end_col(const size_t col_num)
+{
+	return row_iterator(*this, col_num + 1);
+}
+
+template<typename T>
+inline typename Matrix<T>::const_row_iterator Matrix<T>::end_col(const size_t col_num) const
+{
+	return const_row_iterator(*this, col_num + 1);
+}
+
+template<typename T>
 inline void Matrix<T>::swap(Matrix<T>& m)
 {
 	matrix.swap(m.matrix);

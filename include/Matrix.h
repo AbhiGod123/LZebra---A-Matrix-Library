@@ -237,17 +237,17 @@ public:
 	inline const_iterator  end() const;
 	inline const_iterator cend() const;
 
-	inline       col_iterator begin_col(const size_t col_num);
-	inline const_col_iterator begin_col(const size_t col_num) const;
+	inline       col_iterator begin_row(const size_t row_num);
+	inline const_col_iterator begin_row(const size_t row_num) const;
 
-	inline       col_iterator end_col(const size_t col_num);
-	inline const_col_iterator end_col(const size_t col_num) const;
+	inline       col_iterator end_row(const size_t row_num);
+	inline const_col_iterator end_row(const size_t row_num) const;
 
-	inline       row_iterator begin_row(const size_t row_num);
-	inline const_row_iterator begin_row(const size_t row_num) const;
+	inline       row_iterator begin_col(const size_t col_num);
+	inline const_row_iterator begin_col(const size_t col_num) const;
 
-	inline       row_iterator end_row(const size_t row_num);
-	inline const_row_iterator end_row(const size_t row_num) const;
+	inline       row_iterator end_col(const size_t col_num);
+	inline const_row_iterator end_col(const size_t col_num) const;
 
 	//SWAP
 	inline void swap(Matrix<T>& m);
