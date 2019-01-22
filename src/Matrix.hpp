@@ -735,9 +735,27 @@ inline Matrix<T>& Matrix<T>::operator--()
 }
 
 template<typename T>
+inline Matrix<T> Matrix<T>::operator++(int)
+{
+	Matrix<T> temp(*this);
+	++(*this);
+
+	return temp;
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::operator--(int)
+{
+	Matrix<T> temp(*this);
+	--(*this);
+
+	return temp;
+}
+
+template<typename T>
 bool Matrix<T>::is_empty() const
 {
-	return static_cast<bool>(size);
+	return size;
 }
 
 template<typename T>

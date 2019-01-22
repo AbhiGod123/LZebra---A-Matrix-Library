@@ -145,6 +145,8 @@ public:
 	inline Matrix<T>& operator/=(const T val);
 	inline Matrix<T>& operator++();
 	inline Matrix<T>& operator--();
+	inline Matrix<T> operator++(int);
+	inline Matrix<T> operator--(int);
 
 	//MATRIX CHECKS - WORKS
 	bool is_empty()  const;
