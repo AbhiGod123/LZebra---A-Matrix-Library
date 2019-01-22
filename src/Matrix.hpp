@@ -867,6 +867,17 @@ inline size_t Matrix<T>::indexmax() const
 }
 
 template<typename T>
+inline Matrix<T>::row_iterator::row_iterator() : current_ptr(NULL), current_row(0), current_col(0)
+{
+
+}
+
+template<typename T>
+inline Matrix<T>::row_iterator::row_iterator(const row_iterator& X){
+
+}
+
+template<typename T>
 inline void Matrix<T>::swap(Matrix<T>& m)
 {
 	matrix.swap(m.matrix);
@@ -1031,6 +1042,8 @@ inline void Matrix<T>::shed_col(size_t c1)
 {
 	typename std::vector<T>::iterator begin = matrix.begin() + c1;
 	typename std::vector<T>::iterator end = begin * rows;
+
+	
 
 	for (size_t i = c1;i < c1 * rows;i += rows) {
 		matrix.erase(i);

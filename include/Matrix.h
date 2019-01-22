@@ -164,7 +164,7 @@ public:
 	inline size_t indexmin() const;
 	inline size_t indexmax() const;
 
-	//ITERATORS CLASSES
+	//ITERATOR CLASSES
 	typedef       T*       iterator;
 	typedef const T* const_iterator;
 
@@ -195,9 +195,9 @@ public:
 		typedef T* pointer;
 		typedef T& reference;
 
-		eT* current_ptr;
-		uword current_row;
-		uword current_col;
+		std::vector::iterator itr;
+		size_t current_row;
+		size_t current_col;
 	};
 
 	class const_row_iterator {
@@ -224,9 +224,9 @@ public:
 		typedef const T* pointer;
 		typedef const T& reference;
 
-		const eT* current_ptr;
-		uword current_row;
-		uword current_col;
+		const T* current_ptr;
+		size_t current_row;
+		size_t current_col;
 	};
 
 	//ITERATOR FUNCTIONS
