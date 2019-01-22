@@ -1107,6 +1107,14 @@ inline bool Matrix<T>::const_row_iterator::operator==(const const_row_iterator &
 }
 
 template<typename T>
+inline void Matrix<T>::const_row_iterator::print() const
+{
+	std::cout << "itr: " << (*itr) << ' ';
+	std::cout << "row: " << current_row << ' ';
+	std::cout << "col: " << current_col << std::endl;
+}
+
+template<typename T>
 inline typename Matrix<T>::iterator Matrix<T>::begin() {
 	return matrix.begin();
 }

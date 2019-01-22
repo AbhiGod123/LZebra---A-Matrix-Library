@@ -220,7 +220,9 @@ public:
 		inline bool operator!=(const const_row_iterator& X) const;
 		inline bool operator==(const const_row_iterator& X) const;
 
-		Matrix<T>* mat;
+		inline void print() const;
+
+		const Matrix<T>* mat;
 		const_iterator itr;
 		size_t current_row;
 		size_t current_col;
