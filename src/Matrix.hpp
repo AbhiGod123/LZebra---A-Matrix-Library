@@ -895,10 +895,13 @@ inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator++()
 {
 	current_row++;
 
-	if (current_row == mat->n_rows)
+	if (current_row == mat->getRows())
 	{
 		current_row = 0;
 		current_col++;
+
+		if (current_col == mat->getCols())
+			current_col = 0;
 
 		itr = mat->begin() + current_col;
 	}
@@ -923,21 +926,20 @@ inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator++(int)
 template<typename T>
 inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator--()
 {
-	if (current_row > 0)
-	{
-		current_row--;
+	current_row--;
 
-		itr -= mat->n_cols;
+	if (current_row == -1) {
+		current_row = mat->getRows() - 1;
+
+		current_col--;
+
+		if (current_col == -1)
+			current_col = mat->getCols() - 1;
+
+		itr = mat->begin() + (current_row * mat->getCols() + current_col);
 	}
-	else
-	{
-		if (current_col > 0)
-		{
-			current_row = mat->getRows() - 1;
-			current_col--;
-			
-			itr = mat->begin() + (current_row * mat->getCols() + current_col);
-		}
+	else {
+		itr -= mat->getCols();
 	}
 
 	return *this;
@@ -975,6 +977,14 @@ template<typename T>
 inline bool Matrix<T>::row_iterator::operator==(const const_row_iterator & X) const
 {
 	return itr == X.itr;
+}
+
+template<typename T>
+inline void Matrix<T>::row_iterator::print() const
+{
+	std::cout << "itr: " << (*itr) << ' ';
+	std::cout << "row: " << current_row << ' ';
+	std::cout << "col: " << current_col << std::endl;
 }
 
 template<typename T>
@@ -1201,12 +1211,24 @@ inline std::ostream & operator<<(std::ostream & stream, const Matrix<T>& mat)
 	{
 		for (size_t f = 0;f < mat.getCols();++f)
 		{
-			stream << mat(i, f) << " ";
+			stream << mat(i, f) << ' ';
 		}
 		stream << std::endl;
 	}
 	return stream;
 }
+
+template<typename T>
+inline std::ostream & operator<<(std::ostream & stream, const typename Matrix<T>::row_iterator & m)
+{
+	stream << "itr: " << (*m.itr) << ' ';
+	stream << "row: " << m.current_row << ' ';
+	stream << "col: " << m.current_col << std::endl;
+
+	return stream;
+}
+
+
 
 template<typename T>
 inline void Matrix<T>::print() const
@@ -1215,7 +1237,7 @@ inline void Matrix<T>::print() const
 	{
 		for (size_t f = 0;f < cols;++f)
 		{
-			std::cout << (*this)(i,f) << " ";
+			std::cout << (*this)(i,f) << ' ';
 		}
 		std::cout << std::endl;
 	}

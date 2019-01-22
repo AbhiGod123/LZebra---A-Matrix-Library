@@ -196,6 +196,8 @@ public:
 		typedef T& reference;
 		typedef typename std::vector<T>::iterator iterator;
 
+		inline void print() const;
+
 		Matrix<T>* mat;
 		iterator itr;
 		size_t current_col;
@@ -305,6 +307,9 @@ public:
 };
 
 template<typename T>
-inline std::ostream& operator<<(std::ostream& o, const Matrix<T>& m); //WORKS
+inline std::ostream& operator<<(std::ostream& o, const Matrix<T>& m); 
+
+template<typename T>
+inline std::ostream& operator<<(std::ostream& o, const typename Matrix<T>::row_iterator& m); 
 
 #endif // !MATRIX
