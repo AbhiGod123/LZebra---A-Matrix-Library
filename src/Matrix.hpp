@@ -1043,7 +1043,6 @@ inline void Matrix<T>::shed_col(size_t c1)
 	typename std::vector<T>::iterator begin = matrix.begin() + c1;
 	typename std::vector<T>::iterator end = begin * rows;
 
-	
 
 	for (size_t i = c1;i < c1 * rows;i += rows) {
 		matrix.erase(i);
