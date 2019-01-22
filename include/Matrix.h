@@ -173,11 +173,11 @@ public:
 
 	class const_row_iterator;
 
-	class row_iterator {
+	class row_iterator { //iterators through rows and single col
 	public:
 		inline row_iterator();
 		inline row_iterator(const row_iterator& X);
-		inline row_iterator(Matrix<T>& in_M, const size_t in_row);
+		inline row_iterator(Matrix<T>& in_M, const size_t in_col);
 
 		inline T& operator* ();
 
@@ -198,13 +198,12 @@ public:
 
 		Matrix<T>* mat;
 		std::vector<T>::iterator itr;
-		size_t current_row;
 		size_t current_col;
+		size_t current_row;
 	};
 
 	class const_row_iterator {
 	public:
-
 		inline const_row_iterator();
 		inline const_row_iterator(const       row_iterator& X);
 		inline const_row_iterator(const const_row_iterator& X);

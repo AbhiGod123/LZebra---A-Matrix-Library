@@ -88,9 +88,9 @@ template<typename T>
 inline void Matrix<T>::reset()
 {
 	matrix.clear();
-	rows = static_cast<T>(0);
-	cols = static_cast<T>(0);
-	size = static_cast<T>(0);
+	rows = 0;
+	cols = 0;
+	size = 0;
 }
 
 template<typename T>
@@ -122,19 +122,19 @@ inline void Matrix<T>::resize(const size_t in_rows, const size_t in_cols)
 template<typename T>
 inline void Matrix<T>::zeros()
 {
-	this->fill(static_cast<T>(0));
+	this->fill(0);
 }
 
 template<typename T>
 inline void Matrix<T>::row_zeros(const size_t in_rows)
 {
-	this->fill_row(in_rows, static_cast<T>(0));
+	this->fill_row(in_rows, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::col_zeros(const size_t in_cols)
 {
-	this->fill_col(in_cols, static_cast<T>(0));
+	this->fill_col(in_cols, 0);
 }
 
 template<typename T>
@@ -142,26 +142,26 @@ inline void Matrix<T>::zeros(const size_t in_rows, const size_t in_cols)
 {
 	this->set_size(in_rows, in_cols);
 	for (T& i : matrix) {
-		i = static_cast<T>(0);
+		i = 0;
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::ones()
 {
-	this->fill(static_cast<T>(1));
+	this->fill(1);
 }
 
 template<typename T>
 inline void Matrix<T>::row_ones(const size_t in_rows)
 {
-	this->fill_row(in_rows, static_cast<T>(1));
+	this->fill_row(in_rows, 1);
 }
 
 template<typename T>
 inline void Matrix<T>::col_ones(const size_t in_cols)
 {
-	this->fill_col(in_cols, static_cast<T>(1));
+	this->fill_col(in_cols, 1);
 }
 
 template<typename T>
@@ -169,7 +169,7 @@ inline void Matrix<T>::ones(const size_t in_rows, const size_t in_cols)
 {
 	this->set_size(in_rows, in_cols);
 	for (T& i : matrix) {
-		i = static_cast<T>(1);
+		i = 1;
 	}
 }
 
@@ -735,7 +735,7 @@ inline Matrix<T>& Matrix<T>::operator/=(const T val)
 template<typename T>
 inline Matrix<T>& Matrix<T>::operator++()
 {
-	(*this) += static_cast<T>(1);
+	(*this) += 1;
 
 	return *this;
 }
@@ -743,7 +743,7 @@ inline Matrix<T>& Matrix<T>::operator++()
 template<typename T>
 inline Matrix<T>& Matrix<T>::operator--()
 {
-	(*this) -= static_cast<T>(1);
+	(*this) -= 1;
 
 	return *this;
 }
@@ -757,13 +757,13 @@ bool Matrix<T>::is_empty() const
 template<typename T>
 bool Matrix<T>::is_row_vec() const
 {
-	return rows == static_cast<size_t>(1);
+	return rows == 1;
 }
 
 template<typename T>
 bool Matrix<T>::is_col_vec() const
 {
-	return cols == static_cast<size_t>(1);
+	return cols == 1;
 }
 
 template<typename T>
@@ -867,14 +867,21 @@ inline size_t Matrix<T>::indexmax() const
 }
 
 template<typename T>
-inline Matrix<T>::row_iterator::row_iterator() : current_ptr(NULL), current_row(0), current_col(0)
+inline Matrix<T>::row_iterator::row_iterator() :mat(NULL), current_ptr(NULL), current_col(0), current_row(0)
+{
+
+}
+	
+template<typename T>
+inline Matrix<T>::row_iterator::row_iterator(const row_iterator& X) : mat(X.mat), itr(X.itr), current_col(X.current_col), current_row(X.current_row)
 {
 
 }
 
 template<typename T>
-inline Matrix<T>::row_iterator::row_iterator(const row_iterator& X){
-
+inline Matrix<T>::row_iterator::row_iterator(Matrix<T>& in_M, const size_t in_col) : mat(&in_M), itr(in_M.begin() + in_col)current_col(in_col),current_row(0), 
+{
+	
 }
 
 template<typename T>
@@ -976,49 +983,49 @@ inline void Matrix<T>::insert_cols(size_t c1, size_t c2, const T val)
 template<typename T>
 inline void Matrix<T>::insert_row_zeros(size_t r1)
 {
-	this->insert_row(r1, static_cast<T>(0));
+	this->insert_row(r1, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_col_zeros(size_t c1)
 {
-	this->insert_col(c1, static_cast<T>(0));
+	this->insert_col(c1, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_row_ones(size_t r1)
 {
-	this->insert_row(r1, static_cast<T>(1));
+	this->insert_row(r1, 1);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_col_ones(size_t c1)
 {
-	this->insert_col(c1, static_cast<T>(1));
+	this->insert_col(c1, 1);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_rows_zeros(size_t r1, size_t r2)
 {
-	this->insert_rows(r1, r2, static_cast<T>(0));
+	this->insert_rows(r1, r2, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_cols_zeros(size_t c1, size_t c2)
 {
-	this->insert_cols(c1, c2, static_cast<T>(0));
+	this->insert_cols(c1, c2, 0);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_rows_ones(size_t r1, size_t r2)
 {
-	this->insert_rows(r1, r2, static_cast<T>(1));
+	this->insert_rows(r1, r2, 1);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_cols_ones(size_t c1, size_t c2)
 {
-	this->insert_cols(c1, c2, static_cast<T>(1));
+	this->insert_cols(c1, c2, 1);
 }
 
 template<typename T>
@@ -1210,9 +1217,9 @@ inline Matrix<T>::Matrix(const Matrix<T>& m) : matrix(m.matrix), rows(m.rows), c
 
 template<typename T>
 inline Matrix<T>::Matrix(Matrix<T>&& m) : matrix(std::move(m.matrix)), 
-rows(std::exchange(m.rows, static_cast<size_t>(0))), 
-cols(std::exchange(m.cols, static_cast<size_t>(0))), 
-size(std::exchange(m.size, static_cast<size_t>(0)))
+rows(std::exchange(m.rows, 0)), 
+cols(std::exchange(m.cols, 0)), 
+size(std::exchange(m.size, 0))
 {
 
 }
