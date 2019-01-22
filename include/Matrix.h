@@ -165,11 +165,11 @@ public:
 	inline size_t indexmax() const;
 
 	//ITERATOR CLASSES
-	typedef       typename std::vector<T>::iterator        iterator;
-	typedef const typename std::vector<T>::const_iterator  const_iterator;
+	typedef typename std::vector<T>::iterator              iterator;
+	typedef typename std::vector<T>::const_iterator  const_iterator;
 
-	typedef       typename std::vector<T>::iterator        col_iterator;
-	typedef const typename std::vector<T>::const_iterator  const_col_iterator;
+	typedef typename std::vector<T>::iterator              col_iterator;
+	typedef typename std::vector<T>::const_iterator  const_col_iterator;
 
 	class const_row_iterator;
 	
