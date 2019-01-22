@@ -75,7 +75,7 @@ bool Matrix<T>::in_range(const size_t in_row, const size_t in_col) const
 template<typename T>
 inline bool Matrix<T>::is_same_size(const Matrix & m) const
 {
-	return rows==m.rows && cols==m.cols;
+	return rows == m.rows && cols == m.cols;
 }
 
 template<typename T>
@@ -185,24 +185,22 @@ inline void Matrix<T>::replace(const T old_val, const T new_val)
 template<typename T>
 inline void Matrix<T>::replace_row(const size_t in_rows, const T old_val, const T new_val)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_rows * cols;
-	typename std::vector<T>::iterator end = begin + cols;
+	Matrix<T>::col_iterator itrend = end_row(in_rows);
 
-	for (auto it = begin; it != end; it++) {
-		if (*it == old_val)
-			*it = new_val;
+	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+		if (*itr == old_val)
+			*itr = new_val;
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::replace_col(const size_t in_cols, const T old_val, const T new_val)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_cols;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = end_col(in_cols);
 
-	for (auto it = begin; it != end; it += rows) {
-		if (*it == old_val)
-			*it = new_val;
+	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+		if (*itr == old_val)
+			*itr = new_val;
 	}
 }
 
@@ -217,20 +215,19 @@ inline void Matrix<T>::fill(const T val)
 template<typename T>
 inline void Matrix<T>::fill_row(const size_t in_rows, const T val)
 {
-	auto begin = matrix.begin() + in_rows * cols;
-	auto end = begin + cols;
+	Matrix<T>::col_iterator itr = begin_row(in_rows);
+	Matrix<T>::col_iterator itrend = end_row(in_rows);
 
-	std::fill(begin, end, val);
+	std::fill(itr, itrend, val);
 }
 
 template<typename T>
 inline void Matrix<T>::fill_col(const size_t in_cols, const T val)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_cols;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = end_col(in_cols);
 
-	for (auto it = begin; it != end; it += rows) {
-		*it = val;
+	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+		*itr = val;
 	}
 }
 
