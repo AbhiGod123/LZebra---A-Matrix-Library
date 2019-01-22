@@ -258,22 +258,20 @@ inline void Matrix<T>::randu()
 template<typename T>
 inline void Matrix<T>::row_randu(const size_t in_rows)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_rows * cols;
-	typename std::vector<T>::iterator end = begin + cols;
+	Matrix<T>::col_iterator itrend = end_row(in_rows);
 
-	for (auto it = begin; it != end; it++) {
-		*it = uniformFloatRandom();
+	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+		*itr = uniformFloatRandom();
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::col_randu(const size_t in_cols)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_cols;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = end_col(in_cols);
 
-	for (auto it = begin; it != end; it += rows) {
-		*it = uniformFloatRandom();
+	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+		*itr = uniformFloatRandom();
 	}
 }
 
@@ -297,22 +295,20 @@ inline void Matrix<T>::randn()
 template<typename T>
 inline void Matrix<T>::row_randn(const size_t in_rows)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_rows * cols;
-	typename std::vector<T>::iterator end = begin + cols;
+	Matrix<T>::col_iterator itrend = end_row(in_rows);
 
-	for (auto it = begin; it != end; it++) {
-		*it = gaussianRandom();
+	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+		*itr = gaussianRandom();
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::col_randn(const size_t in_cols)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_cols;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = end_col(in_cols);
 
-	for (auto it = begin; it != end; it += rows) {
-		*it = gaussianRandom();
+	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+		*itr = gaussianRandom();
 	}
 }
 
@@ -336,22 +332,20 @@ inline void Matrix<T>::randi()
 template<typename T>
 inline void Matrix<T>::row_randi(const size_t in_rows)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_rows * cols;
-	typename std::vector<T>::iterator end = begin + cols;
+	Matrix<T>::col_iterator itrend = end_row(in_rows);
 
-	for (auto it = begin; it != end; it++) {
-		*it = uniformIntRandom();
+	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+		*itr = uniformIntRandom();
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::col_randi(const size_t in_cols)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_cols;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = end_col(in_cols);
 
-	for (auto it = begin; it != end; it += rows) {
-		*it = uniformIntRandom();
+	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+		*itr = uniformIntRandom();
 	}
 }
 
