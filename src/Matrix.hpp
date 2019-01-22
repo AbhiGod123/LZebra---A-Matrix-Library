@@ -369,22 +369,20 @@ inline void Matrix<T>::fill(const lambdaT val)
 template<typename T>
 inline void Matrix<T>::fill_row(const size_t in_rows, const lambdaT val)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_rows * cols;
-	typename std::vector<T>::iterator end = begin + cols;
+	Matrix<T>::col_iterator itrend = end_row(in_rows);
 
-	for (auto it = begin; it != end; it++) {
-		*it = val(*it);
+	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+		*itr = val(*itr);
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::fill_col(const size_t in_cols, const lambdaT val)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_cols;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = end_col(in_cols);
 
-	for (auto it = begin; it != end; it += rows) {
-		*it = val(*it);
+	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+		*itr = val(*itr);
 	}
 }
 
@@ -415,22 +413,20 @@ inline void Matrix<T>::fill(const func_p val)
 template<typename T>
 inline void Matrix<T>::fill_row(const size_t in_rows, const func_p val)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_rows * cols;
-	typename std::vector<T>::iterator end = begin + cols;
+	Matrix<T>::col_iterator itrend = end_row(in_rows);
 
-	for (auto it = begin; it != end; it++) {
-		*it = val(*it);
+	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+		*itr = val(*itr);
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::fill_col(const size_t in_cols, const func_p val)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + in_cols;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = end_col(in_cols);
 
-	for (auto it = begin; it != end; it += rows) {
-		*it = val(*it);
+	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+		*itr = val(*itr);
 	}
 }
 
@@ -457,7 +453,6 @@ inline const Matrix<T> Matrix<T>::transpose()
 
 	for (size_t i = 0;i < cols;++i) {
 		for (size_t f = 0;f < rows;++f) {
-			//newmat(i, f) = matrix[f * cols + i];
 			newmat(i, f) = (*this)(f,i);
 		}
 	}
