@@ -954,6 +954,30 @@ inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator--(int)
 }
 
 template<typename T>
+inline bool Matrix<T>::row_iterator::operator!=(const row_iterator & X) const
+{
+	return itr != X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator==(const row_iterator & X) const
+{
+	return itr == X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator!=(const const_row_iterator & X) const
+{
+	return itr != X.itr;
+}
+
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator==(const const_row_iterator & X) const
+{
+	return itr == X.itr;
+}
+
+template<typename T>
 inline void Matrix<T>::swap(Matrix<T>& m)
 {
 	matrix.swap(m.matrix);
