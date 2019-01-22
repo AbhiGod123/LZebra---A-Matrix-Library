@@ -879,9 +879,78 @@ inline Matrix<T>::row_iterator::row_iterator(const row_iterator& X) : mat(X.mat)
 }
 
 template<typename T>
-inline Matrix<T>::row_iterator::row_iterator(Matrix<T>& in_M, const size_t in_col) : mat(&in_M), itr(in_M.begin() + in_col)current_col(in_col),current_row(0), 
+inline Matrix<T>::row_iterator::row_iterator(Matrix<T>& in_M, const size_t in_col) : mat(&in_M), itr(in_M.begin() + in_col), current_col(in_col), current_row(0)
 {
-	
+
+}
+
+template<typename T>
+inline T & Matrix<T>::row_iterator::operator*()
+{
+	return (*itr);
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator++()
+{
+	current_row++;
+
+	if (current_row == mat->n_rows)
+	{
+		current_row = 0;
+		current_col++;
+
+		itr = mat->begin() + current_col;
+	}
+	else
+	{
+		current_ptr += M->n_cols;
+	}
+
+	return *this;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator++(int)
+{
+	typename Matrix<T>::row_iterator temp(*this);
+
+	++(*this);
+
+	return temp;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator--()
+{
+	if (current_row > 0)
+	{
+		current_row--;
+
+		itr -= mat->n_cols;
+	}
+	else
+	{
+		if (current_col > 0)
+		{
+			current_row = mat->getRows() - 1;
+			current_col--;
+			
+			itr = mat->begin() + (current_row * mat->getCols() + current_col);
+		}
+	}
+
+	return *this;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator--(int)
+{
+	typename Matrix<T>::row_iterator temp(*this);
+
+	--(*this);
+
+	return temp;
 }
 
 template<typename T>
