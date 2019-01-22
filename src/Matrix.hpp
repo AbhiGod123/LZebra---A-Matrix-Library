@@ -867,7 +867,7 @@ inline size_t Matrix<T>::indexmax() const
 }
 
 template<typename T>
-inline Matrix<T>::row_iterator::row_iterator() :mat(NULL), current_ptr(NULL), current_col(0), current_row(0)
+inline Matrix<T>::row_iterator::row_iterator() :mat(NULL), itr(NULL), current_col(0), current_row(0)
 {
 
 }
@@ -904,7 +904,7 @@ inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator++()
 	}
 	else
 	{
-		current_ptr += M->n_cols;
+		itr += mat->getCols();
 	}
 
 	return *this;
@@ -975,6 +975,40 @@ template<typename T>
 inline bool Matrix<T>::row_iterator::operator==(const const_row_iterator & X) const
 {
 	return itr == X.itr;
+}
+
+template<typename T>
+inline typename Matrix<T>::iterator Matrix<T>::begin() {
+	return matrix.begin();
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::begin() const
+{
+	return matrix.begin();
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::cbegin() const
+{
+	return matrix.cbegin();
+}
+
+template<typename T>
+inline typename Matrix<T>::iterator Matrix<T>::end() {
+	return matrix.end();
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::end() const
+{
+	return matrix.end();
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::cend() const
+{
+	return matrix.cend();
 }
 
 template<typename T>
