@@ -260,7 +260,7 @@ public:
 	inline void insert_cols(size_t c1, const Matrix<T>& m);
 
 	inline void insert_row(size_t r1, const T val);
-	inline void insert_col(size_t c1, const T val);
+	inline void insert_col(size_t c1, const T val); //DOESN'T WORK
 
 	inline void insert_rows(size_t r1, size_t r2, const T val);
 	inline void insert_cols(size_t c1, size_t c2, const T val);
@@ -278,7 +278,7 @@ public:
 	//SHED 
 	inline void shed_row(size_t r1);
 	inline void shed_rows(size_t rbegin, size_t rend);
-	inline void shed_col(size_t c1);
+	inline void shed_col(size_t c1);  //DOESN'T WORK
 	inline void shed_cols(size_t cbegin, size_t cend);
 
 	//PRINT-SAVE MATRIX

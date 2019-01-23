@@ -871,12 +871,6 @@ inline size_t Matrix<T>::indexmax() const
 }
 
 template<typename T>
-inline Matrix<T>::row_iterator::row_iterator() :mat(NULL), itr(NULL), current_col(0), current_row(0)
-{
-
-}
-	
-template<typename T>
 inline Matrix<T>::row_iterator::row_iterator(const row_iterator& X) : mat(X.mat), itr(X.itr), current_col(X.current_col), current_row(X.current_row)
 {
 
@@ -995,12 +989,6 @@ inline void Matrix<T>::row_iterator::print() const
 	std::cout << "itr: " << (*itr) << ' ';
 	std::cout << "row: " << current_row << ' ';
 	std::cout << "col: " << current_col << std::endl;
-}
-
-template<typename T>
-inline Matrix<T>::const_row_iterator::const_row_iterator() :mat(NULL), itr(NULL), current_col(0), current_row(0)
-{
-
 }
 
 template<typename T>
@@ -1278,18 +1266,19 @@ inline void Matrix<T>::insert_row(size_t r1, const T val)
 template<typename T>
 inline void Matrix<T>::insert_col(size_t c1, const T val)
 {
-	Matrix<T>::row_iterator itrend = this->begin_col(c1);
-	Matrix<T>::iterator& itr = itrend.itr;
-	itrend++;
+	Matrix<T>::iterator itr = matrix.begin();
 
-	//matrix.insert(itr, 1, val);
-	std::cout << *itr << std::endl;
-	itrend.print();
-
-
+	for (size_t i = 0;i < rows;i++) {
+		if (i == rows - 1 && c1 == cols) {
+			matrix.push_back(val);
+			break;
+		}else
+		itr = matrix.insert(itr + (cols * i + c1), val);
+		itr++;
+	}
 
 	cols++;
-	this->resize(rows, cols);
+	size = cols * rows;
 }
 
 template<typename T>
@@ -1359,10 +1348,7 @@ inline void Matrix<T>::insert_cols_ones(size_t c1, size_t c2)
 template<typename T>
 inline void Matrix<T>::shed_row(size_t r1)
 {
-	Matrix<T>::col_iterator itr = this->begin_row(r1);
-	Matrix<T>::col_iterator itrend = this->end_row(r1);
-
-	matrix.erase(itr, itrend);
+	matrix.erase(this->begin_row(r1), this->end_row(r1));
 
 	rows--;
 	size = rows * cols;
@@ -1382,7 +1368,7 @@ inline void Matrix<T>::shed_col(size_t c1)
 	Matrix<T>::row_iterator itrend = this->end_col(c1);
 
 	for (Matrix<T>::row_iterator itr = this->begin_col(c1); itr != itrend;itr++) {
-		matrix.erase(itr.itr);
+		itr.itr = matrix.erase(itr.itr);
 	}
 
 	cols--;
