@@ -24,10 +24,7 @@ public:
 	inline size_t getCols() const;
 	inline size_t getSize() const;
 
-	static Matrix<T>& getMatrix(Matrix<T>& m);
-
 	//ELEMENT ACCESSORS
-		//Bounds check
 	T& operator[] (const size_t ii);
 	const T& operator[] (const size_t ii) const;
 	T& at(const size_t ii);
@@ -35,7 +32,6 @@ public:
 	T& operator() (const size_t ii);
 	const T& operator() (const size_t ii) const;
 
-	//!Bounds check
 	T& at(const size_t in_row, const size_t in_col);
 	const T& at(const size_t in_row, const size_t in_col) const;
 	T& operator() (const size_t in_row, const size_t in_col);
