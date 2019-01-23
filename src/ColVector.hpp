@@ -1,7 +1,7 @@
 #include "ColVector.h"
 
 template<typename T>
-ColVector<T>::ColVector() {
+ColVector<T>::ColVector() : Matrix<T>(){
 
 }
 

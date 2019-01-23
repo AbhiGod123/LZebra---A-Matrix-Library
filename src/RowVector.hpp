@@ -1,12 +1,7 @@
 #include "RowVector.h"
 
 template<typename T>
-RowVector<T>::RowVector() {
-
-}
-
-template<typename T>
-RowVector<T>::~RowVector() {
+RowVector<T>::RowVector() : Matrix<T>(){
 
 }
 
@@ -29,12 +24,21 @@ inline void RowVector<T>::resize(const size_t size)
 }
 
 template<typename T>
+inline void RowVector<T>::insert(const RowVector<T>& object)
+{
+	auto& mat = Matrix<T>::matrix;
+	mat.insert(mat.end(), object.matrix.begin(), object.matrix.end());
+
+	this->reshape(object.size + Matrix<T>::size);
+}
+
+template<typename T>
 inline void RowVector<T>::insert(size_t s, const T val)
 {
-	this->resize(s);
-	for (size_t i = 0;i < s;++i) {
-		getMatrix(*this).emplace_back(val);
-	}
+	auto& mat = Matrix<T>::matrix;
+	mat.insert(mat.end(), s, val);
+
+	this->reshape(s + Matrix<T>::size);
 }
 
 template<typename T>
@@ -47,14 +51,6 @@ template<typename T>
 inline void RowVector<T>::insert_ones(size_t s)
 {
 	this->insert(1, s);
-}
-
-template<typename T>
-inline RowVector<T>& RowVector<T>::operator=(RowVector<T>&& m)
-{
-	Matrix<T>::operator=(std::move(m)); //no clue
-
-	return *this;
 }
 
 template<typename T>
@@ -81,12 +77,6 @@ inline RowVector<T>::RowVector(const std::vector<T>& list) : Matrix<T>(1, list.s
 
 template<typename T>
 inline RowVector<T>::RowVector(size_t size, const T * list) : Matrix<T>(1, size, list)
-{
-
-}
-
-template<typename T>
-inline RowVector<T>::RowVector(RowVector<T>&& c) : Matrix<T>(std::move(c))
 {
 
 }

@@ -1558,7 +1558,7 @@ size(std::exchange(m.size, 0))
 }
 
 template<typename T>
-inline Matrix<T>::Matrix() {
+inline Matrix<T>::Matrix() : rows(0), cols(0), size(0), matrix(NULL){
 
 }
 
