@@ -110,7 +110,6 @@ public:
 
 	//MATRIX MANIPULATION
 	inline const Matrix<T> transpose();
-	inline const Matrix<T> inverse();
 
 	//OPERATIONS
 		//MATRIX - MATRIX
