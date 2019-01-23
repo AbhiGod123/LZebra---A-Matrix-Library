@@ -55,6 +55,7 @@ public:
 
 	inline void set_size(const size_t in_rows, const size_t in_cols);
 	inline void resize(const size_t in_rows, const size_t in_cols);
+	inline void reshape(const size_t in_rows, const size_t in_cols);
 
 	//SET ELEMENTS
 	inline void zeros();
@@ -260,7 +261,7 @@ public:
 	inline void insert_cols(size_t c1, const Matrix<T>& m);
 
 	inline void insert_row(size_t r1, const T val);
-	inline void insert_col(size_t c1, const T val); //DOESN'T WORK
+	inline void insert_col(size_t c1, const T val);
 
 	inline void insert_rows(size_t r1, size_t r2, const T val);
 	inline void insert_cols(size_t c1, size_t c2, const T val);

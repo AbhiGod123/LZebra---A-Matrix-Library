@@ -120,6 +120,14 @@ inline void Matrix<T>::resize(const size_t in_rows, const size_t in_cols)
 }
 
 template<typename T>
+inline void Matrix<T>::reshape(const size_t in_rows, const size_t in_cols)
+{
+	rows = in_rows;
+	cols = in_cols;
+	size = rows * cols;
+}
+
+template<typename T>
 inline void Matrix<T>::zeros()
 {
 	this->fill(0);
@@ -1266,15 +1274,12 @@ inline void Matrix<T>::insert_row(size_t r1, const T val)
 template<typename T>
 inline void Matrix<T>::insert_col(size_t c1, const T val)
 {
-	Matrix<T>::iterator itr = matrix.begin();
+	Matrix<T>::iterator itr = matrix.begin() + c1;
 
-	for (size_t i = 0;i < rows;i++) {
-		if (i == rows - 1 && c1 == cols) {
-			matrix.push_back(val);
-			break;
-		}else
-		itr = matrix.insert(itr + (cols * i + c1), val);
+	itr = matrix.insert(itr, val);
+	for (int i = 0;i < rows - 1;++i) {
 		itr++;
+		itr = matrix.insert(itr + cols, val);
 	}
 
 	cols++;
