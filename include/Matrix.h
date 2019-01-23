@@ -19,14 +19,14 @@ protected:
 	size_t size;
 	std::vector<T> matrix;
 public:
-	//GETTERS - WORKS
+	//GETTERS
 	inline size_t getRows() const;
 	inline size_t getCols() const;
 	inline size_t getSize() const;
 
 	static Matrix<T>& getMatrix(Matrix<T>& m);
 
-	//ELEMENT ACCESSORS - WORKS
+	//ELEMENT ACCESSORS
 		//Bounds check
 	T& operator[] (const size_t ii);
 	const T& operator[] (const size_t ii) const;
@@ -41,15 +41,15 @@ public:
 	T& operator() (const size_t in_row, const size_t in_col);
 	const T& operator() (const size_t in_row, const size_t in_col) const;
 
-	//IN-RANGE - WORKS
+	//IN-RANGE
 	bool in_range(const size_t ii) const;
 	bool in_range(const size_t in_row, const size_t in_col) const;
 
-	//SAME SIZE - WORKS
+	//SAME SIZE
 	bool is_same_size(const Matrix& m) const;
 	bool is_same_size(const size_t in_rows, const size_t in_cols);
 
-	//SIZE MANIPULATION - WORKS
+	//SIZE MANIPULATION
 	inline void reset();
 	inline void copysize(const Matrix<T>& m);
 
@@ -115,7 +115,7 @@ public:
 	inline const Matrix<T> transpose();
 	inline const Matrix<T> inverse();
 
-	//OPERATIONS - WORKS
+	//OPERATIONS
 		//MATRIX - MATRIX
 	inline Matrix<T> operator+ (const Matrix<T>& m);
 	inline Matrix<T> operator- (const Matrix<T>& m);
@@ -148,19 +148,19 @@ public:
 	inline Matrix<T> operator++(int);
 	inline Matrix<T> operator--(int);
 
-	//MATRIX CHECKS - WORKS
+	//MATRIX CHECKS
 	bool is_empty()  const;
 	bool is_row_vec() const;
 	bool is_col_vec() const;
 	bool is_square() const;
 	bool is_sorted() const;
 	bool is_symmetric();
-	//FLOATING-POINT ONLY - WORKS
+	//FLOATING-POINT ONLY
 	bool is_finite() const;
 	bool is_inf() const;
 	bool is_nan() const;
 
-	//MAX-MIN ELEMENTS - WORKS
+	//MAX-MIN ELEMENTS
 	inline T min() const;
 	inline T max() const;
 	inline size_t indexmin() const;
@@ -177,11 +177,11 @@ public:
 	
 	class row_iterator { //iterators through rows and single col
 	public:
-		inline row_iterator();
 		inline row_iterator(const row_iterator& X);
 		inline row_iterator(Matrix<T>& in_M, const size_t in_col);
 
 		inline T& operator* ();
+		inline iterator& operator& ();
 
 		inline row_iterator& operator++();
 		inline row_iterator  operator++(int);
@@ -204,7 +204,6 @@ public:
 
 	class const_row_iterator {
 	public:
-		inline const_row_iterator();
 		inline const_row_iterator(const       row_iterator& X);
 		inline const_row_iterator(const const_row_iterator& X);
 		inline const_row_iterator(const Matrix<T>& in_M, const size_t in_row);
@@ -282,12 +281,12 @@ public:
 	inline void shed_col(size_t c1);
 	inline void shed_cols(size_t cbegin, size_t cend);
 
-	//PRINT-SAVE MATRIX - WORKS
+	//PRINT-SAVE MATRIX
 	inline void print() const; 
 	inline void save(const std::string& name);
 	inline void load(const std::string& name);
 
-	//DEFAULT CONSTRUCTOR AND DESTRUCTOR - WORKS
+	//DEFAULT CONSTRUCTOR AND DESTRUCTOR
 	inline Matrix(size_t rows, size_t cols);
 	inline Matrix(size_t rows, size_t cols, T elem); 
 	inline Matrix(size_t rows, size_t cols, const std::initializer_list<T>& list);

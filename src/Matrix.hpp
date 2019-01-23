@@ -185,9 +185,9 @@ inline void Matrix<T>::replace(const T old_val, const T new_val)
 template<typename T>
 inline void Matrix<T>::replace_row(const size_t in_rows, const T old_val, const T new_val)
 {
-	Matrix<T>::col_iterator itrend = end_row(in_rows);
+	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
-	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
 		if (*itr == old_val)
 			*itr = new_val;
 	}
@@ -196,9 +196,9 @@ inline void Matrix<T>::replace_row(const size_t in_rows, const T old_val, const 
 template<typename T>
 inline void Matrix<T>::replace_col(const size_t in_cols, const T old_val, const T new_val)
 {
-	Matrix<T>::row_iterator itrend = end_col(in_cols);
+	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
-	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
 		if (*itr == old_val)
 			*itr = new_val;
 	}
@@ -215,8 +215,8 @@ inline void Matrix<T>::fill(const T val)
 template<typename T>
 inline void Matrix<T>::fill_row(const size_t in_rows, const T val)
 {
-	Matrix<T>::col_iterator itr = begin_row(in_rows);
-	Matrix<T>::col_iterator itrend = end_row(in_rows);
+	Matrix<T>::col_iterator itr = this->begin_row(in_rows);
+	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
 	std::fill(itr, itrend, val);
 }
@@ -224,9 +224,9 @@ inline void Matrix<T>::fill_row(const size_t in_rows, const T val)
 template<typename T>
 inline void Matrix<T>::fill_col(const size_t in_cols, const T val)
 {
-	Matrix<T>::row_iterator itrend = end_col(in_cols);
+	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
-	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
 		*itr = val;
 	}
 }
@@ -258,9 +258,9 @@ inline void Matrix<T>::randu()
 template<typename T>
 inline void Matrix<T>::row_randu(const size_t in_rows)
 {
-	Matrix<T>::col_iterator itrend = end_row(in_rows);
+	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
-	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
 		*itr = uniformFloatRandom();
 	}
 }
@@ -268,9 +268,9 @@ inline void Matrix<T>::row_randu(const size_t in_rows)
 template<typename T>
 inline void Matrix<T>::col_randu(const size_t in_cols)
 {
-	Matrix<T>::row_iterator itrend = end_col(in_cols);
+	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
-	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
 		*itr = uniformFloatRandom();
 	}
 }
@@ -295,9 +295,9 @@ inline void Matrix<T>::randn()
 template<typename T>
 inline void Matrix<T>::row_randn(const size_t in_rows)
 {
-	Matrix<T>::col_iterator itrend = end_row(in_rows);
+	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
-	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
 		*itr = gaussianRandom();
 	}
 }
@@ -305,9 +305,9 @@ inline void Matrix<T>::row_randn(const size_t in_rows)
 template<typename T>
 inline void Matrix<T>::col_randn(const size_t in_cols)
 {
-	Matrix<T>::row_iterator itrend = end_col(in_cols);
+	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
-	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
 		*itr = gaussianRandom();
 	}
 }
@@ -332,9 +332,9 @@ inline void Matrix<T>::randi()
 template<typename T>
 inline void Matrix<T>::row_randi(const size_t in_rows)
 {
-	Matrix<T>::col_iterator itrend = end_row(in_rows);
+	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
-	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
 		*itr = uniformIntRandom();
 	}
 }
@@ -342,9 +342,9 @@ inline void Matrix<T>::row_randi(const size_t in_rows)
 template<typename T>
 inline void Matrix<T>::col_randi(const size_t in_cols)
 {
-	Matrix<T>::row_iterator itrend = end_col(in_cols);
+	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
-	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
 		*itr = uniformIntRandom();
 	}
 }
@@ -369,9 +369,9 @@ inline void Matrix<T>::fill(const lambdaT val)
 template<typename T>
 inline void Matrix<T>::fill_row(const size_t in_rows, const lambdaT val)
 {
-	Matrix<T>::col_iterator itrend = end_row(in_rows);
+	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
-	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
 		*itr = val(*itr);
 	}
 }
@@ -379,9 +379,9 @@ inline void Matrix<T>::fill_row(const size_t in_rows, const lambdaT val)
 template<typename T>
 inline void Matrix<T>::fill_col(const size_t in_cols, const lambdaT val)
 {
-	Matrix<T>::row_iterator itrend = end_col(in_cols);
+	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
-	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
 		*itr = val(*itr);
 	}
 }
@@ -413,9 +413,9 @@ inline void Matrix<T>::fill(const func_p val)
 template<typename T>
 inline void Matrix<T>::fill_row(const size_t in_rows, const func_p val)
 {
-	Matrix<T>::col_iterator itrend = end_row(in_rows);
+	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
-	for (Matrix<T>::col_iterator itr = begin_row(in_rows); itr != itrend;itr++) {
+	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
 		*itr = val(*itr);
 	}
 }
@@ -423,9 +423,9 @@ inline void Matrix<T>::fill_row(const size_t in_rows, const func_p val)
 template<typename T>
 inline void Matrix<T>::fill_col(const size_t in_cols, const func_p val)
 {
-	Matrix<T>::row_iterator itrend = end_col(in_cols);
+	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
-	for (Matrix<T>::row_iterator itr = begin_col(in_cols); itr != itrend;itr++) {
+	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
 		*itr = val(*itr);
 	}
 }
@@ -895,6 +895,12 @@ inline T & Matrix<T>::row_iterator::operator*()
 }
 
 template<typename T>
+inline typename Matrix<T>::iterator& Matrix<T>::row_iterator::operator&()
+{
+	return itr;
+}
+
+template<typename T>
 inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator++()
 {
 	current_row++;
@@ -1204,51 +1210,53 @@ template<typename T>
 inline void Matrix<T>::swap(Matrix<T>& m)
 {
 	matrix.swap(m.matrix);
-	std::swap(rows, m.rows);
-	std::swap(cols, m.cols);
-	std::swap(size, m.size);
 }
 
 template<typename T>
 inline void Matrix<T>::swap_rows(size_t r1, size_t r2)
 {
+	if (r1 == r2)
+		return;
 	if (r1 > r2)
 		std::swap(r1, r2);
-	typename std::vector<T>::iterator begin = matrix.begin() + r1 * cols;
-	typename std::vector<T>::iterator end = begin + cols;
+	
+	Matrix<T>::col_iterator itrend = this->end_row(r1);
 
-	for (auto it = begin; it != end; ++it) {
-		std::swap(*it, matrix[cols * r2 + it - begin]);
+	Matrix<T>::col_iterator itr1;
+	Matrix<T>::col_iterator itr2;
+
+	for (itr1 = this->begin_row(r1), itr2 = this->begin_row(r2); itr1 != itrend;itr1++, itr2++) {
+		std::swap(*itr1, *itr2);
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::swap_cols(size_t c1, size_t c2)
 {
+	if (c1 == c2)
+		return;
 	if (c1 > c2)
 		std::swap(c1, c2);
-	typename std::vector<T>::iterator begin = matrix.begin() + c1;
-	typename std::vector<T>::iterator end = begin * rows;
+	
+	Matrix<T>::row_iterator itrend = this->end_col(c1);
 
-	for (auto it = begin; it != end; it += rows) {
-		std::swap(*it, matrix[rows * c2 + it - begin]);
+	for (Matrix<T>::row_iterator itr1 = this->begin_col(c1), itr2 = this->begin_col(c2); itr1 != itrend;itr1++,itr2++) {
+		std::swap(*itr1, *itr2);
 	}
 }
 
 template<typename T>
 inline void Matrix<T>::insert_rows(size_t r1, const Matrix<T>& m)
 {
-	matrix.insert(r1*cols, m.begin(), m.end());
-	rows = rows + m.rows;
-	size = rows * cols;
+	matrix.insert(this->begin_row(r1), m.begin(), m.end());
+
+	rows+=m.rows;
+	this->resize(rows, cols);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_cols(size_t c1, const Matrix<T>& m)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + c1;
-	typename std::vector<T>::iterator end = begin * rows;
-
 	for (size_t a = 0;a < m.cols;a++) {
 		for (size_t i = c1;i < c1 * rows;i += rows) {
 			matrix.insert(i, m(i, a));
@@ -1261,23 +1269,27 @@ inline void Matrix<T>::insert_cols(size_t c1, const Matrix<T>& m)
 template<typename T>
 inline void Matrix<T>::insert_row(size_t r1, const T val)
 {
-	matrix.insert(r1*cols, val, cols);
+	matrix.insert(this->begin_row(r1), cols, val);
+
 	rows++;
-	size = rows * cols;
+	this->resize(rows, cols);
 }
 
 template<typename T>
 inline void Matrix<T>::insert_col(size_t c1, const T val)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + c1;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = this->begin_col(c1);
+	Matrix<T>::iterator& itr = itrend.itr;
+	itrend++;
 
-	for (size_t i = c1;i < c1 * rows;i += rows) {
-		matrix.insert(i, val);
-	}
+	//matrix.insert(itr, 1, val);
+	std::cout << *itr << std::endl;
+	itrend.print();
+
+
 
 	cols++;
-	size = rows * cols;
+	this->resize(rows, cols);
 }
 
 template<typename T>
@@ -1347,8 +1359,12 @@ inline void Matrix<T>::insert_cols_ones(size_t c1, size_t c2)
 template<typename T>
 inline void Matrix<T>::shed_row(size_t r1)
 {
-	matrix.erase(r1*cols, r1*cols + cols);
-	rows++;
+	Matrix<T>::col_iterator itr = this->begin_row(r1);
+	Matrix<T>::col_iterator itrend = this->end_row(r1);
+
+	matrix.erase(itr, itrend);
+
+	rows--;
 	size = rows * cols;
 }
 
@@ -1363,15 +1379,13 @@ inline void Matrix<T>::shed_rows(size_t rbegin, size_t rend)
 template<typename T>
 inline void Matrix<T>::shed_col(size_t c1)
 {
-	typename std::vector<T>::iterator begin = matrix.begin() + c1;
-	typename std::vector<T>::iterator end = begin * rows;
+	Matrix<T>::row_iterator itrend = this->end_col(c1);
 
-
-	for (size_t i = c1;i < c1 * rows;i += rows) {
-		matrix.erase(i);
+	for (Matrix<T>::row_iterator itr = this->begin_col(c1); itr != itrend;itr++) {
+		matrix.erase(itr.itr);
 	}
 
-	cols++;
+	cols--;
 	size = rows * cols;
 }
 
