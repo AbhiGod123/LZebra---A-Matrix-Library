@@ -1534,7 +1534,7 @@ inline void Matrix<T>::save(const std::string & name)
 	stream << rows << '\n';
 	stream << cols << '\n';
 
-	for (auto i : matrix) {
+	for (T& i : matrix) {
 		stream << i << std::endl;
 	}
 
@@ -1545,10 +1545,25 @@ inline void Matrix<T>::save(const std::string & name)
 template<typename T>
 inline void Matrix<T>::load(const std::string & name)
 {
+	this->reset();
+	std::ifstream stream;
+
+	stream.open(name);
 
 	if (!stream.is_open()) {
-		std::cout << "File not found!" << std::endkl;
+		std::cout << "File not found!" << std::endl;
 	}
+
+	stream >> rows;
+	stream >> cols;
+
+	this->resize(rows, cols);
+
+	for (T& i:matrix) {
+		stream >> i;
+	}
+
+	stream.close();
 }
 
 template<typename T>
@@ -1644,6 +1659,12 @@ size(std::exchange(m.size, 0)),
 matrix(std::move(m.matrix))
 {
 
+}
+
+template<typename T>
+inline Matrix<T>::Matrix(const std::string & name)
+{
+	this->load(name);
 }
 
 template<typename T>

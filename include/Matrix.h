@@ -178,7 +178,6 @@ public:
 		inline row_iterator(Matrix<T>& in_M, const size_t in_col);
 
 		inline T& operator* ();
-		inline iterator& operator& ();
 
 		inline row_iterator& operator++();
 		inline row_iterator  operator++(int);
@@ -294,6 +293,7 @@ public:
 	inline Matrix(size_t rows, size_t cols, const T * const * list);
 	inline Matrix(const Matrix<T>& m);
 	inline Matrix(Matrix<T>&& m); 
+	inline Matrix(const std::string& name);
 	inline Matrix(); 
 	inline ~Matrix();
 };
