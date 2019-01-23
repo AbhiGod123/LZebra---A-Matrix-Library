@@ -541,12 +541,6 @@ inline const Matrix<T> Matrix<T>::transpose()
 }
 
 template<typename T>
-inline const Matrix<T> Matrix<T>::inverse()
-{
-	// TODO: insert return statement here
-}
-
-template<typename T>
 inline Matrix<T> Matrix<T>::operator+(const Matrix<T>& m)
 {
 	Matrix<T> result(*this);
@@ -1365,11 +1359,9 @@ inline void Matrix<T>::insert_col(size_t c1, const T val)
 	{
 		std::cout << "Col out of range" << std::endl;
 	}
-	Matrix<T>::iterator itr = matrix.begin() + c1;
+	Matrix<T>::iterator itr = matrix.insert(matrix.begin() + c1, val);
 
-	itr = matrix.insert(itr, val);
-	for (int i = 0;i < rows - 1;++i) {
-		itr++;
+	for (size_t i = 0;i < rows - 1;++i, ++itr) {
 		itr = matrix.insert(itr + cols, val);
 	}
 
@@ -1469,11 +1461,10 @@ inline void Matrix<T>::shed_col(size_t c1)
 	{
 		std::cout << "Col out of range" << std::endl;
 	}
-	Matrix<T>::row_iterator itrend = this->end_col(c1);
-
-	for (Matrix<T>::row_iterator itr = this->begin_col(c1); itr != itrend;itr++) {
-		itr.itr = matrix.erase(itr.itr);
-	}
+	Matrix<T>::iterator itr = matrix.erase(matrix.begin() + c1);
+	
+	for (size_t i = 0;i < rows - 1;++i) 
+		itr = matrix.erase(itr + cols - 1);
 
 	cols--;
 	size = rows * cols;

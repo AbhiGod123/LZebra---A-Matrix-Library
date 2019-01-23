@@ -273,7 +273,7 @@ public:
 	//SHED 
 	inline void shed_row(size_t r1);
 	inline void shed_rows(size_t rbegin, size_t rend);
-	inline void shed_col(size_t c1);  //DOESN'T WORK
+	inline void shed_col(size_t c1);
 	inline void shed_cols(size_t cbegin, size_t cend);
 
 	//PRINT-SAVE MATRIX
