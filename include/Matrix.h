@@ -91,8 +91,8 @@ public:
 	inline void col_randi(const size_t in_cols);
 	inline void randi(const size_t in_rows, const size_t in_cols);
 
-	typedef std::function<T(T)> lambdaT;
-	typedef T(*func_p)(T);
+	typedef std::function<void(T&)> lambdaT;
+	typedef void(*func_p)(T&);
 
 	//FOREACH
 		//LAMBDA FUNCTION
