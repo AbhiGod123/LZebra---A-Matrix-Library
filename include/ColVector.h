@@ -14,6 +14,7 @@ public:
 	//INSERT
 	inline void insert(const ColVector<T>& object);
 	inline void insert(size_t s, const T val);
+	inline void insert(const T val);
 	inline void insert_zeros(size_t s);
 	inline void insert_ones(size_t s);
 

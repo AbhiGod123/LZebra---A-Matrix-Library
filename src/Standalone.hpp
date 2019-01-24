@@ -209,4 +209,6 @@ namespace tenseopr
 		}
 		return pow(sum, 0.5);
 	}
+
+	
 }

@@ -38,9 +38,7 @@ namespace tenseopr {
 	templ double norm_dot(crvec v1, crvec v2);
 	templ double magnitude(ccvec v1);
 	templ double magnitude(crvec v1);
-	templ ColVector<T> find(cmat m);
-	templ ColVector<T> find(std::function<void(T&)>);
-	templ ColVector<T> find(void(*func_p)(T&));
+	
 }
 
 #endif

@@ -42,6 +42,15 @@ inline void ColVector<T>::insert(size_t s, const T val)
 }
 
 template<typename T>
+inline void ColVector<T>::insert(const T val)
+{
+	auto& mat = Matrix<T>::matrix;
+	mat.push_back(val);
+
+	this->reshape(s + 1);
+}
+
+template<typename T>
 inline void ColVector<T>::insert_zeros(size_t s)
 {
 	this->insert(s, 0);
