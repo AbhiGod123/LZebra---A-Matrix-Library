@@ -1,22 +1,22 @@
 #include "Standalone.h"
 
 namespace random {
-	float gaussianRandom() {
-		float v1, v2, s;
+	double gaussianRandom() {
+		double v1, v2, s;
 		do {
-			v1 = 2.0f * (float)(rand() % 10000) / (10000) - 1.0f;
-			v2 = 2.0f * (float)(rand() % 10000) / (10000) - 1.0f;
+			v1 = 2.0f * static_cast<double>(rand() % 10000) / (10000) - 1.0f;
+			v2 = 2.0f * static_cast<double>(rand() % 10000) / (10000) - 1.0f;
 			s = v1 * v1 + v2 * v2;
 		} while (s >= 1.0f || s == 0.0f);
 
-		s = (float)pow((-2.0f * log(s)) / s, 0.5f);
+		s = pow((-2.0f * log(s)) / s, 0.5f);
 
 		return v1 * s;
 	}
 
-	float uniformFloatRandom()
+	double uniformFloatRandom()
 	{
-		return static_cast<float>(rand() % 10000) / (10000);
+		return static_cast<double>(rand() % 10000) / (10000);
 	}
 
 	int uniformIntRandom(int max)
@@ -45,6 +45,53 @@ namespace tenseopr
 		return sum;
 	}
 
+	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2)
+	{
+		if (m1.getCols() != m2.getCols() || m1.getRows() != m2.getRows())
+			return false;
+
+		switch (c)
+		{
+			case 0:
+			{
+				for (size_t i = 0;i < m1.getSize();++i) {
+					if (::abs(m1(i) - m2(i)) > t1)
+						return false;
+				}
+			}
+			break;
+			case 1:
+			{
+				for (size_t i = 0;i < m1.getSize();++i) {
+					if (::abs(m1(i) - m2(i))/std::max(::abs(m1(i)), ::abs(m2(i))) > t1)
+						return false;
+				}
+			}
+			break;
+			case 2:
+			{
+				for (size_t i = 0;i < m1.getSize();++i)
+				if (::abs(m1(i) - m2(i)) > t1 && ::abs(m1(i) - m2(i)) / std::max(::abs(m1(i)), ::abs(m2(i))) > t2)
+					return false;
+			}
+			break;
+		}
+		return true;
+		
+	}
+
+	templ Matrix<double> arg(cpmat complexmat)
+	{
+		Matrix<double> phaseangles;
+		phaseangles.copysize(complexmat);
+
+		for (size_t i = 0;i < phaseangles.getSize();++i) {
+			phaseangles(i) = ::atan2(complexmat.imag(), complexmat.real());
+		}
+		
+		return phaseangles;
+	}
+
 	templ T as_scalar(cmat m) {
 		return m[0];
 	}
@@ -64,9 +111,9 @@ namespace tenseopr
 	templ ColVector<T> cross(ccvec v1, ccvec v2) {
 		ColVector<T> vec(3);
 
-		size_t x = 0;
-		size_t y = 1;
-		size_t z = 2;
+		uchar x = 0;
+		uchar y = 1;
+		uchar z = 2;
 
 		vec(x) = v1(y)*v2(z) - v1(z)*v2(y);
 		vec(y) = v1(z)*v2(x) - v1(x)*v2(z);
@@ -210,5 +257,4 @@ namespace tenseopr
 		return pow(sum, 0.5);
 	}
 
-	
 }
