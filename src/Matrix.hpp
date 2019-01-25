@@ -744,6 +744,42 @@ inline bool Matrix<T>::operator>(const Matrix<T>& m) const
 }
 
 template<typename T>
+inline Matrix<T> Matrix<T>::operator+(const T val)
+{
+	Matrix<T> result(*this);
+	result += val;
+
+	return result;
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::operator-(const T val)
+{
+	Matrix<T> result(*this);
+	result -= val;
+
+	return result;
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::operator*(const T val)
+{
+	Matrix<T> result(*this);
+	result *= val;
+
+	return result;
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::operator/(const T val)
+{
+	Matrix<T> result(*this);
+	result /= val;
+
+	return result;
+}
+
+template<typename T>
 inline Matrix<T>& Matrix<T>::operator=(const T val)
 {
 	set_size(1, 1);
@@ -1481,9 +1517,9 @@ inline void Matrix<T>::shed_cols(size_t cbegin, size_t cend)
 template<typename T>
 inline std::ostream & operator<<(std::ostream & stream, const Matrix<T>& mat)
 {
-	for (size_t i = 0;i < mat.rows;++i)
+	for (size_t i = 0;i < mat.getRows();++i)
 	{
-		for (size_t f = 0;f < mat.cols;++f)
+		for (size_t f = 0;f < mat.getCols();++f)
 		{
 			stream << mat(i, f) << ' ';
 		}

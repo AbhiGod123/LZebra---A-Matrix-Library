@@ -134,6 +134,10 @@ public:
 	inline bool operator> (const Matrix<T>& m) const;
 
 	//MATRIX - SCALAR
+	inline Matrix<T> operator+ (const T val);
+	inline Matrix<T> operator- (const T val);
+	inline Matrix<T> operator* (const T val);
+	inline Matrix<T> operator/ (const T val);
 	inline Matrix<T>& operator= (const T val);
 	inline Matrix<T>& operator+=(const T val);
 	inline Matrix<T>& operator-=(const T val);
