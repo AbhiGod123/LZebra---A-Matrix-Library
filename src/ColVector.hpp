@@ -47,7 +47,7 @@ inline void ColVector<T>::insert(const T val)
 	auto& mat = Matrix<T>::matrix;
 	mat.push_back(val);
 
-	this->reshape(s + 1);
+	this->reshape(1 + Matrix<T>::size);
 }
 
 template<typename T>
