@@ -1422,54 +1422,6 @@ inline void Matrix<T>::insert_cols(size_t c1, size_t c2, const T val)
 }
 
 template<typename T>
-inline void Matrix<T>::insert_row_zeros(size_t r1)
-{
-	this->insert_row(r1, 0);
-}
-
-template<typename T>
-inline void Matrix<T>::insert_col_zeros(size_t c1)
-{
-	this->insert_col(c1, 0);
-}
-
-template<typename T>
-inline void Matrix<T>::insert_row_ones(size_t r1)
-{
-	this->insert_row(r1, 1);
-}
-
-template<typename T>
-inline void Matrix<T>::insert_col_ones(size_t c1)
-{
-	this->insert_col(c1, 1);
-}
-
-template<typename T>
-inline void Matrix<T>::insert_rows_zeros(size_t r1, size_t r2)
-{
-	this->insert_rows(r1, r2, 0);
-}
-
-template<typename T>
-inline void Matrix<T>::insert_cols_zeros(size_t c1, size_t c2)
-{
-	this->insert_cols(c1, c2, 0);
-}
-
-template<typename T>
-inline void Matrix<T>::insert_rows_ones(size_t r1, size_t r2)
-{
-	this->insert_rows(r1, r2, 1);
-}
-
-template<typename T>
-inline void Matrix<T>::insert_cols_ones(size_t c1, size_t c2)
-{
-	this->insert_cols(c1, c2, 1);
-}
-
-template<typename T>
 inline void Matrix<T>::shed_row(size_t r1)
 {
 	if (r1 >= rows)
