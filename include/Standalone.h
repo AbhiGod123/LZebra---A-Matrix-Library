@@ -37,10 +37,13 @@ namespace random {
 namespace tenseopr {
 	templ Matrix<T> abs(cmat m);
 	templ T accu(cmat m);
+
+	templ bool all(cmat m);
+	templ bool any(cmat m);
 	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2=0);
 	ftempldec Matrix<T> round(cmat m1, T tolerance);
 
-	ftempldec Matrix<T> arg(cpmat complexmat);
+	ftempldec Matrix<T> arg(cpmat complexmat); //phaseangles
 	templ T as_scalar(cmat m);
 	templ Matrix<T> clamp(cmat m, T min, T max);
 
@@ -55,8 +58,9 @@ namespace tenseopr {
 
 	templ std::tuple<T, Matrix<T>> ref(cmat m);
 	templ T det(cmat m);
-
-
+	templ Matrix<T> diagmat(cmat m, uchar val = 0);
+	templ ColVector<T> diagvec(cmat m, uchar val = 0);
+ 
 	templ double dot(ccvec v1, ccvec v2);
 	templ double dot(crvec v1, crvec v2);
 	templ double norm_dot(ccvec v1, ccvec v2);
@@ -64,6 +68,12 @@ namespace tenseopr {
 	templ double magnitude(ccvec v1);
 	templ double magnitude(crvec v1);
 	
+	templ Matrix<T> expmat(cmat m);
+	templ Matrix<T> expmat_sym(cmat m);
+
+
+
+
 }
 
 #endif

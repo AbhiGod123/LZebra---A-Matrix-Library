@@ -267,6 +267,22 @@ namespace tenseopr
 		return std::get<0>(tpref);
 	}
 
+	templ Matrix<T> diagmat(cmat m, uchar val)
+	{
+		Matrix<T> dmat;
+		dmat.copysize(m);
+
+		if (val >= dmat.getSize())
+		{
+			std::cout << "Value over size" << std::endl;
+		}
+
+		for (size_t i = 0;i < dmat.getSize();++i) {
+			dmat(i, i+val) = m(i, i+val);
+		}
+		return dmat;
+	}
+
 	templ double dot(ccvec v1, ccvec v2)
 	{
 		double sum = 0;
