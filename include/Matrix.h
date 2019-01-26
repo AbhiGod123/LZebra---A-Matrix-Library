@@ -270,20 +270,11 @@ public:
 	inline void insert_cols(size_t c1, const Matrix<T>& m);
 
 	inline void insert_row(size_t r1, const T val);
+	inline void insert_row(size_t, T);
 	inline void insert_col(size_t c1, const T val);
 
 	inline void insert_rows(size_t r1, size_t r2, const T val);
 	inline void insert_cols(size_t c1, size_t c2, const T val);
-
-	inline void insert_row_zeros(size_t r1);
-	inline void insert_col_zeros(size_t c1);
-	inline void insert_row_ones(size_t r1);
-	inline void insert_col_ones(size_t c1);
-
-	inline void insert_rows_zeros(size_t r1, size_t r2);
-	inline void insert_cols_zeros(size_t c1, size_t c2);
-	inline void insert_rows_ones(size_t r1, size_t r2);
-	inline void insert_cols_ones(size_t c1, size_t c2);
 
 	//SHED 
 	inline void shed_row(size_t r1);

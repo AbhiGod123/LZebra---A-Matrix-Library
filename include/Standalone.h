@@ -71,7 +71,15 @@ namespace tenseopr {
 	templ Matrix<T> expmat(cmat m);
 	templ Matrix<T> expmat_sym(cmat m);
 
+	templ Matrix<size_t> find(cmat m);
+	templ Matrix<size_t> find_finite(cmat m);
+	templ Matrix<size_t> find_nonfinite(cmat m);
+	templ Matrix<size_t> find_unique(cmat m);
 
+	templ Matrix<T> fliplr(cmat m);
+	templ Matrix<T> flipup(cmat m);
+	templ Matrix<T> real(cpmat m);
+	templ Matrix<T> imag(cpmat m);
 
 
 }
