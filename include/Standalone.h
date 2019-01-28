@@ -45,13 +45,13 @@ namespace tenseopr {
 	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2 = 0);
 	ftempldec Matrix<T> round(cmat m1, T tolerance);
 
-	ftempldec Matrix<T> arg(cpmat complexmat); //phaseangles
+	ftempldec Matrix<T> arg(cpmat complexmat); //should be able to take it any variable type
 	templ T as_scalar(cmat m);
 	templ Matrix<T> clamp(cmat m, T min, T max);
 
-	templ double cond(cmat m);
+	templ double cond(cmat m);//need det first
 	templ Matrix<std::complex<T>> conj(cpmat complexmat);
-	template<typename T, typename C> Matrix<T> conv_to(cmat m);
+	template<typename T, typename C> Matrix<T> conv_to(cmat m); //NOT SURE OF HOW TO DO THIS
 
 	templ ColVector<T> cross(ccvec v1, ccvec v2);
 	templ RowVector<T> cross(crvec v1, crvec v2);

@@ -139,7 +139,7 @@ namespace tenseopr
 	templ Matrix<T> clamp(cmat m,T min, T max) {
 		Matrix<T> mat(m);
 
-		for (typename Matrix<T>::iterator itr = mat.begin();itr != mat.end();++itr) {
+		for (auto itr = mat.begin();itr != mat.end();++itr) {
 			if (*itr < min)
 				*itr = min;
 			else if (*itr > max)
@@ -147,6 +147,16 @@ namespace tenseopr
 		}
 		return mat;
 	}
+
+	templ Matrix<std::complex<T>> conj(cpmat complexmat)
+	{
+		Matrix<std::complex<T>> conjugate(complexmat);
+
+		for (auto itr = conjugate.begin();itr != conjugate.end();++itr) {
+			(*itr).imag(-1 * (*itr).imag());
+		}
+		return conjugate;
+ 	}
 
 	templ ColVector<T> cross(ccvec v1, ccvec v2) {
 		ColVector<T> vec(3);
