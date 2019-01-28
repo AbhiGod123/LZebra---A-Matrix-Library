@@ -51,7 +51,7 @@ namespace tenseopr {
 
 	templ double cond(cmat m);//need det first
 	templ Matrix<std::complex<T>> conj(cpmat complexmat);
-	template<typename T, typename C> Matrix<T> conv_to(cmat m); //NOT SURE OF HOW TO DO THIS
+	template<typename C, typename T> Matrix<C> conv_to(cmat m);
 
 	templ ColVector<T> cross(ccvec v1, ccvec v2);
 	templ RowVector<T> cross(crvec v1, crvec v2);
@@ -82,6 +82,7 @@ namespace tenseopr {
 	templ Matrix<T> flipup(cmat m);
 	templ Matrix<T> real(cpmat m);
 	templ Matrix<T> imag(cpmat m);
+
 
 
 }

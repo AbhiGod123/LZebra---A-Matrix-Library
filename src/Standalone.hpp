@@ -158,6 +158,17 @@ namespace tenseopr
 		return conjugate;
  	}
 
+	template<typename C, typename T>
+	Matrix<C> conv_to(cmat m)
+	{
+		Matrix<C> casted(m.getRows(),m.getCols());
+
+		for (size_t i = 0;i < casted.getSize();++i) {
+			casted(i) = static_cast<C>(m(i));
+		}
+		return casted;
+	}
+
 	templ ColVector<T> cross(ccvec v1, ccvec v2) {
 		ColVector<T> vec(3);
 
