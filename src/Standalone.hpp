@@ -45,6 +45,34 @@ namespace tenseopr
 		return sum;
 	}
 
+	templ Matrix<T> affmul(cmat m1, noncmat m2)
+	{
+		m2.insert_row(m2.getRows(), 1);
+
+		Matrix<T> resultmat = const_cast<Matrix<T>&>(m1) * m2;
+		m2.shed_row(m2.getRows()-1);
+
+		return resultmat;
+	}
+
+	templ bool all(cmat m)
+	{
+		for (auto itr = m.begin(); itr != m.end();++itr) {
+			if (!(*itr))
+				return false;
+		}
+		return true;
+	}
+
+	templ bool any(cmat m)
+	{
+		for (auto itr = m.begin(); itr != m.end();++itr) {
+			if (*itr)
+				return true;
+		}
+		return false;
+	}
+
 	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2)
 	{
 		if (m1.getCols() != m2.getCols() || m1.getRows() != m2.getRows())

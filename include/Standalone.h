@@ -12,6 +12,7 @@
 
 #define templ template<typename T>
 #define cmat const Matrix<T>&
+#define noncmat Matrix<T>&
 #define ccvec const ColVector<T>& 
 #define crvec const RowVector<T>& 
 #define cpmat const Matrix<std::complex<T>>&
@@ -37,10 +38,11 @@ namespace random {
 namespace tenseopr {
 	templ Matrix<T> abs(cmat m);
 	templ T accu(cmat m);
+	templ Matrix<T> affmul(cmat m1, noncmat m2);
 
-	templ bool all(cmat m);
+	templ bool all(cmat m);	
 	templ bool any(cmat m);
-	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2=0);
+	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2 = 0);
 	ftempldec Matrix<T> round(cmat m1, T tolerance);
 
 	ftempldec Matrix<T> arg(cpmat complexmat); //phaseangles
