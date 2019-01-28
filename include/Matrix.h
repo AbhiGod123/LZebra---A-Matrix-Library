@@ -58,7 +58,7 @@ public:
 
 	//SIZE MANIPULATION
 	inline void reset();
-	inline void copysize(const Matrix<T>& m);
+	inline void copysize(const Matrix& m);
 
 	inline void set_size(const size_t in_rows, const size_t in_cols);
 	inline void resize(const size_t in_rows, const size_t in_cols);
@@ -137,12 +137,12 @@ public:
 	inline Matrix<T>& operator%=(const Matrix<T>& m);
 	inline Matrix<T>& operator/=(const Matrix<T>& m);
 	//BOOLEAN EVALUATION
-	inline bool operator!=(const Matrix<T>& m) const;
-	inline bool operator==(const Matrix<T>& m) const;
-	inline bool operator>=(const Matrix<T>& m) const;
-	inline bool operator<=(const Matrix<T>& m) const;
-	inline bool operator< (const Matrix<T>& m) const;
-	inline bool operator> (const Matrix<T>& m) const;
+	inline Matrix<char> operator!=(const Matrix<T>& m);
+	inline Matrix<char> operator==(const Matrix<T>& m);
+	inline Matrix<char> operator>=(const Matrix<T>& m);
+	inline Matrix<char> operator<=(const Matrix<T>& m);
+	inline Matrix<char> operator< (const Matrix<T>& m);
+	inline Matrix<char> operator> (const Matrix<T>& m);
 
 	//MATRIX - SCALAR
 	inline Matrix<T> operator+ (const T val);
@@ -270,7 +270,6 @@ public:
 	inline void insert_cols(size_t c1, const Matrix<T>& m);
 
 	inline void insert_row(size_t r1, const T val);
-	inline void insert_row(size_t, T);
 	inline void insert_col(size_t c1, const T val);
 
 	inline void insert_rows(size_t r1, size_t r2, const T val);

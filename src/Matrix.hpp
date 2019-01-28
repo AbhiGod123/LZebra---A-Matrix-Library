@@ -110,7 +110,7 @@ inline void Matrix<T>::reset()
 }
 
 template<typename T>
-inline void Matrix<T>::copysize(const Matrix<T>& m)
+inline void Matrix<T>::copysize(const Matrix& m)
 {
 	this->set_size(m.rows, m.cols);
 }
@@ -662,85 +662,93 @@ inline Matrix<T>& Matrix<T>::operator/=(const Matrix<T>& m)
 }
 
 template<typename T>
-inline bool Matrix<T>::operator!=(const Matrix<T>& m) const
+inline Matrix<char> Matrix<T>::operator!=(const Matrix<T>& m) 
 {
 	if (!this->is_same_size(m))
-		return false;
+		return Matrix<char>();
+
+	Matrix<char> boolmat(m.getRows(),m.getCols());
 
 	for (size_t i = 0;i < size;++i) {
-		if (matrix[i] == m[i])
-			return false;
+		boolmat(i) = (*this)(i) != m(i);
 	}
-	return true;
+
+	return boolmat;
 }
 
 template<typename T>
-inline bool Matrix<T>::operator==(const Matrix<T>& m) const
+inline Matrix<char> Matrix<T>::operator==(const Matrix<T>& m) 
 {
 	if (!this->is_same_size(m))
-		return false;
+		return Matrix<char>();
+
+	Matrix<char> boolmat(m.getRows(), m.getCols());
 
 	for (size_t i = 0;i < size;++i) {
-		if (matrix[i] != m[i])
-			return false;
+		boolmat(i) = ((*this)(i) == m(i));
 	}
-	return true;
+
+	return boolmat;
 }
 
 template<typename T>
-inline bool Matrix<T>::operator>=(const Matrix<T>& m) const
+inline Matrix<char> Matrix<T>::operator>=(const Matrix<T>& m) 
 {
 	if (!this->is_same_size(m))
-		return false;
+		return Matrix<char>();
+
+	Matrix<char> boolmat(m.getRows(), m.getCols());
 
 	for (size_t i = 0;i < size;++i) {
-		if (matrix[i] < m[i])
-			return false;
+		boolmat(i) = (*this)(i) >= m(i);
 	}
 
-	return true;
+	return boolmat;
 }
 
 template<typename T>
-inline bool Matrix<T>::operator<=(const Matrix<T>& m) const
+inline Matrix<char> Matrix<T>::operator<=(const Matrix<T>& m) 
 {
 	if (!this->is_same_size(m))
-		return false;
+		return Matrix<char>();
+
+	Matrix<char> boolmat(m.getRows(), m.getCols());
 
 	for (size_t i = 0;i < size;++i) {
-		if (matrix[i] > m[i])
-			return false;
+		boolmat(i) = (*this)(i) <= m(i);
 	}
 
-	return true;
+	return boolmat;
 }
 
 template<typename T>
-inline bool Matrix<T>::operator<(const Matrix<T>& m) const
+inline Matrix<char> Matrix<T>::operator<(const Matrix<T>& m) 
 {
 	if (!this->is_same_size(m))
-		return false;
+		return Matrix<char>();
+
+	Matrix<char> boolmat(m.getRows(), m.getCols());
 
 	for (size_t i = 0;i < size;++i) {
-		if (matrix[i] >= m[i])
-			return false;
+		boolmat(i) = (*this)(i) < m(i);
 	}
 
-	return true;
+	return boolmat;
 }
 
 template<typename T>
-inline bool Matrix<T>::operator>(const Matrix<T>& m) const
+inline Matrix<char> Matrix<T>::operator>(const Matrix<T>& m) 
 {
 	if (!this->is_same_size(m))
-		return false;
+		return Matrix<char>();
+
+	Matrix<char> boolmat(m.getRows(), m.getCols());
 
 	for (size_t i = 0;i < size;++i) {
-		if (matrix[i] <= m[i])
-			return false;
+		boolmat(i) = (*this)(i) > m(i);
 	}
 
-	return true;
+	return boolmat;
 }
 
 template<typename T>
