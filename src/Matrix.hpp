@@ -889,6 +889,12 @@ bool Matrix<T>::is_col_vec() const
 }
 
 template<typename T>
+inline bool Matrix<T>::is_vec() const
+{
+	return this->is_col_vec() || this->is_row_vec();
+}
+
+template<typename T>
 bool Matrix<T>::is_square() const
 {
 	return rows == cols;
