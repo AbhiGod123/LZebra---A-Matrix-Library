@@ -62,9 +62,9 @@ namespace tenseopr {
 	templ Matrix<T> diagmat(cmat m, uchar val = 0);//vector and mat
 	templ Matrix<T> diagvec(cmat m, uchar val = 0);//vector and mat
  
-	templ Matrix<T> diff(cmat m1, size_t k=0);//vector and mat
-	templ double dot(cmat v1, cmat v2);//only vector
-	templ double norm_dot(cmat v1, cmat v2);//only vector
+	templ Matrix<T> diff(cmat m1, size_t k=1, uchar dim = 0);//vector and mat
+	templ double dot(cmat v1, cmat v2);
+	templ double norm_dot(cmat v1, cmat v2);
 	templ double magnitude(cmat v1);
 	
 	templ Matrix<T> expmat(cmat m); //later

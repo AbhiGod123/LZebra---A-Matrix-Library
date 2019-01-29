@@ -68,9 +68,9 @@ namespace tenseopr
 
 			for (size_t i = 0;i < m.getCols();++i) {
 
-				typename Matrix<T>::row_iterator itrend = this->end_col(i);
+				typename Matrix<T>::row_iterator itrend = m->end_col(i);
 
-				for (typename Matrix<T>::row_iterator itr = this->begin_col(i); itr != itrend;++itr) {
+				for (typename Matrix<T>::row_iterator itr = m->begin_col(i); itr != itrend;++itr) {
 					if (!(*itr)) {
 						c(i) = 0;
 						break;
@@ -85,9 +85,9 @@ namespace tenseopr
 
 			for (size_t i = 0;i < m.getRows();++i) {
 
-				typename Matrix<T>::col_iterator itrend = this->end_row(i);
+				typename Matrix<T>::col_iterator itrend = m->end_row(i);
 
-				for (typename Matrix<T>::col_iterator itr = this->begin_row(i); itr != itrend;++itr) {
+				for (typename Matrix<T>::col_iterator itr = m->begin_row(i); itr != itrend;++itr) {
 					if (!(*itr)) {
 						c(i) = 0;
 						break;
@@ -114,9 +114,9 @@ namespace tenseopr
 
 			for (size_t i = 0;i < m.getCols();++i) {
 
-				typename Matrix<T>::row_iterator itrend = this->end_col(i);
+				typename Matrix<T>::row_iterator itrend = m->end_col(i);
 
-				for (typename Matrix<T>::row_iterator itr = this->begin_col(i); itr != itrend;++itr) {
+				for (typename Matrix<T>::row_iterator itr = m->begin_col(i); itr != itrend;++itr) {
 					if ((*itr)) {
 						c(i) = 1;
 						break;
@@ -131,9 +131,9 @@ namespace tenseopr
 
 			for (size_t i = 0;i < m.getRows();++i) {
 
-				typename Matrix<T>::col_iterator itrend = this->end_row(i);
+				typename Matrix<T>::col_iterator itrend = m->end_row(i);
 
-				for (typename Matrix<T>::col_iterator itr = this->begin_row(i); itr != itrend;++itr) {
+				for (typename Matrix<T>::col_iterator itr = m->begin_row(i); itr != itrend;++itr) {
 					if ((*itr)) {
 						c(i) = 1;
 						break;
@@ -441,6 +441,47 @@ namespace tenseopr
 			dmat(i) = m(i, i + val);
 		}
 		return dmat;
+	}
+
+	templ Matrix<T> diff(cmat m1, size_t k, uchar dim)
+	{
+		Matrix<T> mat;
+
+		if (m1.getSize() <= k)
+			return mat;
+
+		if (m1.is_vec()) {
+			mat.copysize(m1);
+
+			for (size_t i = 1;i < m1.getSize();++i) {
+				mat(i - 1) = m1(i) - m1(i - 1);
+			}
+
+		}
+		else {
+			if (!k) {
+				mat.copysize(m1.getRows() - 1, m1.getCols());
+
+				for (size_t i = 0;i < mat.getCols();++i) {
+					for (size_t f = 1;f < m1.getRows();++f) {
+						mat(f - 1,i) = m1(f,i) - m1(f - 1,i);
+					}
+				}
+			}
+			else {
+				mat.copysize(m1.getRows(), m1.getCols() - 1);
+
+				for (size_t i = 0;i < mat.getRows();++i) {
+					for (size_t f = 1;f < m1.getCols();++f) {
+						mat(i, f - 1) = m1(i, f) - m1(i, f - 1);
+					}
+				}
+			}
+		}
+
+		if (k > 0)
+			return tenseopr::diff(mat, k - 1, dim);
+		return mat;
 	}
 
 	templ double dot(cmat v1, cmat v2)
