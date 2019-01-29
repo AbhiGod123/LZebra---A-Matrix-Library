@@ -408,10 +408,6 @@ namespace tenseopr
 			dmat.set_size()
 		}
 
-
-
-
-
 		
 		dmat.copysize(m);
 
@@ -449,15 +445,18 @@ namespace tenseopr
 
 	templ double dot(cmat v1, cmat v2)
 	{
+		double sum = 0;
+
 		if (!v1.is_vec() || !v2.is_vec())
 		{
 			std::cout << "Not a vector" << '\n';
 		}
-
-		double sum = 0;
-		for (size_t i = 0;i < v1.getSize();++i) {
-			sum += v1(i) * v2(i);
+		else {
+			for (size_t i = 0;i < v1.getSize();++i) {
+				sum += v1(i) * v2(i);
+			}
 		}
+
 		return sum;
 	}
 
@@ -468,15 +467,18 @@ namespace tenseopr
 
 	templ double magnitude(cmat v1)
 	{
+		double sum = 0;
+
 		if (!v1.is_vec() || !v2.is_vec())
 		{
 			std::cout << "Not a vector" << '\n';
 		}
-
-		double sum = 0;
-		for (size_t i = 0;i < v1.getSize();++i) {
-			sum += ::pow(v1(i),2);
+		else {
+			for (size_t i = 0;i < v1.getSize();++i) {
+				sum += ::pow(v1(i), 2);
+			}
 		}
+
 		return pow(sum,0.5);
 	}
 
