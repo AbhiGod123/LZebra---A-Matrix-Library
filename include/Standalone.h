@@ -62,7 +62,7 @@ namespace tenseopr {
 	templ Matrix<T> diagmat(cmat m, uchar val = 0);//vector and mat
 	templ Matrix<T> diagvec(cmat m, uchar val = 0);//vector and mat
  
-	templ Matrix<T> diff(cmat m1, size_t k=1, uchar dim = 0);//vector and mat
+	templ Matrix<T> diff(cmat m1, size_t k=1, uchar dim = 0);
 	templ double dot(cmat v1, cmat v2);
 	templ double norm_dot(cmat v1, cmat v2);
 	templ double magnitude(cmat v1);
@@ -70,7 +70,7 @@ namespace tenseopr {
 	templ Matrix<T> expmat(cmat m); //later
 	templ Matrix<T> expmat_sym(cmat m);//later
 
-	/*---------------------------------------------------------------------------------------------*/
+
 	templ Matrix<size_t> find(cmat m);
 	templ Matrix<size_t> find_finite(cmat m);
 	templ Matrix<size_t> find_nonfinite(cmat m);
@@ -80,7 +80,7 @@ namespace tenseopr {
 	templ Matrix<T> flipup(cmat m);
 	templ Matrix<T> real(cpmat m);
 	templ Matrix<T> imag(cpmat m);
-
+	//10 functions
 
 
 }

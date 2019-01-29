@@ -405,7 +405,7 @@ namespace tenseopr
 		Matrix<T> dmat;
 
 		if (m.is_vec()) {
-			dmat.set_size()
+			//dmat.set_size()
 		}
 
 		
@@ -447,20 +447,25 @@ namespace tenseopr
 	{
 		Matrix<T> mat;
 
-		if (m1.getSize() <= k)
-			return mat;
-
 		if (m1.is_vec()) {
-			mat.copysize(m1);
+			if (m1.getCols() == 1)
+			{
+				mat.set_size(1, m1.getRows() - 1);
+			}
+			else {
+				mat.set_size(m1.getCols() - 1,1);
+			}
 
 			for (size_t i = 1;i < m1.getSize();++i) {
 				mat(i - 1) = m1(i) - m1(i - 1);
 			}
-
 		}
 		else {
-			if (!k) {
-				mat.copysize(m1.getRows() - 1, m1.getCols());
+			if (m1.getRows() == 1 || m1.getCols() == 1) {
+				return mat;
+			}
+			if (!dim) {
+				mat.set_size(m1.getRows() - 1, m1.getCols());
 
 				for (size_t i = 0;i < mat.getCols();++i) {
 					for (size_t f = 1;f < m1.getRows();++f) {
@@ -469,7 +474,7 @@ namespace tenseopr
 				}
 			}
 			else {
-				mat.copysize(m1.getRows(), m1.getCols() - 1);
+				mat.set_size(m1.getRows(), m1.getCols() - 1);
 
 				for (size_t i = 0;i < mat.getRows();++i) {
 					for (size_t f = 1;f < m1.getCols();++f) {
@@ -479,7 +484,7 @@ namespace tenseopr
 			}
 		}
 
-		if (k > 0)
+		if (k > 1)
 			return tenseopr::diff(mat, k - 1, dim);
 		return mat;
 	}
@@ -510,7 +515,7 @@ namespace tenseopr
 	{
 		double sum = 0;
 
-		if (!v1.is_vec() || !v2.is_vec())
+		if (!v1.is_vec())
 		{
 			std::cout << "Not a vector" << '\n';
 		}
