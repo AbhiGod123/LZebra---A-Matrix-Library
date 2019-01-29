@@ -326,7 +326,7 @@ namespace tenseopr
 	{
 		Matrix<T> dmat;
 		
-		const size_t lowsize = dmat.getCols() < dmat.getRows() ? dmat.getCols() : dmat.getRows();
+		const size_t lowsize = m.getCols() < m.getRows() ? m.getCols() : m.getRows();
 
 		if (val >= lowsize)
 		{
@@ -341,16 +341,7 @@ namespace tenseopr
 		return dmat;
 	}
 
-	templ double dot(ccvec v1, ccvec v2)
-	{
-		double sum = 0;
-		for (size_t i = 0;i < v1.getSize();++i) {
-			sum+= v1(i) * v2(i);
-		}
-		return sum;
-	}
-
-	templ double dot(crvec v1, crvec v2) 
+	templ double dot(cmat v1, cmat v2)
 	{
 		double sum = 0;
 		for (size_t i = 0;i < v1.getSize();++i) {
@@ -359,17 +350,12 @@ namespace tenseopr
 		return sum;
 	}
 
-	templ double norm_dot(ccvec v1, ccvec v2)
+	templ double norm_dot(cmat v1, cmat v2)
 	{
 		return dot(v1, v2) / (magnitude(v1) * magnitude(v2));
 	}
 
-	templ double norm_dot(crvec v1, crvec v2)
-	{
-		return dot(v1, v2) / (magnitude(v1) * magnitude(v2));
-	}
-
-	templ double magnitude(ccvec v1)
+	templ double magnitude(cmat v1)
 	{
 		double sum = 0;
 
@@ -379,14 +365,5 @@ namespace tenseopr
 		return pow(sum,0.5);
 	}
 
-	templ double magnitude(crvec v1)
-	{
-		double sum = 0;
-
-		for (size_t i = 0;i < v1.getSize();++i) {
-			sum += ::pow(v1(i), 2);
-		}
-		return pow(sum, 0.5);
-	}
 
 }
