@@ -68,9 +68,9 @@ namespace tenseopr
 
 			for (size_t i = 0;i < m.getCols();++i) {
 
-				Matrix<T>::row_iterator itrend = this->end_col(i);
+				typename Matrix<T>::row_iterator itrend = this->end_col(i);
 
-				for (Matrix<T>::row_iterator itr = this->begin_col(i); itr != itrend;++itr) {
+				for (typename Matrix<T>::row_iterator itr = this->begin_col(i); itr != itrend;++itr) {
 					if (!(*itr)) {
 						c(i) = 0;
 						break;
@@ -85,9 +85,9 @@ namespace tenseopr
 
 			for (size_t i = 0;i < m.getRows();++i) {
 
-				Matrix<T>::col_iterator itrend = this->end_row(i);
+				typename Matrix<T>::col_iterator itrend = this->end_row(i);
 
-				for (Matrix<T>::col_iterator itr = this->begin_row(i); itr != itrend;++itr) {
+				for (typename Matrix<T>::col_iterator itr = this->begin_row(i); itr != itrend;++itr) {
 					if (!(*itr)) {
 						c(i) = 0;
 						break;
@@ -114,9 +114,9 @@ namespace tenseopr
 
 			for (size_t i = 0;i < m.getCols();++i) {
 
-				Matrix<T>::row_iterator itrend = this->end_col(i);
+				typename Matrix<T>::row_iterator itrend = this->end_col(i);
 
-				for (Matrix<T>::row_iterator itr = this->begin_col(i); itr != itrend;++itr) {
+				for (typename Matrix<T>::row_iterator itr = this->begin_col(i); itr != itrend;++itr) {
 					if ((*itr)) {
 						c(i) = 1;
 						break;
@@ -131,9 +131,9 @@ namespace tenseopr
 
 			for (size_t i = 0;i < m.getRows();++i) {
 
-				Matrix<T>::col_iterator itrend = this->end_row(i);
+				typename Matrix<T>::col_iterator itrend = this->end_row(i);
 
-				for (Matrix<T>::col_iterator itr = this->begin_row(i); itr != itrend;++itr) {
+				for (typename Matrix<T>::col_iterator itr = this->begin_row(i); itr != itrend;++itr) {
 					if ((*itr)) {
 						c(i) = 1;
 						break;
@@ -249,7 +249,7 @@ namespace tenseopr
 
 		if (!m1.is_vec() || !m2.is_vec())
 		{
-			std::cout << "Must be a vector" << std::endl;
+			std::cout << "Must be a vector" << '\n';
 		}
 
 		constexpr char x = 0;
@@ -267,70 +267,87 @@ namespace tenseopr
 	{
 		Matrix<T> mat(m);
 
-		switch (dim) {
-			case 0: {
-				for (size_t i = 0;i < m.getRows();++i) {
-					typename Matrix<T>::col_iterator itrend = mat.end_row(i);
-
-					T cm = 0;
-					for (typename Matrix<T>::col_iterator itr1 = mat.begin_row(i);itr1 != itrend;++itr1) {
-						cm += *itr1;
-						*itr1 = cm;
-					}
-				}
-				break;
-			}
-			case 1: {
-				for (size_t i = 0;i < m.getCols();++i) {
-					typename Matrix<T>::row_iterator itrend = mat.end_col(i);
-
-					//itrend--;
-					T cm = 0;
-					for (typename Matrix<T>::row_iterator itr1 = mat.begin_col(i); itr1 != itrend;++itr1) {
-						cm += *itr1;
-						std::cout << cm << std::endl;
-						*itr1 = cm;
-					}
-				}
-				//mat(mat.getSize() - 1) = cm;
-				break;
+		if (m.is_vec()) {
+			T sum = 0;
+			for (typename Matrix<T>::iterator itr = mat.begin(); itr != mat.end();++itr) {
+				sum += (*itr);
+				*itr = sum;
 			}
 		}
+		else {
+			switch (dim) {
+				case 0: {
+					for (size_t i = 0;i < m.getRows();++i) {
+						typename Matrix<T>::col_iterator itrend = mat.end_row(i);
 
+						T cm = 0;
+						for (typename Matrix<T>::col_iterator itr1 = mat.begin_row(i);itr1 != itrend;++itr1) {
+							cm += *itr1;
+							*itr1 = cm;
+						}
+					}
+					break;
+				}
+				case 1: {
+					for (size_t i = 0;i < m.getCols();++i) {
+						typename Matrix<T>::row_iterator itrend = mat.end_col(i);
+
+						//itrend--;
+						T cm = 0;
+						for (typename Matrix<T>::row_iterator itr1 = mat.begin_col(i); itr1 != itrend;++itr1) {
+							cm += *itr1;
+							std::cout << cm << '\n';
+							*itr1 = cm;
+						}
+					}
+					//mat(mat.getSize() - 1) = cm;
+					break;
+				}
+			}
+		}
+		
 		return mat;
 	}
 
 	templ Matrix<T> cumprod(cmat m, size_t dim)
 	{
-		Matrix<T> mat;
-		mat.copysize(m);
+		Matrix<T> mat(m);
 
-		switch (dim) {
-			case 0: {
-				for (size_t i = 0;i < m.getRows();++i) {
-					typename Matrix<T>::col_iterator itrend = mat.end_row(i);
-
-					T cm = 0;
-					for (typename Matrix<T>::col_iterator itr1 = mat.begin_row(i);itr1 != itrend;++itr1) {
-						cm *= *itr1;
-						*itr1 = cm;
-					}
-				}
-				break;
+		if (m.is_vec()) {
+			T sum = 0;
+			for (typename Matrix<T>::iterator itr = mat.begin(); itr != mat.end();++itr) {
+				sum *= (*itr);
+				*itr = sum;
 			}
-			case 1: {
-				for (size_t i = 0;i < m.getCols();++i) {
-					typename Matrix<T>::row_iterator itrend = mat.end_col(i);
+		}
+		else {
+			switch (dim) {
+				case 0: {
+					for (size_t i = 0;i < m.getRows();++i) {
+						typename Matrix<T>::col_iterator itrend = mat.end_row(i);
 
-					T cm = 0;
-					for (typename Matrix<T>::row_iterator itr1 = mat.begin_col(i); itr1 != itrend;++itr1) {
-						cm *= *itr1;
-						std::cout << cm << std::endl;
-						*itr1 = cm;
-
+						T cm = 0;
+						for (typename Matrix<T>::col_iterator itr1 = mat.begin_row(i);itr1 != itrend;++itr1) {
+							cm *= *itr1;
+							*itr1 = cm;
+						}
 					}
+					break;
 				}
-				break;
+				case 1: {
+					for (size_t i = 0;i < m.getCols();++i) {
+						typename Matrix<T>::row_iterator itrend = mat.end_col(i);
+
+						//itrend--;
+						T cm = 0;
+						for (typename Matrix<T>::row_iterator itr1 = mat.begin_col(i); itr1 != itrend;++itr1) {
+							cm *= *itr1;
+							*itr1 = cm;
+						}
+					}
+					//mat(mat.getSize() - 1) = cm;
+					break;
+				}
 			}
 		}
 
@@ -343,7 +360,7 @@ namespace tenseopr
 
 		if (m.getCols() != m.getRows())
 		{
-			std::cout << "Non-square matrix!" << std::endl;
+			std::cout << "Non-square matrix!" << '\n';
 			return badtuple;
 		}
 
@@ -402,7 +419,7 @@ namespace tenseopr
 
 		if (val >= lowsize)
 		{
-			std::cout << "Value over size" << std::endl;
+			std::cout << "Value over size" << '\n';
 		}
 
 		for (size_t i = 0;i < lowsize-val;++i) {
@@ -419,7 +436,7 @@ namespace tenseopr
 
 		if (val >= lowsize)
 		{
-			std::cout << "Value over size" << std::endl;
+			std::cout << "Value over size" << '\n';
 		}
 
 		dmat.set_size(1, lowsize - val);
@@ -432,6 +449,11 @@ namespace tenseopr
 
 	templ double dot(cmat v1, cmat v2)
 	{
+		if (!v1.is_vec() || !v2.is_vec())
+		{
+			std::cout << "Not a vector" << '\n';
+		}
+
 		double sum = 0;
 		for (size_t i = 0;i < v1.getSize();++i) {
 			sum += v1(i) * v2(i);
@@ -446,8 +468,12 @@ namespace tenseopr
 
 	templ double magnitude(cmat v1)
 	{
-		double sum = 0;
+		if (!v1.is_vec() || !v2.is_vec())
+		{
+			std::cout << "Not a vector" << '\n';
+		}
 
+		double sum = 0;
 		for (size_t i = 0;i < v1.getSize();++i) {
 			sum += ::pow(v1(i),2);
 		}

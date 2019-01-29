@@ -54,8 +54,8 @@ namespace tenseopr {
 	template<typename C, typename T> Matrix<C> conv_to(cmat m);
 
 	templ Matrix<T> cross(cmat m1, cmat m2);
-	templ Matrix<T> cumsum(cmat m, size_t dim = 0); //DOESNT WORK - vector and mat
-	templ Matrix<T> cumprod(cmat m, size_t dim = 0); //DOESNT WORK - vector and mat
+	templ Matrix<T> cumsum(cmat m, size_t dim = 0); //DOESNT WORK
+	templ Matrix<T> cumprod(cmat m, size_t dim = 0); //DOESNT WORK
 
 	templ std::tuple<T, Matrix<T>> ref(cmat m);//code later
 	templ T det(cmat m);
