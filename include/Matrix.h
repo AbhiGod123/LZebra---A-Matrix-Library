@@ -163,6 +163,7 @@ public:
 	bool is_empty()  const;
 	bool is_row_vec() const;
 	bool is_col_vec() const;
+	bool is_vec() const;
 	bool is_square() const;
 	bool is_sorted() const;
 	bool is_symmetric();
