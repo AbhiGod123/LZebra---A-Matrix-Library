@@ -40,8 +40,8 @@ namespace tenseopr {
 	templ T accu(cmat m);
 	templ Matrix<T> affmul(cmat m1, noncmat m2);
 
-	templ bool all(cmat m);	
-	templ bool any(cmat m);
+	templ bool all(cmat m);	//vector and mat
+	templ bool any(cmat m);//vector and mat
 	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2 = 0);
 	ftempldec Matrix<T> round(cmat m1, T tolerance);
 
@@ -54,21 +54,23 @@ namespace tenseopr {
 	template<typename C, typename T> Matrix<C> conv_to(cmat m);
 
 	templ Matrix<T> cross(cmat m1, cmat m2);
-	templ Matrix<T> cumsum(cmat m, size_t dim = 0); //DOESNT WORK
-	templ Matrix<T> cumprod(cmat m, size_t dim = 0); //DOESNT WORK
+	templ Matrix<T> cumsum(cmat m, size_t dim = 0); //DOESNT WORK - vector and mat
+	templ Matrix<T> cumprod(cmat m, size_t dim = 0); //DOESNT WORK - vector and mat
 
-	templ std::tuple<T, Matrix<T>> ref(cmat m);//DOESNT WORK
+	templ std::tuple<T, Matrix<T>> ref(cmat m);//code later
 	templ T det(cmat m);
-	templ Matrix<T> diagmat(cmat m, uchar val = 0);
-	templ Matrix<T> diagvec(cmat m, uchar val = 0);
+	templ Matrix<T> diagmat(cmat m, uchar val = 0);//vector and mat
+	templ Matrix<T> diagvec(cmat m, uchar val = 0);//vector and mat
  
-	templ double dot(cmat v1, cmat v2);
-	templ double norm_dot(cmat v1, cmat v2);
-	templ double magnitude(cmat v1);
+	templ Matrix<T> diff(cmat m1, size_t k=0);//vector and mat
+	templ double dot(cmat v1, cmat v2);//only vector
+	templ double norm_dot(cmat v1, cmat v2);//only vector
+	templ double magnitude(cmat v1);//only vector
 	
-	templ Matrix<T> expmat(cmat m);
-	templ Matrix<T> expmat_sym(cmat m);
+	templ Matrix<T> expmat(cmat m); //later
+	templ Matrix<T> expmat_sym(cmat m);//later
 
+	/*---------------------------------------------------------------------------------------------*/
 	templ Matrix<size_t> find(cmat m);
 	templ Matrix<size_t> find_finite(cmat m);
 	templ Matrix<size_t> find_nonfinite(cmat m);

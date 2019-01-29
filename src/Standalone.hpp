@@ -173,6 +173,11 @@ namespace tenseopr
 	{
 		Matrix<T> mat(3);
 
+		if (!m1.is_vec() || !m2.is_vec())
+		{
+			std::cout << "Must be a vector" << std::endl;
+		}
+
 		constexpr char x = 0;
 		constexpr char y = 1;
 		constexpr char z = 2;
@@ -325,7 +330,7 @@ namespace tenseopr
 	templ Matrix<T> diagvec(cmat m, uchar val)
 	{
 		Matrix<T> dmat;
-		
+
 		const size_t lowsize = m.getCols() < m.getRows() ? m.getCols() : m.getRows();
 
 		if (val >= lowsize)
