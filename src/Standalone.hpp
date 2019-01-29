@@ -55,22 +55,96 @@ namespace tenseopr
 		return resultmat;
 	}
 
-	templ bool all(cmat m)
+	templ Matrix<char> all(cmat m, uchar c)
 	{
-		for (auto itr = m.begin(); itr != m.end();++itr) {
-			if (!(*itr))
-				return false;
+		if (m.is_vec()) {
+			for (auto itr = m.begin(); itr != m.end();++itr) {
+				if (!(*itr))
+					return Matrix<char>(1,1,0);
+			}
 		}
-		return true;
+		else if (!c) {
+			RowVector<char> c(m.getCols());
+
+			for (size_t i = 0;i < m.getCols();++i) {
+
+				Matrix<T>::row_iterator itrend = this->end_col(i);
+
+				for (Matrix<T>::row_iterator itr = this->begin_col(i); itr != itrend;++itr) {
+					if (!(*itr)) {
+						c(i) = 0;
+						break;
+					}
+				}
+			}
+
+			return c;
+		}
+		else {
+			ColVector<char> c(m.getRows());
+
+			for (size_t i = 0;i < m.getRows();++i) {
+
+				Matrix<T>::col_iterator itrend = this->end_row(i);
+
+				for (Matrix<T>::col_iterator itr = this->begin_row(i); itr != itrend;++itr) {
+					if (!(*itr)) {
+						c(i) = 0;
+						break;
+					}
+				}
+			}
+
+			return c;
+		}
+		
+		return Matrix<char>(1, 1, 1);
 	}
 
-	templ bool any(cmat m)
+	templ Matrix<char> any(cmat m, uchar c)
 	{
-		for (auto itr = m.begin(); itr != m.end();++itr) {
-			if (*itr)
-				return true;
+		if (m.is_vec()) {
+			for (auto itr = m.begin(); itr != m.end();++itr) {
+				if ((*itr))
+					return Matrix<char>(1, 1, 1);
+			}
 		}
-		return false;
+		else if (!c) {
+			RowVector<char> c(m.getCols());
+
+			for (size_t i = 0;i < m.getCols();++i) {
+
+				Matrix<T>::row_iterator itrend = this->end_col(i);
+
+				for (Matrix<T>::row_iterator itr = this->begin_col(i); itr != itrend;++itr) {
+					if ((*itr)) {
+						c(i) = 1;
+						break;
+					}
+				}
+			}
+
+			return c;
+		}
+		else {
+			ColVector<char> c(m.getRows());
+
+			for (size_t i = 0;i < m.getRows();++i) {
+
+				Matrix<T>::col_iterator itrend = this->end_row(i);
+
+				for (Matrix<T>::col_iterator itr = this->begin_row(i); itr != itrend;++itr) {
+					if ((*itr)) {
+						c(i) = 1;
+						break;
+					}
+				}
+			}
+
+			return c;
+		}
+
+		return Matrix<char>(1, 1, 0);
 	}
 
 	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2)
@@ -300,7 +374,7 @@ namespace tenseopr
 
 	templ T det(cmat m)
 	{
-		std::tuple<T,Matrix<T>> tpref = ref(m); //performs the rref and returns that matrix with a scalar. Also checks if it's a square matrix
+		std::tuple<T,Matrix<T>> tpref = ref(m); //performs the ref and returns that matrix with a scalar. Also checks if it's a square matrix
 
 		for (size_t i = 0;i < std::get<1>(tpref).getRows();++i) {
 			std::get<0>(tpref)*=std::get<1>(tpref)(i,i);
@@ -312,6 +386,16 @@ namespace tenseopr
 	templ Matrix<T> diagmat(cmat m, uchar val)
 	{
 		Matrix<T> dmat;
+
+		if (m.is_vec()) {
+			dmat.set_size()
+		}
+
+
+
+
+
+		
 		dmat.copysize(m);
 
 		const size_t lowsize = dmat.getCols() < dmat.getRows() ? dmat.getCols() : dmat.getRows();

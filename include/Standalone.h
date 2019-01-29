@@ -40,8 +40,8 @@ namespace tenseopr {
 	templ T accu(cmat m);
 	templ Matrix<T> affmul(cmat m1, noncmat m2);
 
-	templ bool all(cmat m);	//vector and mat
-	templ bool any(cmat m);//vector and mat
+	templ Matrix<char> all(cmat m, uchar c=0);
+	templ Matrix<char> any(cmat m, uchar c=0);
 	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2 = 0);
 	ftempldec Matrix<T> round(cmat m1, T tolerance);
 
