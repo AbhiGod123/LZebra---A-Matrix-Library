@@ -45,7 +45,7 @@ namespace tenseopr {
 	templ bool approx_equal(cmat m1, cmat m2, uchar c, T t1, T t2 = 0);
 	ftempldec Matrix<T> round(cmat m1, T tolerance);
 
-	ftempldec Matrix<T> arg(cpmat complexmat); //should be able to take it any variable type
+	template<typename C, typename T> Matrix<C> arg(cpmat complexmat);
 	templ T as_scalar(cmat m);
 	templ Matrix<T> clamp(cmat m, T min, T max);
 
@@ -53,15 +53,14 @@ namespace tenseopr {
 	templ Matrix<std::complex<T>> conj(cpmat complexmat);
 	template<typename C, typename T> Matrix<C> conv_to(cmat m);
 
-	templ ColVector<T> cross(ccvec v1, ccvec v2);
-	templ RowVector<T> cross(crvec v1, crvec v2);
+	templ Matrix<T> cross(cmat m1, cmat m2);
 	templ Matrix<T> cumsum(cmat m, size_t dim = 0); //DOESNT WORK
 	templ Matrix<T> cumprod(cmat m, size_t dim = 0); //DOESNT WORK
 
 	templ std::tuple<T, Matrix<T>> ref(cmat m);
 	templ T det(cmat m);
 	templ Matrix<T> diagmat(cmat m, uchar val = 0);
-	templ ColVector<T> diagvec(cmat m, uchar val = 0);
+	templ Matrix<T> diagvec(cmat m, uchar val = 0);
  
 	templ double dot(ccvec v1, ccvec v2);
 	templ double dot(crvec v1, crvec v2);

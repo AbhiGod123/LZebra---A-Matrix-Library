@@ -120,15 +120,15 @@ namespace tenseopr
 		return appmat;
 	}
 
-	ftempldef Matrix<T> arg(cpmat complexmat)
+	template<typename C, typename T>
+	Matrix<C> arg(cpmat complexmat)
 	{
-		Matrix<T> phaseangles;
-		phaseangles.copysize(complexmat);
+		Matrix<C> phaseangles(complexmat.getRows(),complexmat.getCols());
 
 		for (size_t i = 0;i < phaseangles.getSize();++i) {
-			phaseangles(i) = ::atan2(complexmat.imag(), complexmat.real());
+			phaseangles(i) = ::atan2(complexmat(i).imag(), complexmat(i).real());
 		}
-		
+
 		return phaseangles;
 	}
 
@@ -169,32 +169,19 @@ namespace tenseopr
 		return casted;
 	}
 
-	templ ColVector<T> cross(ccvec v1, ccvec v2) {
-		ColVector<T> vec(3);
+	templ Matrix<T> cross(cmat m1, cmat m2)
+	{
+		Matrix<T> mat(3);
 
-		uchar x = 0;
-		uchar y = 1;
-		uchar z = 2;
+		constexpr char x = 0;
+		constexpr char y = 1;
+		constexpr char z = 2;
 
-		vec(x) = v1(y)*v2(z) - v1(z)*v2(y);
-		vec(y) = v1(z)*v2(x) - v1(x)*v2(z);
-		vec(z) = v1(x)*v2(y) - v1(y)*v2(x);
+		mat(x) = m1(y)*m2(z) - m1(z)*m2(y);
+		mat(y) = m1(z)*m2(x) - m1(x)*m2(z);
+		mat(z) = m1(x)*m2(y) - m1(y)*m2(x);
 
-		return vec;
-	}
-
-	templ RowVector<T> cross(crvec v1, crvec v2) {
-		RowVector<T> vec(3);
-
-		size_t x = 0;
-		size_t y = 1;
-		size_t z = 2;
-
-		vec(x) = v1(y)*v2(z) - v1(z)*v2(y);
-		vec(y) = v1(z)*v2(x) - v1(x)*v2(z);
-		vec(z) = v1(x)*v2(y) - v1(y)*v2(x);
-
-		return vec;
+		return mat;
 	}
 
 	templ Matrix<T> cumsum(cmat m, size_t dim)
@@ -217,15 +204,16 @@ namespace tenseopr
 			case 1: {
 				for (size_t i = 0;i < m.getCols();++i) {
 					typename Matrix<T>::row_iterator itrend = mat.end_col(i);
-					
+
+					//itrend--;
 					T cm = 0;
 					for (typename Matrix<T>::row_iterator itr1 = mat.begin_col(i); itr1 != itrend;++itr1) {
 						cm += *itr1;
 						std::cout << cm << std::endl;
 						*itr1 = cm;
-						
 					}
 				}
+				//mat(mat.getSize() - 1) = cm;
 				break;
 			}
 		}
@@ -277,7 +265,7 @@ namespace tenseopr
 		if (m.getCols() != m.getRows())
 		{
 			std::cout << "Non-square matrix!" << std::endl;
-			return std::make_tuple(0, Matrix<T>());
+			return badtuple;
 		}
 
 		for (size_t i = 0;i < m.getRows();++i)
@@ -321,13 +309,34 @@ namespace tenseopr
 		Matrix<T> dmat;
 		dmat.copysize(m);
 
-		if (val >= dmat.getSize())
+		const size_t lowsize = dmat.getCols() < dmat.getRows() ? dmat.getCols() : dmat.getRows();
+
+		if (val >= lowsize)
 		{
 			std::cout << "Value over size" << std::endl;
 		}
 
-		for (size_t i = 0;i < dmat.getSize();++i) {
+		for (size_t i = 0;i < lowsize-val;++i) {
 			dmat(i, i+val) = m(i, i+val);
+		}
+		return dmat;
+	}
+
+	templ Matrix<T> diagvec(cmat m, uchar val)
+	{
+		Matrix<T> dmat;
+		
+		const size_t lowsize = dmat.getCols() < dmat.getRows() ? dmat.getCols() : dmat.getRows();
+
+		if (val >= lowsize)
+		{
+			std::cout << "Value over size" << std::endl;
+		}
+
+		dmat.set_size(1, lowsize - val);
+
+		for (size_t i = 0;i < lowsize - val;++i) {
+			dmat(i) = m(i, i + val);
 		}
 		return dmat;
 	}
