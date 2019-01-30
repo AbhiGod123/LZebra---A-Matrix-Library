@@ -82,12 +82,14 @@ namespace tenseopr {
 	templ Matrix<T> flipup(cmat m);//need submat
 	templ Matrix<T> real(cpmat m);
 	templ Matrix<T> imag(cpmat m);
-	//10 functions
+	
 	templ ColVector<size_t> ind2sub(size_t rows, size_t cols, size_t index, T i=0); //doesn't work
 	templ ColVector<size_t> ind2sub(cmat size, size_t index);
 
 	templ Matrix<T> ind2sub(size_t rows, size_t cols, cmat indices);
 	templ Matrix<T> ind2sub(cmat size, cmat indices);
+	//10 functions
+
 
 	templ void inplace_trans(noncmat m);
 	templ void inplace_trans(noncpmat m);
@@ -101,6 +103,10 @@ namespace tenseopr {
 	templ Matrix<T> join_vert(cmat m1, cmat m2);
 
 	templ Matrix<T> kron(cmat m1, cmat m2);
+	
+	templ ColVector<T> nonzeros(cmat m);
+
+	templ size_t rank(cmat m);
 }
 
 #endif

@@ -726,11 +726,11 @@ namespace tenseopr
 
 		for (size_t i = 0;i < mat.getRows();++i) {
 			for (size_t j = 0;j < mat.getCols();++j) {
-				size_t m1x = ((i) / m2.getRows());
-				size_t m1y = ((j) / m2.getCols());
+				size_t m1x = i / m2.getRows();
+				size_t m1y = j / m2.getCols();
 
-				size_t m2x =  (i) % m2.getRows();
-				size_t m2y =  (j) % m2.getCols();
+				size_t m2x =  i % m2.getRows();
+				size_t m2y =  j % m2.getCols();
 				mat(i, j) = m1(m1x, m1y) * m2(m2x, m2y);
 			}
 		}
@@ -738,19 +738,17 @@ namespace tenseopr
 		return mat;
 	}
 
-}
+	templ ColVector<T> nonzeros(cmat m)
+	{
+		std::vector<T> values;
+		values.reserve(m.getSize());
 
-/*
-for (size_t i = 0;i < m1.getRows();++i) {
-			for (size_t j = 0;j < m1.getCols();++j) {
-
-				for (size_t k = 0;k < m2.getRows();++k) {
-					for (size_t w = 0;w < m2.getCols();++w) {
-						mat(k,w) = m1(i, j)*m2(k, w);
-						std::cout << m1(i, j)*m2(k, w) << std::endl;
-					}
-				}
-
-			}
+		for (auto itr = m.begin();itr != m.end();++itr) {
+			if ((*itr))
+				values.emplace_back(*itr);
 		}
-*/
+
+		return ColVector<T>(std::move(values));
+	}
+
+}
