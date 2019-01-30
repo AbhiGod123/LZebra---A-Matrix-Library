@@ -351,8 +351,18 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ std::tuple<T, Matrix<T>> ref(cmat m)
+	templ Matrix<T> ref(cmat m1)
 	{
+		/*--------------------------------------------------------------------------*/
+		Matrix<T> mat(m1);
+
+
+		return mat;
+	}
+
+	templ T det(cmat m)
+	{
+
 		std::tuple<T, Matrix<T>> badtuple = std::make_tuple(0, Matrix<T>());
 
 		for (size_t i = 0;i < m.getRows();++i)
@@ -360,28 +370,17 @@ namespace tenseopr
 				return badtuple;
 		//A. IF AN ENTIRE ROW OR COL CONTAINS ZERO THEN DET = 0
 
-		for (size_t i = 0;i < m.getRows() - 1;++i) 
-			for (size_t k = i + 1;k < m.getRows();++k) 
+		for (size_t i = 0;i < m.getRows() - 1;++i)
+			for (size_t k = i + 1;k < m.getRows();++k)
 				if (m.is_equal_rows(i, k) || m.is_equal_cols(i, k))
 					return badtuple;
-		
+
 		//B. IF ANY 2 ROWS OR COLS ARE EQUAL THEN DET = 0
-		
-		
+
+
 		//C. IF 2 ROWS OR COLS ARE PROPORTIONAL TO EACH OTHER THEN DET = 0
 
 
-
-		T value = 1;
-		Matrix<T> reducedmat(m);
-		
-				
-
-		return std::make_tuple(value, reducedmat);
-	}
-
-	templ T det(cmat m)
-	{
 		std::tuple<T,Matrix<T>> tpref = ref(m); //performs the ref and returns that matrix with a scalar. Also checks if it's a square matrix
 
 		for (size_t i = 0;i < std::get<1>(tpref).getRows();++i) {

@@ -59,7 +59,7 @@ namespace tenseopr {
 	templ Matrix<T> cumsum(cmat m, size_t dim = 0); 
 	templ Matrix<T> cumprod(cmat m, size_t dim = 0);
 
-	templ std::tuple<T, Matrix<T>> ref(cmat m);//code later
+	templ Matrix<T> ref(cmat m);//code later
 	templ T det(cmat m);
 	templ Matrix<T> diagmat(cmat m, char val = 0);
 	templ Matrix<T> diagvec(cmat m, char val = 0);
