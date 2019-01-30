@@ -247,11 +247,6 @@ namespace tenseopr
 	{
 		Matrix<T> mat(3);
 
-		if (!m1.is_vec() || !m2.is_vec())
-		{
-			std::cout << "Must be a vector" << '\n';
-		}
-
 		constexpr char x = 0;
 		constexpr char y = 1;
 		constexpr char z = 2;
@@ -289,18 +284,18 @@ namespace tenseopr
 					break;
 				}
 				case 1: {
+					T early = mat(0);
+
 					for (size_t i = 0;i < m.getCols();++i) {
 						typename Matrix<T>::row_iterator itrend = mat.end_col(i);
 
-						//itrend--;
 						T cm = 0;
 						for (typename Matrix<T>::row_iterator itr1 = mat.begin_col(i); itr1 != itrend;++itr1) {
 							cm += *itr1;
-							std::cout << cm << '\n';
 							*itr1 = cm;
 						}
 					}
-					//mat(mat.getSize() - 1) = cm;
+					mat(0) = early;
 					break;
 				}
 			}
@@ -326,7 +321,7 @@ namespace tenseopr
 					for (size_t i = 0;i < m.getRows();++i) {
 						typename Matrix<T>::col_iterator itrend = mat.end_row(i);
 
-						T cm = 0;
+						T cm = 1;
 						for (typename Matrix<T>::col_iterator itr1 = mat.begin_row(i);itr1 != itrend;++itr1) {
 							cm *= *itr1;
 							*itr1 = cm;
@@ -335,17 +330,19 @@ namespace tenseopr
 					break;
 				}
 				case 1: {
+					T early = mat(0);
+
 					for (size_t i = 0;i < m.getCols();++i) {
 						typename Matrix<T>::row_iterator itrend = mat.end_col(i);
-
-						//itrend--;
-						T cm = 0;
+						
+						T cm = 1;
 						for (typename Matrix<T>::row_iterator itr1 = mat.begin_col(i); itr1 != itrend;++itr1) {
 							cm *= *itr1;
 							*itr1 = cm;
 						}
 					}
-					//mat(mat.getSize() - 1) = cm;
+					
+					mat(0) = early;
 					break;
 				}
 			}
@@ -357,12 +354,6 @@ namespace tenseopr
 	templ std::tuple<T, Matrix<T>> ref(cmat m)
 	{
 		std::tuple<T, Matrix<T>> badtuple = std::make_tuple(0, Matrix<T>());
-
-		if (m.getCols() != m.getRows())
-		{
-			std::cout << "Non-square matrix!" << '\n';
-			return badtuple;
-		}
 
 		for (size_t i = 0;i < m.getRows();++i)
 			if (m.is_same_row(i, 0) || m.is_same_col(i, 0))
@@ -400,47 +391,62 @@ namespace tenseopr
 		return std::get<0>(tpref);
 	}
 
-	templ Matrix<T> diagmat(cmat m, uchar val)
+	templ Matrix<T> diagmat(cmat m, char val)
 	{
 		Matrix<T> dmat;
 
 		if (m.is_vec()) {
-			//dmat.set_size()
+			dmat.set_size(m.getSize() + ::abs(val), m.getSize() + ::abs(val));
+			std::cout << dmat.getSize() << std::endl;
+
+			if (val>=0) {
+				for (size_t i = 0;i < m.getSize();++i) {
+					dmat(i, i + val) = m(i);
+				}
+			}
+			else {
+				for (size_t i = 0;i < m.getSize();++i) {
+					dmat(i-val, i) = m(i);
+				}
+			}
+		}
+		else {
+			dmat.copysize(m);
+
+			if (val >= 0) {
+				for (size_t i = 0;i < m.getCols() - val;++i) {
+					dmat(i, i+val) = m(i, i+val);
+				}
+			}
+			else {
+				for (size_t i = 0;i < m.getRows() + val;++i) {
+					dmat(i-val, i) = m(i-val, i);
+				}
+			}
 		}
 
-		
-		dmat.copysize(m);
-
-		const size_t lowsize = dmat.getCols() < dmat.getRows() ? dmat.getCols() : dmat.getRows();
-
-		if (val >= lowsize)
-		{
-			std::cout << "Value over size" << '\n';
-		}
-
-		for (size_t i = 0;i < lowsize-val;++i) {
-			dmat(i, i+val) = m(i, i+val);
-		}
 		return dmat;
 	}
 
-	templ Matrix<T> diagvec(cmat m, uchar val)
+	templ Matrix<T> diagvec(cmat m, char val)
 	{
-		Matrix<T> dmat;
+		ColVector<T> vec;
 
-		const size_t lowsize = m.getCols() < m.getRows() ? m.getCols() : m.getRows();
+		if (val >= 0) {
+			vec.set_size(m.getCols() - val);
 
-		if (val >= lowsize)
-		{
-			std::cout << "Value over size" << '\n';
+			for (size_t i = 0;i < m.getCols() - val;++i) {
+				vec(i) = m(i, i + val);
+			}
 		}
+		else {
+			vec.set_size(m.getRows() + val);
 
-		dmat.set_size(1, lowsize - val);
-
-		for (size_t i = 0;i < lowsize - val;++i) {
-			dmat(i) = m(i, i + val);
+			for (size_t i = 0;i < m.getRows() + val;++i) {
+				vec(i) = m(i-val, i);
+			}
 		}
-		return dmat;
+		return vec;
 	}
 
 	templ Matrix<T> diff(cmat m1, size_t k, uchar dim)
@@ -526,6 +532,84 @@ namespace tenseopr
 		}
 
 		return pow(sum,0.5);
+	}
+
+	templ Matrix<size_t> find(cmat m, size_t k, uchar s)
+	{
+		std::vector<size_t> indices;
+		indices.reserve(m.getSize() / 2);
+		
+		if (!k) { //RETURN ALL NON-ZERO INDICES  
+			for (size_t i = 0;i < m.getSize();++i) {
+				if(m(i))
+				indices.emplace_back(i);
+			}
+		}
+		else {
+			if (!s) {
+				for (size_t i = 0;i < m.getSize();++i) {
+					if (m(i))
+						indices.emplace_back(i);
+
+					if (indices.size() == k)
+						break;
+				}
+			}
+			else {
+				for (size_t i = m.getSize()-1;i >= 0;--i) {
+					if (m(i))
+						indices.emplace_back(i);
+
+					if (indices.size() == k)
+						break;
+				}
+			}
+		}
+
+		return ColVector<size_t>(std::move(indices));
+	}
+
+	templ Matrix<size_t> find_finite(cmat m)
+	{
+		std::vector<size_t> indices;
+		indices.reserve(m.getSize() / 2);
+
+		for (size_t i = 0;i < m.getSize();++i) {
+			if (m.is_finite())
+				indices.emplace_back(i);
+		}
+
+		return ColVector<size_t>(std::move(indices));
+	}
+
+	templ Matrix<size_t> find_nonfinite(cmat m)
+	{
+		std::vector<T> indices;
+		indices.reserve(m.getSize() / 2);
+
+		for (size_t i = 0;i < m.getSize();++i) {
+			if (!m.is_finite())
+				indices.emplace_back(i);
+		}
+
+		return ColVector<size_t>(std::move(indices));
+	}
+
+	templ Matrix<size_t> find_unique(cmat m)
+	{
+		std::vector<size_t> indices(m.max() + 1);
+		std::vector<size_t> reali;
+
+		for (size_t i = 0;i < m.getSize();++i) {
+			++indices[m(i)];
+		}
+
+		for (size_t i = 1;i <= m.max();++i) {
+			if(indices[i]==1)
+			reali.emplace_back(i);
+		}
+
+		return ColVector<size_t>(reali);
 	}
 
 

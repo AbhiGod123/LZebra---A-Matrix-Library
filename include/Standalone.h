@@ -3,6 +3,7 @@
 
 #define _USE_MATH_DEFINES
 
+#include <vector>
 #include <cmath>
 #include <complex>
 #include <algorithm>
@@ -54,13 +55,13 @@ namespace tenseopr {
 	template<typename C, typename T> Matrix<C> conv_to(cmat m);
 
 	templ Matrix<T> cross(cmat m1, cmat m2);
-	templ Matrix<T> cumsum(cmat m, size_t dim = 0); //DOESNT WORK
-	templ Matrix<T> cumprod(cmat m, size_t dim = 0); //DOESNT WORK
+	templ Matrix<T> cumsum(cmat m, size_t dim = 0); 
+	templ Matrix<T> cumprod(cmat m, size_t dim = 0);
 
 	templ std::tuple<T, Matrix<T>> ref(cmat m);//code later
 	templ T det(cmat m);
-	templ Matrix<T> diagmat(cmat m, uchar val = 0);//vector and mat
-	templ Matrix<T> diagvec(cmat m, uchar val = 0);//vector and mat
+	templ Matrix<T> diagmat(cmat m, char val = 0);
+	templ Matrix<T> diagvec(cmat m, char val = 0);
  
 	templ Matrix<T> diff(cmat m1, size_t k=1, uchar dim = 0);
 	templ double dot(cmat v1, cmat v2);
@@ -70,8 +71,7 @@ namespace tenseopr {
 	templ Matrix<T> expmat(cmat m); //later
 	templ Matrix<T> expmat_sym(cmat m);//later
 
-
-	templ Matrix<size_t> find(cmat m);
+	templ Matrix<size_t> find(cmat m,size_t k=0, uchar s=0);
 	templ Matrix<size_t> find_finite(cmat m);
 	templ Matrix<size_t> find_nonfinite(cmat m);
 	templ Matrix<size_t> find_unique(cmat m);
