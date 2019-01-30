@@ -997,6 +997,41 @@ inline size_t Matrix<T>::indexmax() const
 }
 
 template<typename T>
+inline size_t Matrix<T>::indexmin_row(size_t r1) const
+{
+	T minval = std::numeric_limits<T>::max();
+	size_t index = 0;
+
+	for (size_t i = r1 * cols; i < r1 * cols + cols;++i) {
+		if (matrix[i] < minval)
+		{
+			index = i;
+			minval = matrix[i];
+		}
+	}
+
+	return index;
+}
+
+template<typename T>
+inline size_t Matrix<T>::indexmax_row(size_t r1) const
+{
+	T maxval = std::numeric_limits<T>::min();
+
+	size_t index = 0;
+
+	for (size_t i = r1 * cols; i < r1 * cols + cols;++i) {
+		if (matrix[i] > maxval)
+		{
+			index = i;
+			maxval = matrix[i];
+		}
+	}
+
+	return index;
+}
+
+template<typename T>
 inline Matrix<T>::row_iterator::row_iterator(const row_iterator& X) : mat(X.mat), itr(X.itr), current_col(X.current_col), current_row(X.current_row)
 {
 

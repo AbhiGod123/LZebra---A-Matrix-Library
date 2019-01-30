@@ -178,6 +178,16 @@ public:
 	inline size_t indexmin() const;
 	inline size_t indexmax() const;
 
+	inline T min_row(size_t r1) const;
+	inline T max_row(size_t r1) const;
+	inline size_t indexmin_row(size_t r1) const;
+	inline size_t indexmax_row(size_t r1) const;
+
+	inline T min_col(size_t c1) const;
+	inline T max_col(size_t c1) const;
+	inline size_t indexmin_col(size_t c1) const;
+	inline size_t indexmax_col(size_t c1) const;
+
 	//ITERATOR CLASSES
 	typedef typename std::vector<T>::iterator              iterator;
 	typedef typename std::vector<T>::const_iterator  const_iterator;
