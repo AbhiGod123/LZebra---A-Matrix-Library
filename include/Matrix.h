@@ -276,6 +276,9 @@ public:
 	inline void insert_rows(size_t r1, size_t r2, const T val);
 	inline void insert_cols(size_t c1, size_t c2, const T val);
 
+	//SUBVIEW
+
+
 	//SHED 
 	inline void shed_row(size_t r1);
 	inline void shed_rows(size_t rbegin, size_t rend);

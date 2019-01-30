@@ -611,6 +611,8 @@ inline Matrix<T>& Matrix<T>::operator=(Matrix<T>&& m)
 	rows = std::exchange(m.rows, 0);
 	cols = std::exchange(m.cols, 0);
 	size = std::exchange(m.size, 0);
+
+	return (*this);
 }
 
 template<typename T>

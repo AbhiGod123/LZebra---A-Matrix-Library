@@ -595,7 +595,7 @@ namespace tenseopr
 		return ColVector<size_t>(std::move(indices));
 	}
 
-	templ Matrix<size_t> find_unique(cmat m)
+	templ Matrix<size_t> find_unique(cmat m, bool ascending)
 	{
 		std::vector<size_t> indices(m.max() + 1);
 		std::vector<size_t> reali;
@@ -612,5 +612,145 @@ namespace tenseopr
 		return ColVector<size_t>(reali);
 	}
 
+	templ Matrix<T> find_unique_elem(cmat m)
+	{
+		std::vector<T> indices(m.max() + 1);
+		std::vector<T> reali;
+
+		for (size_t i = 0;i < m.getSize();++i) {
+			++indices[m(i)];
+		}
+
+		for (size_t i = 1;i <= m.max();++i) {
+			if (indices[i] == 1)
+				reali.emplace_back(i);
+		}
+
+		return ColVector<T>(reali);
+	}
+
+	templ Matrix<T> real(cpmat m)
+	{
+		Matrix<T> mat(m.getRows(),m.getCols());
+
+		for (size_t i = 0;i < m.getSize();++i) {
+			mat(i) = m(i).real();
+		}
+
+		return mat;
+	}
+
+	templ Matrix<T> imag(cpmat m)
+	{
+		Matrix<T> mat(m.getRows(), m.getCols());
+
+		for (size_t i = 0;i < m.getSize();++i) {
+			mat(i) = m(i).imag();
+		}
+
+		return mat;
+	}
+
+	templ ColVector<size_t> ind2sub(size_t rows, size_t cols, size_t index, T i)
+	{
+		ColVector<size_t> subscripts(2);
+
+		subscripts(0) = index / cols;
+		subscripts(1) = index % cols;
+
+		return subscripts;
+	}
+
+	templ ColVector<size_t> ind2sub(cmat size, size_t index)
+	{
+		ColVector<size_t> subscripts(2);
+
+		subscripts(0) = index / size.getCols();
+		subscripts(1) = index % size.getCols();
+
+		return subscripts;
+	}
+
+	templ void inplace_trans(noncmat m)
+	{
+		Matrix<T> trans = m.transpose();
+		m = std::move(trans);
+	}
+
+	templ Matrix<T> intersect(cmat m1, cmat m2)
+	{
+		Matrix<T> unique1 = tenseopr::find_unique_elem(m1);
+		Matrix<T> unique2 = tenseopr::find_unique_elem(m2);
+
+		Matrix<T> mat;
+
+		return mat;
+	}
+
+	templ bool is_finite(cmat m)
+	{
+		return m.is_finite();
+	}
+
+	templ Matrix<T> join_rows(cmat m1, cmat m2)
+	{
+		Matrix<T> mat(m1);
+
+		mat.insert_rows(m2);
+
+		return mat;
+	}
+
+	templ Matrix<T> join_cols(cmat m1, cmat m2)
+	{
+		Matrix<T> mat(m1);
+
+		mat.insert_cols(m2);
+
+		return mat;
+	}
+
+	templ Matrix<T> join_horiz(cmat m1, cmat m2)
+	{
+		return tenseopr::join_rows(m1, m2);
+	}
+
+	templ Matrix<T> join_vert(cmat m1, cmat m2)
+	{
+		return tenseopr::join_cols(m1, m2);
+	}
+
+	templ Matrix<T> kron(cmat m1, cmat m2)
+	{
+		Matrix<T> mat(m1.getRows()*m2.getRows(), m1.getCols()*m2.getCols());
+
+		for (size_t i = 0;i < mat.getRows();++i) {
+			for (size_t j = 0;j < mat.getCols();++j) {
+				size_t m1x = ((i) / m2.getRows());
+				size_t m1y = ((j) / m2.getCols());
+
+				size_t m2x =  (i) % m2.getRows();
+				size_t m2y =  (j) % m2.getCols();
+				mat(i, j) = m1(m1x, m1y) * m2(m2x, m2y);
+			}
+		}
+
+		return mat;
+	}
 
 }
+
+/*
+for (size_t i = 0;i < m1.getRows();++i) {
+			for (size_t j = 0;j < m1.getCols();++j) {
+
+				for (size_t k = 0;k < m2.getRows();++k) {
+					for (size_t w = 0;w < m2.getCols();++w) {
+						mat(k,w) = m1(i, j)*m2(k, w);
+						std::cout << m1(i, j)*m2(k, w) << std::endl;
+					}
+				}
+
+			}
+		}
+*/

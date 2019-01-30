@@ -17,6 +17,7 @@
 #define ccvec const ColVector<T>& 
 #define crvec const RowVector<T>& 
 #define cpmat const Matrix<std::complex<T>>&
+#define noncpmat Matrix<std::complex<T>>&
 
 #define ftempldec template<typename T, typename = typename std::enable_if<std::is_floating_point<T>::value>::type>
 #define ftempldef template<typename T, typename>
@@ -74,15 +75,32 @@ namespace tenseopr {
 	templ Matrix<size_t> find(cmat m,size_t k=0, uchar s=0);
 	templ Matrix<size_t> find_finite(cmat m);
 	templ Matrix<size_t> find_nonfinite(cmat m);
-	templ Matrix<size_t> find_unique(cmat m);
+	templ Matrix<size_t> find_unique(cmat m, bool ascending=0); //not done yet
+	templ Matrix<T> find_unique_elem(cmat m);
 
-	templ Matrix<T> fliplr(cmat m);
-	templ Matrix<T> flipup(cmat m);
+	templ Matrix<T> fliplr(cmat m);//need submat
+	templ Matrix<T> flipup(cmat m);//need submat
 	templ Matrix<T> real(cpmat m);
 	templ Matrix<T> imag(cpmat m);
 	//10 functions
+	templ ColVector<size_t> ind2sub(size_t rows, size_t cols, size_t index, T i=0); //doesn't work
+	templ ColVector<size_t> ind2sub(cmat size, size_t index);
 
+	templ Matrix<T> ind2sub(size_t rows, size_t cols, cmat indices);
+	templ Matrix<T> ind2sub(cmat size, cmat indices);
 
+	templ void inplace_trans(noncmat m);
+	templ void inplace_trans(noncpmat m);
+
+	templ Matrix<T> intersect(cmat m1, cmat m2); //doesn't work
+
+	templ bool is_finite(cmat m);
+	templ Matrix<T> join_rows(cmat m1, cmat m2);
+	templ Matrix<T> join_cols(cmat m1, cmat m2);
+	templ Matrix<T> join_horiz(cmat m1, cmat m2);
+	templ Matrix<T> join_vert(cmat m1, cmat m2);
+
+	templ Matrix<T> kron(cmat m1, cmat m2);
 }
 
 #endif
