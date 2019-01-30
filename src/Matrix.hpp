@@ -17,7 +17,7 @@ T & Matrix<T>::at(const size_t ii)
 {
 	if (!this->in_range(ii))
 	{
-		std::cout << "Index out of bounds!" << std::endl;
+		std::cout << "Index out of bounds!" << '\n';
 	}
 	return matrix[ii];
 }
@@ -27,7 +27,7 @@ const T & Matrix<T>::at(const size_t ii) const
 {
 	if (!this->in_range(ii))
 	{
-		std::cout << "Index out of bounds!" << std::endl;
+		std::cout << "Index out of bounds!" << '\n';
 	}
 	return matrix[ii];
 }
@@ -49,7 +49,7 @@ T & Matrix<T>::at(const size_t in_row, const size_t in_col)
 {
 	if (!this->in_range(in_row,in_col))
 	{
-		std::cout << "Index out of bounds!" << std::endl;
+		std::cout << "Index out of bounds!" << '\n';
 	}
 	return matrix[in_row * cols + in_col];
 }
@@ -59,7 +59,7 @@ const T & Matrix<T>::at(const size_t in_row, const size_t in_col) const
 {
 	if (!this->in_range(in_row, in_col))
 	{
-		std::cout << "Index out of bounds!" << std::endl;
+		std::cout << "Index out of bounds!" << '\n';
 	}
 	return matrix[in_row * cols + in_col];
 }
@@ -211,7 +211,7 @@ inline void Matrix<T>::replace_row(const size_t in_rows, const T old_val, const 
 {
 	if (in_rows >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
@@ -226,7 +226,7 @@ inline void Matrix<T>::replace_col(const size_t in_cols, const T old_val, const 
 {
 	if (in_cols >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
@@ -249,7 +249,7 @@ inline void Matrix<T>::fill_row(const size_t in_rows, const T val)
 {
 	if (in_rows >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	Matrix<T>::col_iterator itr = this->begin_row(in_rows);
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
@@ -262,7 +262,7 @@ inline void Matrix<T>::fill_col(const size_t in_cols, const T val)
 {
 	if (in_cols >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
@@ -300,7 +300,7 @@ inline void Matrix<T>::row_randu(const size_t in_rows)
 {
 	if (in_rows >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
@@ -314,7 +314,7 @@ inline void Matrix<T>::col_randu(const size_t in_cols)
 {
 	if (in_cols >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
@@ -345,7 +345,7 @@ inline void Matrix<T>::row_randn(const size_t in_rows)
 {
 	if (in_rows >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
@@ -359,7 +359,7 @@ inline void Matrix<T>::col_randn(const size_t in_cols)
 {
 	if (in_cols >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
@@ -390,7 +390,7 @@ inline void Matrix<T>::row_randi(const size_t in_rows)
 {
 	if (in_rows >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
@@ -404,7 +404,7 @@ inline void Matrix<T>::col_randi(const size_t in_cols)
 {
 	if (in_cols >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
@@ -435,7 +435,7 @@ inline void Matrix<T>::fill_row(const size_t in_rows, const lambdaT val)
 {
 	if (in_rows >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
@@ -449,7 +449,7 @@ inline void Matrix<T>::fill_col(const size_t in_cols, const lambdaT val)
 {
 	if (in_cols >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
@@ -487,7 +487,7 @@ inline void Matrix<T>::fill_row(const size_t in_rows, const func_p val)
 {
 	if (in_rows >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
@@ -501,7 +501,7 @@ inline void Matrix<T>::fill_col(const size_t in_cols, const func_p val)
 {
 	if (in_cols >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
@@ -920,8 +920,8 @@ bool Matrix<T>::is_symmetric()
 template<typename T>
 bool Matrix<T>::is_finite() const
 {
-	for (T& i : matrix) {
-		if (!isfinite(i))
+	for (const T& i : matrix) {
+		if (!std::isfinite(static_cast<float>(i)))
 			return false;
 	}
 	return true;
@@ -930,8 +930,8 @@ bool Matrix<T>::is_finite() const
 template<typename T>
 bool Matrix<T>::is_inf() const
 {
-	for (T& i : matrix) {
-		if (!isinf(i))
+	for (const T& i : matrix) {
+		if (!std::isinf(i))
 			return false;
 	}
 	return true;
@@ -940,8 +940,8 @@ bool Matrix<T>::is_inf() const
 template<typename T>
 bool Matrix<T>::is_nan() const
 {
-	for (T& i : matrix) {
-		if (!isnan(i))
+	for (const T& i : matrix) {
+		if (!std::isnan(i))
 			return false;
 	}
 	return true;
@@ -1106,7 +1106,7 @@ inline void Matrix<T>::row_iterator::print() const
 {
 	std::cout << "itr: " << (*itr) << ' ';
 	std::cout << "row: " << current_row << ' ';
-	std::cout << "col: " << current_col << std::endl;
+	std::cout << "col: " << current_col << '\n';
 }
 
 template<typename T>
@@ -1227,7 +1227,7 @@ inline void Matrix<T>::const_row_iterator::print() const
 {
 	std::cout << "itr: " << (*itr) << ' ';
 	std::cout << "row: " << current_row << ' ';
-	std::cout << "col: " << current_col << std::endl;
+	std::cout << "col: " << current_col << '\n';
 }
 
 template<typename T>
@@ -1326,7 +1326,7 @@ inline void Matrix<T>::swap_rows(size_t r1, size_t r2)
 	
 	if (r1 >= rows || r2 >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}else if (r1 > r2)
 		std::swap(r1, r2);
 	
@@ -1348,7 +1348,7 @@ inline void Matrix<T>::swap_cols(size_t c1, size_t c2)
 
 	if (c1 >= cols || c2 >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	else if (c1 > c2)
 		std::swap(c1, c2);
@@ -1365,7 +1365,7 @@ inline void Matrix<T>::insert_rows(size_t r1, const Matrix<T>& m)
 {
 	if (r1 > rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	matrix.insert(this->begin_row(r1), m.begin(), m.end());
 
@@ -1378,7 +1378,7 @@ inline void Matrix<T>::insert_cols(size_t c1, const Matrix<T>& m)
 {
 	if (c1 > cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	for (size_t a = 0;a < m.cols;a++) {
 		for (size_t i = c1;i < c1 * rows;i += rows) {
@@ -1394,7 +1394,7 @@ inline void Matrix<T>::insert_row(size_t r1, const T val)
 {
 	if (r1 > rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	matrix.insert(this->begin_row(r1), cols, val);
 
@@ -1407,7 +1407,7 @@ inline void Matrix<T>::insert_col(size_t c1, const T val)
 {
 	if (c1 > cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::iterator itr = matrix.insert(matrix.begin() + c1, val);
 
@@ -1440,7 +1440,7 @@ inline void Matrix<T>::shed_row(size_t r1)
 {
 	if (r1 >= rows)
 	{
-		std::cout << "Row out of range" << std::endl;
+		std::cout << "Row out of range" << '\n';
 	}
 	matrix.erase(this->begin_row(r1), this->end_row(r1));
 
@@ -1461,7 +1461,7 @@ inline void Matrix<T>::shed_col(size_t c1)
 {
 	if (c1 >= cols)
 	{
-		std::cout << "Col out of range" << std::endl;
+		std::cout << "Col out of range" << '\n';
 	}
 	Matrix<T>::iterator itr = matrix.erase(matrix.begin() + c1);
 	
@@ -1489,7 +1489,7 @@ inline std::ostream & operator<<(std::ostream & stream, const Matrix<T>& mat)
 		{
 			stream << mat(i, f) << ' ';
 		}
-		stream << std::endl;
+		stream << '\n';
 	}
 	return stream;
 }
@@ -1499,7 +1499,7 @@ inline std::ostream & operator<<(std::ostream & stream, const typename Matrix<T>
 {
 	stream << "itr: " << (*m.itr) << ' ';
 	stream << "row: " << m.current_row << ' ';
-	stream << "col: " << m.current_col << std::endl;
+	stream << "col: " << m.current_col << '\n';
 
 	return stream;
 }
@@ -1513,7 +1513,7 @@ inline void Matrix<T>::print() const
 		{
 			std::cout << (*this)(i,f) << ' ';
 		}
-		std::cout << std::endl;
+		std::cout << '\n';
 	}
 }
 
@@ -1528,10 +1528,10 @@ inline void Matrix<T>::save(const std::string & name)
 	stream << cols << '\n';
 
 	for (T& i : matrix) {
-		stream << i << std::endl;
+		stream << i << '\n';
 	}
 
-	stream << std::endl;
+	stream << '\n';
 	stream.close();
 }
 
@@ -1544,7 +1544,7 @@ inline void Matrix<T>::load(const std::string & name)
 	stream.open(name);
 
 	if (!stream.is_open()) {
-		std::cout << "File not found!" << std::endl;
+		std::cout << "File not found!" << '\n';
 	}
 
 	stream >> rows;
