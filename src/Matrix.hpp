@@ -101,6 +101,63 @@ inline bool Matrix<T>::is_same_size(const size_t in_rows, const size_t in_cols)
 }
 
 template<typename T>
+inline bool Matrix<T>::is_same_row(size_t r1, const T val)
+{
+	if (r1 >= rows)
+	{
+		std::cout << "Row out of range" << '\n';
+	}
+	Matrix<T>::col_iterator itr = this->begin_row(r1);
+	Matrix<T>::col_iterator itrend = this->end_row(r1);
+
+	for (;itr != itrend;++itr) {
+		if ((*itr) != val)
+			return false;
+	}
+
+	return true;
+}
+
+template<typename T>
+inline bool Matrix<T>::is_same_col(size_t in_cols, const T val)
+{
+	if (in_cols >= cols)
+	{
+		std::cout << "Col out of range" << '\n';
+	}
+	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
+
+	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
+		if ((*itr) != val)
+			return false;
+	}
+
+	return true;
+}
+
+template<typename T>
+inline bool Matrix<T>::is_same_rows(size_t r1, size_t r2, const T val)
+{
+	for (size_t i = r1;i <= r2;++i) {
+		if (!this->is_same_row(i, val))
+			return false;
+	}
+
+	return true;
+}
+
+template<typename T>
+inline bool Matrix<T>::is_same_cols(size_t c1, size_t c2, const T val)
+{
+	for (size_t i = c1;i <= c2;++i) {
+		if (!this->is_same_col(i, val))
+			return false;
+	}
+
+	return true;
+}
+
+template<typename T>
 inline void Matrix<T>::reset()
 {
 	matrix.clear();
@@ -1504,7 +1561,7 @@ inline void Matrix<T>::insert_col(size_t c1, const T val)
 	{
 		std::cout << "Col out of range" << '\n';
 	}
-	Matrix<T>::iterator itr = matrix.insert(matrix.begin() + c1, val);
+	Matrix<T>::col_iterator itr = matrix.insert(matrix.begin() + c1, val);
 
 	for (size_t i = 0;i < rows - 1;++i, ++itr) {
 		itr = matrix.insert(itr + cols, val);

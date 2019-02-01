@@ -46,15 +46,15 @@ public:
 	bool is_same_size(const size_t in_rows, const size_t in_cols);
 
 	//CHECKS ROWS-COLS OF ELEMENT
-	inline void is_same_row(size_t r1, const T val);
-	inline void is_same_col(size_t c1, const T val);
+	inline bool is_same_row(size_t r1, const T val);
+	inline bool is_same_col(size_t c1, const T val);
 
-	inline void is_same_rows(size_t r1, size_t r2, const T val);
-	inline void is_same_cols(size_t c1, size_t c2, const T val);
+	inline bool is_same_rows(size_t r1, size_t r2, const T val);
+	inline bool is_same_cols(size_t c1, size_t c2, const T val);
 
 	//EQUAL ROWS-COLS
-	inline void is_equal_rows(size_t r1, size_t r2);
-	inline void is_equal_cols(size_t c1, size_t c2);
+	inline bool is_equal_rows(size_t r1, size_t r2);
+	inline bool is_equal_cols(size_t c1, size_t c2);
 
 	//SIZE MANIPULATION
 	inline void reset();
