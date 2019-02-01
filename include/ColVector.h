@@ -14,7 +14,7 @@ public:
 	//INSERT
 	inline void insert(const ColVector<T>& object);
 	inline void insert(size_t s, const T val);
-	inline void insert(const T val); //don't use this. will remove soon
+	inline void insert(const T val); 
 	inline void insert_zeros(size_t s);
 	inline void insert_ones(size_t s);
 
@@ -22,12 +22,9 @@ public:
 	inline ColVector(size_t size);
 	inline ColVector(size_t size, T elem);
 	inline ColVector(const std::initializer_list<T>& list);
-	inline ColVector(const Matrix<T>& m);
 	inline ColVector(const std::vector<T>& list);
 	inline ColVector(size_t size, const T* list);
 	inline ColVector();
-private:
-	using Matrix<T>::insert_row(size_t,T);
 };
 
 #endif // !COL_VECTOR

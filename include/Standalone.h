@@ -59,7 +59,7 @@ namespace tenseopr {
 	templ Matrix<T> cumsum(cmat m, size_t dim = 0); 
 	templ Matrix<T> cumprod(cmat m, size_t dim = 0);
 
-	templ Matrix<T> ref(cmat m);//code later
+	templ Matrix<T> ref(cmat m);//almost done. maybe done. no clue
 	templ T det(cmat m);
 	templ Matrix<T> diagmat(cmat m, char val = 0);
 	templ Matrix<T> diagvec(cmat m, char val = 0);
@@ -75,21 +75,20 @@ namespace tenseopr {
 	templ Matrix<size_t> find(cmat m,size_t k=0, uchar s=0);
 	templ Matrix<size_t> find_finite(cmat m);
 	templ Matrix<size_t> find_nonfinite(cmat m);
-	templ Matrix<size_t> find_unique(cmat m, bool ascending=0); //not done yet
+	templ Matrix<size_t> find_unique(cmat m, bool ascending=1);
 	templ Matrix<T> find_unique_elem(cmat m);
 
 	templ Matrix<T> fliplr(cmat m);//need submat
 	templ Matrix<T> flipup(cmat m);//need submat
 	templ Matrix<T> real(cpmat m);
 	templ Matrix<T> imag(cpmat m);
-	
-	templ ColVector<size_t> ind2sub(size_t rows, size_t cols, size_t index, T i=0); //doesn't work
 	templ ColVector<size_t> ind2sub(cmat size, size_t index);
 
 	templ Matrix<T> ind2sub(size_t rows, size_t cols, cmat indices);
 	templ Matrix<T> ind2sub(cmat size, cmat indices);
 	//10 functions
-
+	templ Matrix<size_t> index_max(cmat m, uchar dim = 0);
+	templ Matrix<size_t> index_min(cmat m, uchar dim = 0);
 
 	templ void inplace_trans(noncmat m);
 	templ void inplace_trans(noncpmat m);
@@ -114,6 +113,9 @@ namespace tenseopr {
 	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols);
 
 	templ Matrix<T> reverse(cmat m,size_t dim=0);
+	templ Matrix<std::complex<T>> roots(cmat m);
+	templ Matrix<T> shift(cmat m, char c);
+	templ Matrix<T> shuffle(cmat m);
 }
 
 #endif

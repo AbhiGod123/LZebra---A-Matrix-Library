@@ -663,6 +663,9 @@ namespace tenseopr
 			reali.emplace_back(i);
 		}
 
+		if (ascending)
+			std::sort(reali.begin(), reali.end());
+
 		return ColVector<size_t>(reali);
 	}
 
@@ -705,16 +708,6 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ ColVector<size_t> ind2sub(size_t rows, size_t cols, size_t index, T i)
-	{
-		ColVector<size_t> subscripts(2);
-
-		subscripts(0) = index / cols;
-		subscripts(1) = index % cols;
-
-		return subscripts;
-	}
-
 	templ ColVector<size_t> ind2sub(cmat size, size_t index)
 	{
 		ColVector<size_t> subscripts(2);
@@ -723,6 +716,78 @@ namespace tenseopr
 		subscripts(1) = index % size.getCols();
 
 		return subscripts;
+	}
+
+	templ Matrix<T> ind2sub(size_t rows, size_t cols, cmat indices)
+	{
+		Matrix<T> mat;
+		mat.set_size(indices.getSize(), 2);
+
+		for (size_t i = 0;i < indices.getSize();++i) {
+			mat(i, 0) = indices(i) / cols;
+			mat(i, 1) = indices(i) % cols;
+		}
+
+		return mat;
+	}
+
+	templ Matrix<T> ind2sub(cmat size, cmat indices)
+	{
+		Matrix<T> mat;
+		mat.set_size(indices.getSize(), 2);
+
+		for (size_t i = 0;i < indices.getSize();++i) {
+			mat(i, 0) = indices(i) / size.getCols();
+			mat(i, 1) = indices(i) % size.getCols();
+		}
+
+		return mat;
+	}
+
+	templ Matrix<size_t> index_max(cmat m, uchar dim)
+	{
+		if (m.is_vec()) {
+			return Matrix<size_t>(1, 1, m.indexmax());
+		}
+		else if(!dim){
+			RowVector<size_t> index(m.getCols());
+
+			for (size_t i = 0;i < m.getCols();++i) {
+				index(i) = m.indexmax_col(i);
+			}
+
+			return index;
+		}
+		ColVector<size_t> index(m.getRows());
+
+		for (size_t i = 0;i < m.getRows();++i) {
+			index(i) = m.indexmax_row(i);
+		}
+
+		return index;
+	}
+
+	templ Matrix<size_t> index_min(cmat m, uchar dim)
+	{
+		if (m.is_vec()) {
+			return Matrix<size_t>(1, 1, m.indexmin());
+		}
+		else if (!dim) {
+			RowVector<size_t> index(m.getCols());
+
+			for (size_t i = 0;i < m.getCols();++i) {
+				index(i) = m.indexmin_col(i);
+			}
+
+			return index;
+		}
+		ColVector<size_t> index(m.getRows());
+
+		for (size_t i = 0;i < m.getRows();++i) {
+			index(i) = m.indexmin_row(i);
+		}
+
+		return index;
 	}
 
 	templ void inplace_trans(noncmat m)

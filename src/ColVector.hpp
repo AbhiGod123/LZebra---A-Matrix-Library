@@ -1,5 +1,8 @@
 #include "ColVector.h"
 
+#ifndef COL_VECTOR_HPP
+#define COL_VECTOR_HPP
+
 template<typename T>
 ColVector<T>::ColVector() : Matrix<T>(){
 
@@ -89,3 +92,5 @@ inline ColVector<T>::ColVector(size_t size, const T * list) : Matrix<T>(size, 1,
 {
 
 }
+
+#endif // !COL_VECTOR_HPP

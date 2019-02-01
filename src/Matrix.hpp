@@ -1,5 +1,8 @@
 #include "Matrix.h"
 
+#ifndef MATRIX_HPP
+#define MATRIX_HPP
+
 template<typename T>
 inline T & Matrix<T>::operator[](size_t index)
 {
@@ -1825,3 +1828,5 @@ template<typename T>
 inline Matrix<T>::~Matrix() {
 
 }
+
+#endif // !MATRIX_HPP

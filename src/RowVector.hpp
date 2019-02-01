@@ -1,5 +1,8 @@
 #include "RowVector.h"
 
+#ifndef ROW_VECTOR_HPP
+#define ROW_VECTOR_HPP
+
 template<typename T>
 RowVector<T>::RowVector() : Matrix<T>(){
 
@@ -42,6 +45,15 @@ inline void RowVector<T>::insert(size_t s, const T val)
 }
 
 template<typename T>
+inline void RowVector<T>::insert(const T val)
+{
+	auto& mat = Matrix<T>::matrix;
+	mat.push_back(val);
+
+	this->reshape(1 + Matrix<T>::size);
+}
+
+template<typename T>
 inline void RowVector<T>::insert_zeros(size_t s)
 {
 	this->insert(0, s);
@@ -80,3 +92,5 @@ inline RowVector<T>::RowVector(size_t size, const T * list) : Matrix<T>(1, size,
 {
 
 }
+
+#endif // !ROW_VECTOR_HPP
