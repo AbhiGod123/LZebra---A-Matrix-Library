@@ -107,6 +107,13 @@ namespace tenseopr {
 	templ ColVector<T> nonzeros(cmat m);
 
 	templ size_t rank(cmat m);
+	templ double rcond(cmat m);
+	templ Matrix<T> repelem(cmat m, size_t rowcopy, size_t colcopy);//doesn't work
+
+	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols); // : (
+	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols);
+
+	templ Matrix<T> reverse(cmat m,size_t dim=0);
 }
 
 #endif

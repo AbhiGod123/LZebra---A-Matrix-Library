@@ -353,11 +353,66 @@ namespace tenseopr
 
 	templ Matrix<T> ref(cmat m1)
 	{
-		/*--------------------------------------------------------------------------*/
-		Matrix<T> mat(m1);
+		Matrix<double> mat = tenseopr::conv_to<double>(m1);
 
+		size_t m = m1.getRows();
+		size_t n = m1.getCols();
 
-		return mat;
+		size_t pivot = 0;
+		for (size_t i = 0;i < n-1;++i) {	
+
+			bool same_col = 1;
+
+			for (size_t c = i + pivot * m;c < mat.getSize();c+=m) {
+					
+				if (mat(c) != 0)
+				{
+					same_col = 0;
+					break;
+				}		
+			}
+
+			if (same_col) //check if elem range also contains the value
+			{
+				continue;
+			}
+			else {
+				//we know the col doesn't contain all zeros. So there must be at least 1 number to use for the pivot point
+				size_t prev_pivot = pivot;
+
+				for (size_t j = prev_pivot;j < m;++j) {
+					if (mat(j, i))
+					{
+						pivot = j;
+						break;
+					}
+				}//finds the pivot point
+
+				mat.swap_rows(prev_pivot, pivot);
+				pivot = prev_pivot;
+
+				double cur_elem = mat(prev_pivot, i);
+
+				std::cout << cur_elem << '\n';
+
+				for (size_t row = prev_pivot + 1;row < m;++row) {
+					//the goal is to make everything under the pivot zeros
+					double multiplier = -1 * mat(row, i) / cur_elem;
+
+					if (multiplier == 0)
+						continue;
+
+					for (size_t col = i;col < n;++col) {
+						mat(row, col) += mat(prev_pivot, col) * multiplier;
+					}
+				}
+
+				std::cout << mat<<'\n';
+				++pivot;
+			}
+		}
+		
+		return tenseopr::conv_to<T>(mat);
 	}
 
 	templ T det(cmat m)
@@ -748,6 +803,68 @@ namespace tenseopr
 		}
 
 		return ColVector<T>(std::move(values));
+	}
+
+	templ Matrix<T> repelem(cmat m, size_t rowcopy, size_t colcopy)
+	{
+		Matrix<T> mat;
+
+		mat.set_size(rowcopy * m.getRows(), colcopy * m.getCols());
+
+		for (size_t i = 0;i < rowcopy;++i) {
+			mat.insert_rows(mat.getRows(),m);
+		}
+
+		for (size_t i = 0;i < colcopy;++i) {
+			mat.insert_cols(mat.getCols(), m);
+		}
+
+		return mat;
+	}
+
+	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols)
+	{
+		Matrix<T> mat;
+
+		if (n_rows * n_cols <= m.getSize()) {
+			mat.set_size(n_rows, n_cols);
+
+			for (size_t i = 0;i < mat.getSize();++i) {
+				mat(i) = m(i);
+			}
+		}
+		else
+		{
+			mat = m;
+
+			
+			mat.resize(mat.getRows() + n_rows, mat.getCols() + n_cols);
+		}
+		
+		return mat;
+	}
+
+	templ Matrix<T> reverse(cmat m, size_t dim)
+	{
+		Matrix<T> mat;
+
+		if (m.is_vec()){
+			mat = m;
+			std::reverse(mat.begin(), mat.end());
+		}
+		else {
+			mat = m;
+			if (!dim) {
+				for (size_t i = 0;i < mat.getRows();++i) {
+					std::reverse(mat.begin_row(i),mat.end_row(i));
+				}
+			}
+			else {
+
+			}
+		}
+
+		return mat;
 	}
 
 }
