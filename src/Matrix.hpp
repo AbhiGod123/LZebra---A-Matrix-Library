@@ -1532,13 +1532,17 @@ inline void Matrix<T>::insert_cols(size_t c1, const Matrix<T>& m)
 	{
 		std::cout << "Col out of range" << '\n';
 	}
-	for (size_t a = 0;a < m.cols;a++) {
-		for (size_t i = c1;i < c1 * rows;i += rows) {
-			matrix.insert(i, m(i, a));
+
+	for (size_t a = 0;a < m.getCols();++a) {
+		Matrix<T>::col_iterator itr = matrix.insert(matrix.begin() + c1 + a, m(0, a));
+
+		for (size_t i = 1;i < rows;++i) {
+			itr = matrix.insert(itr + cols + 1, m(i, a));
 		}
+		++cols;
+		size = cols * rows;
 	}
-	cols = cols + m.cols;
-	size = rows * cols;
+
 }
 
 template<typename T>
@@ -1563,8 +1567,8 @@ inline void Matrix<T>::insert_col(size_t c1, const T val)
 	}
 	Matrix<T>::col_iterator itr = matrix.insert(matrix.begin() + c1, val);
 
-	for (size_t i = 0;i < rows - 1;++i, ++itr) {
-		itr = matrix.insert(itr + cols, val);
+	for (size_t i = 0;i < rows - 1;++i) {
+		itr = matrix.insert(itr + cols + 1, val);
 	}
 
 	cols++;

@@ -277,6 +277,9 @@ public:
 	inline void swap_cols(size_t c1, size_t c2);
 
 	//INSERT 
+	inline void insert_row(size_t r1, const Matrix<T>& m);
+	inline void insert_col(size_t c1, const Matrix<T>& m);
+
 	inline void insert_rows(size_t r1, const Matrix<T>& m);
 	inline void insert_cols(size_t c1, const Matrix<T>& m);
 
