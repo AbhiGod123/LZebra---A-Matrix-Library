@@ -1121,7 +1121,7 @@ inline size_t Matrix<T>::indexmin_col(size_t c1) const
 	T minval = std::numeric_limits<T>::max();
 	size_t index = 0;
 
-	for (size_t i = c1;i < c1*rows;++i) {
+	for (size_t i = c1;i < size;i+=cols) {
 		if (matrix[i] < minval) {
 			index = i;
 			minval = matrix[i];
@@ -1135,10 +1135,9 @@ template<typename T>
 inline size_t Matrix<T>::indexmax_col(size_t c1) const
 {
 	T maxval = std::numeric_limits<T>::min();
-
 	size_t index = 0;
 
-	for (size_t i = c1;i < c1*rows;++i) {
+	for (size_t i = c1;i < size;i+=cols) {
 		if (matrix[i] > maxval)
 		{
 			index = i;
