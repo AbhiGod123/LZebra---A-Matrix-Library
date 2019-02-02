@@ -60,7 +60,7 @@ namespace tenseopr {
 	templ Matrix<T> cumprod(cmat m, size_t dim = 0);
 
 	templ Matrix<T> ref(cmat m);//almost done. maybe done. no clue
-	templ T det(cmat m);
+	templ T det(cmat m);//finish this
 	templ Matrix<T> diagmat(cmat m, char val = 0);
 	templ Matrix<T> diagvec(cmat m, char val = 0);
  
@@ -83,17 +83,14 @@ namespace tenseopr {
 	templ Matrix<T> real(cpmat m);
 	templ Matrix<T> imag(cpmat m);
 	templ ColVector<size_t> ind2sub(cmat size, size_t index);
-
 	templ Matrix<T> ind2sub(size_t rows, size_t cols, cmat indices);
 	templ Matrix<T> ind2sub(cmat size, cmat indices);
 	//10 functions
 	templ Matrix<size_t> index_max(cmat m, uchar dim = 0);
 	templ Matrix<size_t> index_min(cmat m, uchar dim = 0);
-
 	templ void inplace_trans(noncmat m);
 	templ void inplace_trans(noncpmat m);
-
-	templ Matrix<T> intersect(cmat m1, cmat m2); //doesn't work
+	templ void inplace_strans(noncpmat m);
 
 	templ bool is_finite(cmat m);
 	templ Matrix<T> join_rows(cmat m1, cmat m2);
@@ -102,15 +99,28 @@ namespace tenseopr {
 	templ Matrix<T> join_vert(cmat m1, cmat m2);
 
 	templ Matrix<T> kron(cmat m1, cmat m2);
-	
+	templ void log_det(double &val, double& sign, cmat m); //need trace
+	templ Matrix<std::complex<T>> log_det(cmat m);//need trace
+	templ Matrix<T> logmat(cmat m);//need to diagonalize first
+	templ Matrix<T> logmat_sympd(cmat m);//need to diagonalize first
+
+	templ Matrix<T> max(cmat m, uchar dim = 0);
+	templ Matrix<T> min(cmat m, uchar dim = 0);
 	templ ColVector<T> nonzeros(cmat m);
 
-	templ size_t rank(cmat m);
-	templ double rcond(cmat m);
-	templ Matrix<T> repelem(cmat m, size_t rowcopy, size_t colcopy);//doesn't work
+	templ double pnorm(cmat m, uchar type=2); //need eigenvals
+	templ double pnorm(cmat m, std::string type); //need eigenvals
 
-	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols); // : (
-	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols);
+	templ Matrix<T> normalise(cmat m, uchar type = 2, uchar dim = 0);//eigenvals
+	templ Matrix<T> prod(cmat m, uchar dim = 0);
+
+	templ size_t rank(cmat m);
+	templ double rcond(cmat m);//eigen stuff
+	templ Matrix<T> repelem(cmat m, size_t rowcopy, size_t colcopy);//doesn't work
+	templ Matrix<T> repmat(cmat m, size_t rowcopy, size_t colcopy);//doesn't work
+
+	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols); //not sure
+	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols);//not sure
 
 	templ Matrix<T> reverse(cmat m,size_t dim=0);
 	templ Matrix<std::complex<T>> roots(cmat m);
