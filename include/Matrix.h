@@ -199,6 +199,7 @@ public:
 	
 	class row_iterator { //iterators through rows and single col
 	public:
+		inline row_iterator();
 		inline row_iterator(const row_iterator& X);
 		inline row_iterator(Matrix<T>& in_M, const size_t in_col);
 
@@ -210,12 +211,23 @@ public:
 		inline row_iterator& operator--();
 		inline row_iterator  operator--(int);
 
+		inline row_iterator operator+(int);
+		inline row_iterator operator-(int);
+
 		inline bool operator!=(const       row_iterator& X) const;
 		inline bool operator==(const       row_iterator& X) const;
 		inline bool operator!=(const const_row_iterator& X) const;
 		inline bool operator==(const const_row_iterator& X) const;
 
-		inline void print() const;
+		#ifdef _DEBUG
+				inline void print() const;
+		#endif // _DEBUG
+
+		typedef std::bidirectional_iterator_tag iterator_category;
+		typedef T value_type;
+		typedef std::ptrdiff_t difference_type;
+		typedef T* pointer;
+		typedef T& reference;
 
 		Matrix<T>* mat;
 		iterator itr;

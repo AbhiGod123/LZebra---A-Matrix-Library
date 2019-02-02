@@ -6,7 +6,9 @@
 #include <vector>
 #include <cmath>
 #include <complex>
+#include <random>
 #include <algorithm>
+#include <numeric>
 #include <tuple>
 #include <limits>
 #include <type_traits>
@@ -51,7 +53,7 @@ namespace tenseopr {
 	templ T as_scalar(cmat m);
 	templ Matrix<T> clamp(cmat m, T min, T max);
 
-	templ double cond(cmat m);//need det first
+	templ double cond(cmat m);//eigen values
 	templ Matrix<std::complex<T>> conj(cpmat complexmat);
 	template<typename C, typename T> Matrix<C> conv_to(cmat m);
 
@@ -123,9 +125,15 @@ namespace tenseopr {
 	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols);//not sure
 
 	templ Matrix<T> reverse(cmat m,size_t dim=0);
-	templ Matrix<std::complex<T>> roots(cmat m);
-	templ Matrix<T> shift(cmat m, char c);
-	templ Matrix<T> shuffle(cmat m);
+	templ ColVector<std::complex<T>> roots(cmat m); //eigen decomp
+	templ Matrix<T> shift(cmat m, char c, uchar dim = 0);//failed iterator
+	templ Matrix<T> shuffle(cmat m, uchar dim=0);//failed iterator
+	templ Matrix<T> sort(cmat m, std::string type, uchar dim = 0);//need random-access iterator
+
+	templ Matrix<std::complex<T>> sqrtmat(cmat m);
+	templ Matrix<T> sqrtmat_sympd(cmat m);
+
+	templ Matrix<T> sum(cmat m, uchar dim = 0);
 }
 
 #endif

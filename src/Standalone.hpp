@@ -973,6 +973,15 @@ namespace tenseopr
 		return mat;
 	}
 
+	templ Matrix<T> repmat(cmat m, size_t rowcopy, size_t colcopy)
+	{
+		Matrix<T> mat(m);
+
+		
+
+		return mat;
+	}
+
 	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols)
 	{
 		Matrix<T> mat(m);
@@ -985,8 +994,9 @@ namespace tenseopr
 	{	
 		if (m.is_vec()){
 			Matrix<T> mat(m);
-
 			std::reverse(mat.begin(), mat.end());
+
+			return mat;
 		}
 		else if(!dim){
 			Matrix<T> mat(m);
@@ -999,11 +1009,140 @@ namespace tenseopr
 		}
 		Matrix<T> mat(m);
 
-		for (size_t i = 0;i < m.getCols();++i) {
-			for (size_t f = 0;f < m.getRows() / 2;++f) {
-				std::swap(mat(f,i),mat(m.getRows()-f-1,i));
+		for (size_t i = 0;i < mat.getCols();++i) {
+			std::reverse(mat.begin_col(i), mat.end_col(i));
+		}
+
+		return mat;
+	}
+
+	templ Matrix<T> shift(cmat m, char c, uchar dim)
+	{
+		if (!c)
+			return m;
+
+		if (m.is_vec()) {
+			Matrix<T> mat(m);
+
+			if (c > 0)
+				std::rotate(mat.begin(), mat.begin() + mat.getSize() - c, mat.end());
+			else
+				std::rotate(mat.begin(), mat.begin() - c, mat.end());
+
+			return mat;
+		}
+		else if (!dim) {
+			Matrix<T> mat(m);
+
+			if (c > 0) {
+				for (size_t i = 0;i < mat.getRows();++i) {
+					std::rotate(mat.begin_row(i), mat.begin_row(i) + mat.getCols() - c, mat.end_row(i));
+				}
+			}
+			else {
+				for (size_t i = 0;i < mat.getRows();++i) {
+					std::rotate(mat.begin_row(i), mat.begin_row(i) - c, mat.end_row(i));
+				}
+			}
+
+			return mat;
+		}
+
+		Matrix<T> mat(m);
+
+		if (c > 0) {
+			for (size_t i = 0;i < mat.getCols();++i) {
+				std::rotate(mat.begin_col(i), mat.begin_col(i) + (mat.getRows() - c), mat.end_col(i));
 			}
 		}
+		else {
+			for (size_t i = 0;i < mat.getCols();++i) {
+				std::rotate(mat.begin_col(i), mat.begin_col(i) - c, mat.end_col(i));
+			}
+		}
+
+		return mat;
+	}
+
+	templ Matrix<T> shuffle(cmat m, uchar dim)
+	{
+		std::random_device rd;
+		std::mt19937 g(rd());
+
+		if (m.is_vec()) {
+			Matrix<T> mat(m);
+			std::shuffle(mat.begin(), mat.end(), g);
+
+			return mat;
+		}
+		else if (!dim) {
+			Matrix<T> mat(m);
+
+			for(size_t i=0;i<mat.getRows();++i)
+				std::shuffle(mat.begin_row(i), mat.end_row(i), g);
+			
+			return mat;
+		}
+		Matrix<T> mat(m);
+
+		for (size_t i = 0;i < mat.getCols();++i)
+			std::shuffle(mat.begin_col(i), mat.end_col(i), g);
+		
+		return mat;
+	}
+
+	templ Matrix<T> sort(cmat m, std::string type, uchar dim)
+	{
+		if (m.is_vec()) {
+			Matrix<T> mat(m);
+			if(type == "ascend")
+			std::sort(mat.begin(), mat.end());
+			else
+				std::sort(mat.begin(), mat.end(), std::greater<T>());
+
+			return mat;
+		}
+		else if (!dim) {
+			Matrix<T> mat(m);
+
+			for (size_t i = 0;i < mat.getCols();++i){
+				if (type == "ascend")
+					std::sort(mat.begin_row(i), mat.end_row(i));
+				else
+					std::sort(mat.begin_row(i), mat.end_row(i), std::greater<T>());
+			}
+
+			return mat;
+		}
+		Matrix<T> mat(m);
+
+		for (size_t i = 0;i < mat.getRows();++i) {
+			if (type == "ascend")
+				std::sort(mat.begin_col(i), mat.end_col(i));
+			else
+				std::sort(mat.begin_col(i), mat.end_col(i), std::greater<T>());
+		}
+
+		return mat;
+	}
+
+	templ Matrix<T> sum(cmat m, uchar dim)
+	{
+		if (m.is_vec()) {
+			return std::accumulate(m.begin(), m.end(), 0);
+		}
+		else if (!dim) {
+			ColVector<T> mat(m.getRows());
+
+			for (size_t i = 0;i < m.getRows();++i)
+				mat(i) = std::accumulate(m.begin_row(i), m.end_row(i), 0);
+
+			return mat;
+		}
+		RowVector<T> mat(m.getRows());
+
+		for (size_t i = 0;i < m.getRows();++i)
+			mat(i) = std::accumulate(m.begin_col(i), m.end_col(i), 0);
 
 		return mat;
 	}

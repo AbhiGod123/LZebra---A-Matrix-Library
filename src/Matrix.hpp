@@ -1149,6 +1149,12 @@ inline size_t Matrix<T>::indexmax_col(size_t c1) const
 }
 
 template<typename T>
+inline Matrix<T>::row_iterator::row_iterator() : mat(new Matrix<T>()), itr(mat->begin()), current_col(0), current_row(0)
+{
+	//invalid iterator. Not good for use
+}
+
+template<typename T>
 inline Matrix<T>::row_iterator::row_iterator(const row_iterator& X) : mat(X.mat), itr(X.itr), current_col(X.current_col), current_row(X.current_row)
 {
 
@@ -1186,7 +1192,7 @@ inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator++()
 		itr += mat->getCols();
 	}
 
-	return *this;
+	return (*this);
 }
 
 template<typename T>
@@ -1218,7 +1224,7 @@ inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator--()
 		itr -= mat->getCols();
 	}
 
-	return *this;
+	return (*this);
 }
 
 template<typename T>
@@ -1232,29 +1238,48 @@ inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator--(int)
 }
 
 template<typename T>
-inline bool Matrix<T>::row_iterator::operator!=(const row_iterator & X) const
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator+(int inc)
 {
-	return itr != X.itr;
+	Matrix<T>::row_iterator itr(*this);
+
+	itr.itr += (inc * mat->getCols());
+	return itr;
 }
 
 template<typename T>
-inline bool Matrix<T>::row_iterator::operator==(const row_iterator & X) const
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator-(int inc)
 {
-	return itr == X.itr;
+	Matrix<T>::row_iterator itr(*this);
+
+	itr.itr -= (inc * mat->getCols());
+	return itr;
 }
 
 template<typename T>
-inline bool Matrix<T>::row_iterator::operator!=(const const_row_iterator & X) const
+inline bool Matrix<T>::row_iterator::operator!=(const typename Matrix<T>::row_iterator & X) const
 {
-	return itr != X.itr;
+	return (itr != X.itr);
 }
 
 template<typename T>
-inline bool Matrix<T>::row_iterator::operator==(const const_row_iterator & X) const
+inline bool Matrix<T>::row_iterator::operator==(const typename Matrix<T>::row_iterator & X) const
 {
-	return itr == X.itr;
+	return (itr == X.itr);
 }
 
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator!=(const typename Matrix<T>::const_row_iterator & X) const
+{
+	return (itr != X.itr);
+}
+
+template<typename T>
+inline bool Matrix<T>::row_iterator::operator==(const typename Matrix<T>::const_row_iterator & X) const
+{
+	return (itr == X.itr);
+}
+
+#ifdef _DEBUG
 template<typename T>
 inline void Matrix<T>::row_iterator::print() const
 {
@@ -1262,6 +1287,7 @@ inline void Matrix<T>::row_iterator::print() const
 	std::cout << "row: " << current_row << ' ';
 	std::cout << "col: " << current_col << '\n';
 }
+#endif // _DEBUG
 
 template<typename T>
 inline Matrix<T>::const_row_iterator::const_row_iterator(const row_iterator& X) : mat(X.mat), itr(X.itr), current_col(X.current_col), current_row(X.current_row)
