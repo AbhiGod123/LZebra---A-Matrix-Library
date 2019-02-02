@@ -304,6 +304,7 @@ public:
 	inline void load(const std::string& name);
 
 	//DEFAULT CONSTRUCTOR AND DESTRUCTOR
+	inline Matrix(T elem);
 	inline Matrix(size_t rows, size_t cols);
 	inline Matrix(size_t rows, size_t cols, T elem); 
 	inline Matrix(size_t rows, size_t cols, const std::initializer_list<T>& list);
