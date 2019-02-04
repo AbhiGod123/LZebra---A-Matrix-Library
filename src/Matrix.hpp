@@ -587,20 +587,6 @@ inline void Matrix<T>::fill_cols(size_t c1, size_t c2, const func_p val)
 }
 
 template<typename T>
-inline const Matrix<T> Matrix<T>::transpose()
-{
-	Matrix<T> newmat(cols, rows);
-
-	for (size_t i = 0;i < cols;++i) {
-		for (size_t f = 0;f < rows;++f) {
-			newmat(i, f) = (*this)(f,i);
-		}
-	}
-
-	return newmat;
-}
-
-template<typename T>
 inline Matrix<T> Matrix<T>::operator+(const Matrix<T>& m)
 {
 	Matrix<T> result(*this);
@@ -976,7 +962,9 @@ bool Matrix<T>::is_sorted() const
 template<typename T>
 bool Matrix<T>::is_symmetric()
 {
-	return (*this) == transpose();
+	Matrix<char> chars = (*this) == tenseopr::trans((*this));
+
+	return std::all_of(chars.begin(), chars.end(), [](char i) {return i;});
 }
 
 template<typename T>

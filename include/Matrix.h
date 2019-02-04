@@ -119,9 +119,6 @@ public:
 	inline void fill_rows(size_t r1, size_t r2, const func_p val);
 	inline void fill_cols(size_t c1, size_t c2, const func_p val);
 
-	//MATRIX MANIPULATION
-	inline const Matrix<T> transpose();
-
 	//OPERATIONS
 		//MATRIX - MATRIX
 	inline Matrix<T> operator+ (const Matrix<T>& m);
