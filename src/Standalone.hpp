@@ -433,7 +433,7 @@ namespace tenseopr
 		return std::get<0>(tpref);
 	}
 
-	templ Matrix<T> diagmat(cmat m, char val)
+	templ Matrix<T> diagmat(cmat m, int val)
 	{
 		Matrix<T> dmat;
 
@@ -470,7 +470,7 @@ namespace tenseopr
 		return dmat;
 	}
 
-	templ Matrix<T> diagvec(cmat m, char val)
+	templ Matrix<T> diagvec(cmat m, int val)
 	{
 		ColVector<T> vec;
 
@@ -657,7 +657,7 @@ namespace tenseopr
 		return ColVector<size_t>(reali);
 	}
 
-	templ Matrix<T> find_unique_elem(cmat m)
+	templ Matrix<T> unique(cmat m)
 	{
 		std::vector<T> indices(m.max() + 1);
 		std::vector<T> reali;
@@ -672,6 +672,28 @@ namespace tenseopr
 		}
 
 		return ColVector<T>(reali);
+	}
+
+	templ Matrix<T> fliplr(cmat m)
+	{
+		Matrix<T> mat(m);
+
+		for (size_t i = 0;i < m.getRows();++i) {
+			std::reverse(mat.begin_row(i), mat.end_row(i));
+		}
+		
+		return mat;
+	}
+
+	templ Matrix<T> flipud(cmat m)
+	{
+		Matrix<T> mat(m);
+
+		for (size_t i = 0;i < m.getCols();++i) {
+			std::reverse(mat.begin_col(i), mat.end_col(i));
+		}
+
+		return mat;
 	}
 
 	templ Matrix<T> real(cpmat m)
@@ -706,10 +728,9 @@ namespace tenseopr
 		return subscripts;
 	}
 
-	templ Matrix<T> ind2sub(size_t rows, size_t cols, cmat indices)
+	templ Matrix<size_t> ind2sub(size_t rows, size_t cols, cmat indices)
 	{
-		Matrix<T> mat;
-		mat.set_size(indices.getSize(), 2);
+		Matrix<size_t> mat(indices.getSize(), 2);
 
 		for (size_t i = 0;i < indices.getSize();++i) {
 			mat(i, 0) = indices(i) / cols;
@@ -719,10 +740,9 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ Matrix<T> ind2sub(cmat size, cmat indices)
+	templ Matrix<size_t> ind2sub(cmat size, cmat indices)
 	{
-		Matrix<T> mat;
-		mat.set_size(indices.getSize(), 2);
+		Matrix<size_t> mat(indices.getSize(), 2);
 
 		for (size_t i = 0;i < indices.getSize();++i) {
 			mat(i, 0) = indices(i) / size.getCols();
@@ -907,40 +927,21 @@ namespace tenseopr
 	templ Matrix<T> prod(cmat m, uchar dim)
 	{
 		if (m.is_vec()) {
-			T sum = 1;
-			for (auto itr = m.begin(); itr != m.end();++itr) {
-				sum *= (*itr);
-			}
-
-			return sum;
+			return std::accumulate(m.begin(), m.end(), 1, std::multiplies<T>());
 		}
-		else if(!dim){
-			RowVector<T> mat(m.getRows());
+		else if (!dim) {
+			ColVector<T> mat(m.getRows());
 
-			for (size_t i = 0;i < m.getRows();++i) {
-				typename Matrix<T>::const_col_iterator itrend = m.end_row(i);
-
-				T cm = 1;
-				for (typename Matrix<T>::const_col_iterator itr1 = m.begin_row(i);itr1 != itrend;++itr1) {
-					cm *= (*itr1);
-				}
-				mat(i) = cm;
-			}
+			for (size_t i = 0;i < m.getRows();++i)
+				mat(i) = std::accumulate(m.begin_row(i), m.end_row(i), 1, std::multiplies<T>());
 
 			return mat;
 		}
+		RowVector<T> mat(m.getRows());
 
-		ColVector<T> mat(m.getCols());
+		for (size_t i = 0;i < m.getRows();++i)
+			mat(i) = std::accumulate(m.begin_col(i), m.end_col(i), 1, std::multiplies<T>());
 
-		for (size_t i = 0;i < m.getCols();++i) {
-			typename Matrix<T>::const_row_iterator itrend = m.end_col(i);
-
-			T cm = 1;
-			for (typename Matrix<T>::const_row_iterator itr1 = m.begin_col(i); itr1 != itrend;++itr1) {
-				cm *= (*itr1);
-			}
-			mat(i) = cm;
-		}
 		return mat;
 	}
 
@@ -1016,7 +1017,7 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ Matrix<T> shift(cmat m, char c, uchar dim)
+	templ Matrix<T> shift(cmat m, int c, uchar dim)
 	{
 		if (!c)
 			return m;
@@ -1144,6 +1145,141 @@ namespace tenseopr
 		for (size_t i = 0;i < m.getRows();++i)
 			mat(i) = std::accumulate(m.begin_col(i), m.end_col(i), 0);
 
+		return mat;
+	}
+
+	templ size_t sub2ind(cmat size, size_t i, size_t j)
+	{
+		return (i * size.getCols() + j);
+	}
+
+	templ ColVector<size_t> sub2ind(size_t rows, size_t cols, cmat indices)
+	{
+		ColVector<size_t> vec(indices.getRows());
+
+		for (size_t i = 0;i < indices.getRows();++i) {
+			vec(i) = indices(i, 0) * cols + indices(i, 1);
+		}
+
+		return vec;
+	}
+
+	templ ColVector<size_t> sub2ind(cmat size, cmat indices)
+	{
+		ColVector<size_t> vec(indices.getRows());
+
+		for (size_t i = 0;i < indices.getRows();++i) {
+			vec(i) = indices(i, 0) * size.getCols() + indices(i, 1);
+		}
+
+		return vec;
+	}
+
+	templ T trace(cmat m)
+	{
+		T sum = 0;
+		for (size_t i = 0;i < m.getCols() && i < m.getRows();++i) {
+			sum += mat(i, i);
+		}
+
+		return sum;
+	}
+
+	templ Matrix<T> trans(cmat m)
+	{
+		Matrix<T> mat = m.transpose();
+		return mat;
+	}
+
+	templ Matrix<std::complex<T>> trans(cpmat m)
+	{
+		Matrix<std::complex<T>> trans = m.transpose();
+		return tenseopr::conj(trans);
+	}
+
+	templ Matrix<std::complex<T>> strans(cpmat m)
+	{
+		Matrix<std::complex<T>> trans = m.transpose();
+		return trans;
+	}
+
+	templ Matrix<T> trapz(cmat m, uchar dim)
+	{
+		if (!dim) {
+			ColVector<T> mat(m.getRows());
+
+			for (size_t i = 0;i < m.getRows();++i) {
+				T sum = m(i,0);
+
+				for (size_t f = 1;f < m.getCols()-1;++f) {
+					sum += 2 * m(i, f);
+				}
+				sum += m(i, m.getCols() - 2);
+
+				mat(i) = 0.5 * sum;
+			}
+
+			return mat;
+		}
+		RowVector<T> mat(m.getCols());
+
+		for (size_t i = 0;i < m.getCols();++i) {
+			T sum = m(0, i);
+
+			for (size_t f = 1;f < m.getRows() - 1;++f) {
+				sum += 2 * m(f, i);
+			}
+			sum += m(m.getCols() - 2,i);
+
+			mat(i) = 0.5 * sum;
+		}
+
+		return mat;
+	}
+
+	templ Matrix<T> trimatl(cmat m, int val)
+	{
+		Matrix<T> mat;
+		mat.copysize(m);
+
+		if (val == 0) {
+
+		}
+
+		if (val > 0) {
+			for (size_t i = 0;i < m.getCols() - val;++i) {
+				dmat(i, i + val) = m(i, i + val);
+			}
+
+			for (size_t f = 0;f < m.getCols();++f) {
+				for (size_t i = f - val;i < m.getRows();++i) {
+			
+				}
+			}
+			
+
+		}
+		else {
+			for (size_t i = 0;i < m.getRows() + val;++i) {
+				dmat(i - val, i) = m(i - val, i);
+			}
+		}
+
+	}
+
+	templ Matrix<T> vectorise(cmat m, uchar dim)
+	{
+		if (!dim) {
+			return tenseopr::reshape(m, m.getSize(), 1);
+		}
+		return tenseopr::reshape(m, 1, m.getSize());
+	}
+
+	_fPtr Matrix<double> misc(cmat m)
+	{
+		Matrix<double> mat = tenseopr::conv_to<double>(m);
+
+		mat.fill(_func);
 		return mat;
 	}
 

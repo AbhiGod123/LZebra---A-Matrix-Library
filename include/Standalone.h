@@ -20,6 +20,7 @@
 #define crvec const RowVector<T>& 
 #define cpmat const Matrix<std::complex<T>>&
 #define noncpmat Matrix<std::complex<T>>&
+#define _fPtr template<double(*_func)(double), typename T>
 
 #define ftempldec template<typename T, typename = typename std::enable_if<std::is_floating_point<T>::value>::type>
 #define ftempldef template<typename T, typename>
@@ -63,8 +64,8 @@ namespace tenseopr {
 
 	templ Matrix<T> ref(cmat m);//almost done. maybe done. no clue
 	templ T det(cmat m);//finish this
-	templ Matrix<T> diagmat(cmat m, char val = 0);
-	templ Matrix<T> diagvec(cmat m, char val = 0);
+	templ Matrix<T> diagmat(cmat m, int val = 0);
+	templ Matrix<T> diagvec(cmat m, int val = 0);
  
 	templ Matrix<T> diff(cmat m1, size_t k=1, uchar dim = 0);
 	templ double dot(cmat v1, cmat v2);
@@ -77,17 +78,16 @@ namespace tenseopr {
 	templ Matrix<size_t> find(cmat m,size_t k=0, uchar s=0);
 	templ Matrix<size_t> find_finite(cmat m);
 	templ Matrix<size_t> find_nonfinite(cmat m);
-	templ Matrix<size_t> find_unique(cmat m, bool ascending=1);
-	templ Matrix<T> find_unique_elem(cmat m);
+	templ Matrix<size_t> find_unique(cmat m, bool ascending = 1);
 
-	templ Matrix<T> fliplr(cmat m);//need submat
-	templ Matrix<T> flipup(cmat m);//need submat
+	templ Matrix<T> fliplr(cmat m);
+	templ Matrix<T> flipud(cmat m);
 	templ Matrix<T> real(cpmat m);
 	templ Matrix<T> imag(cpmat m);
 	templ ColVector<size_t> ind2sub(cmat size, size_t index);
-	templ Matrix<T> ind2sub(size_t rows, size_t cols, cmat indices);
-	templ Matrix<T> ind2sub(cmat size, cmat indices);
-	//10 functions
+	templ Matrix<size_t> ind2sub(size_t rows, size_t cols, cmat indices);
+	templ Matrix<size_t> ind2sub(cmat size, cmat indices);
+	
 	templ Matrix<size_t> index_max(cmat m, uchar dim = 0);
 	templ Matrix<size_t> index_min(cmat m, uchar dim = 0);
 	templ void inplace_trans(noncmat m);
@@ -126,7 +126,7 @@ namespace tenseopr {
 
 	templ Matrix<T> reverse(cmat m,size_t dim=0);
 	templ ColVector<std::complex<T>> roots(cmat m); //eigen decomp
-	templ Matrix<T> shift(cmat m, char c, uchar dim = 0);//failed iterator
+	templ Matrix<T> shift(cmat m, int c, uchar dim = 0);//failed iterator
 	templ Matrix<T> shuffle(cmat m, uchar dim=0);//failed iterator
 	templ Matrix<T> sort(cmat m, std::string type, uchar dim = 0);//need random-access iterator
 
@@ -134,6 +134,22 @@ namespace tenseopr {
 	templ Matrix<T> sqrtmat_sympd(cmat m);
 
 	templ Matrix<T> sum(cmat m, uchar dim = 0);
+	templ size_t sub2ind(cmat size, size_t i, size_t j);
+	templ ColVector<size_t> sub2ind(size_t rows, size_t cols, cmat indices);
+	templ ColVector<size_t> sub2ind(cmat size, cmat indices);
+
+	templ T trace(cmat m);
+	templ Matrix<T> trans(cmat m);
+	templ Matrix<std::complex<T>> trans(cpmat m);
+	templ Matrix<std::complex<T>> strans(cpmat m);
+	templ Matrix<T> trapz(cmat m, uchar dim = 0);
+
+	templ Matrix<T> trimatu(cmat m, int k = 0);//nope
+	templ Matrix<T> trimatl(cmat m, int k = 0);//nope
+	templ Matrix<T> unique(cmat m);
+	templ Matrix<T> vectorise(cmat m, uchar dim=0);
+
+	_fPtr Matrix<double> misc(cmat m);
 }
 
 #endif
