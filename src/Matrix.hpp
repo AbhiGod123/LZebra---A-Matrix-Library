@@ -486,7 +486,7 @@ template<typename T>
 inline void Matrix<T>::fill(const lambdaT val)
 {
 	for (T& i : matrix) {
-		val(i);
+		i = val(i);
 	}
 }
 
@@ -500,7 +500,7 @@ inline void Matrix<T>::fill_row(const size_t in_rows, const lambdaT val)
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
 	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
-		val(*itr);
+		*itr = val(*itr);
 	}
 }
 
@@ -514,7 +514,7 @@ inline void Matrix<T>::fill_col(const size_t in_cols, const lambdaT val)
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
 	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
-		val(*itr);
+		*itr = val(*itr);
 	}
 }
 
@@ -538,7 +538,7 @@ template<typename T>
 inline void Matrix<T>::fill(const func_p val)
 {
 	for (T& i : matrix) {
-		val(i);
+		i = val(i);
 	}
 }
 
@@ -552,7 +552,7 @@ inline void Matrix<T>::fill_row(const size_t in_rows, const func_p val)
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
 	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
-		val(*itr);
+		*itr = val(*itr);
 	}
 }
 
@@ -566,7 +566,7 @@ inline void Matrix<T>::fill_col(const size_t in_cols, const func_p val)
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
 	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
-		val(*itr);
+		*itr = val(*itr);
 	}
 }
 
