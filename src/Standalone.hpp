@@ -60,7 +60,7 @@ namespace tenseopr
 		if (m.is_vec()) {
 			for (auto itr = m.begin(); itr != m.end();++itr) {
 				if (!(*itr))
-					return Matrix<char>(1,1,0);
+					return 0;
 			}
 		}
 		else if (!c) {
@@ -1187,19 +1187,40 @@ namespace tenseopr
 
 	templ Matrix<T> trans(cmat m)
 	{
-		Matrix<T> mat = m.transpose();
+		Matrix<T> mat(m.getCols(), m.getRows());
+
+		for (size_t i = 0;i < m.getCols();++i) {
+			for (size_t f = 0;f < m.getRows();++f) {
+				mat(i, f) = m(f, i);
+			}
+		}
+
 		return mat;
 	}
 
 	templ Matrix<std::complex<T>> trans(cpmat m)
 	{
-		Matrix<std::complex<T>> trans = m.transpose();
+		Matrix<std::complex<T>> trans(m.getCols(), m.getRows());
+
+		for (size_t i = 0;i < m.getCols();++i) {
+			for (size_t f = 0;f < m.getRows();++f) {
+				trans(i, f) = m(f, i);
+			}
+		}
+
 		return tenseopr::conj(trans);
 	}
 
 	templ Matrix<std::complex<T>> strans(cpmat m)
 	{
-		Matrix<std::complex<T>> trans = m.transpose();
+		Matrix<std::complex<T>> trans(m.getCols(), m.getRows());
+
+		for (size_t i = 0;i < m.getCols();++i) {
+			for (size_t f = 0;f < m.getRows();++f) {
+				trans(i, f) = m(f, i);
+			}
+		}
+
 		return trans;
 	}
 
@@ -1237,34 +1258,70 @@ namespace tenseopr
 		return mat;
 	}
 
+	templ Matrix<T> trimatu(cmat m, int val)
+	{
+		Matrix<T> mat;
+		mat.copysize(m);
+
+		if (val == 0) {
+			for (size_t i = 0;i < m.getRows()-m.getCols()-2;++i) {
+				for (size_t f = 1;f < mat.getCols();++f) {
+					mat(i, f) = m(i, f);
+				}
+			}
+			return mat;
+		}
+
+		if (val > 0) {
+			for (size_t i = 0;i < m.getCols() - val - 1;++i) {
+				for (size_t f = val + i + 1;f < mat.getCols();++f) {
+					mat(i, f) = m(i, f);
+				}
+			}
+
+			return mat;
+		}
+
+		for (size_t i = 0;i < m.getCols() - val && i < m.getRows();++i) {
+			for (size_t f = i;f <m.getCols();++f) {
+				mat(i, f) = m(i, f);
+			}
+		}
+
+		return mat;
+	}
+
 	templ Matrix<T> trimatl(cmat m, int val)
 	{
 		Matrix<T> mat;
 		mat.copysize(m);
 
 		if (val == 0) {
-
+			for (size_t i = 1;i < m.getRows();++i) {
+				for (size_t f = 0;f < val + i && f < mat.getCols();++f) {
+					mat(i, f) = m(i, f);
+				}
+			}
+			return mat;
 		}
 
 		if (val > 0) {
-			for (size_t i = 0;i < m.getCols() - val;++i) {
-				dmat(i, i + val) = m(i, i + val);
-			}
-
-			for (size_t f = 0;f < m.getCols();++f) {
-				for (size_t i = f - val;i < m.getRows();++i) {
-			
+			for (size_t i = 0;i < m.getRows();++i) {
+				for (size_t f = 0;f < val + i && f < mat.getCols();++f) {
+					mat(i, f) = m(i, f);
 				}
 			}
 			
-
+			return mat;
 		}
-		else {
-			for (size_t i = 0;i < m.getRows() + val;++i) {
-				dmat(i - val, i) = m(i - val, i);
+
+		for (size_t i = -val + 1;i < m.getRows();++i) {
+			for (size_t f = 0;f < 1 + i - (-val + 1) && f < mat.getCols();++f) {
+				mat(i, f) = m(i, f);
 			}
 		}
 
+		return mat;
 	}
 
 	templ Matrix<T> vectorise(cmat m, uchar dim)

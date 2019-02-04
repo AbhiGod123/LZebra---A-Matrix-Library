@@ -145,7 +145,7 @@ namespace tenseopr {
 	templ Matrix<T> trapz(cmat m, uchar dim = 0);
 
 	templ Matrix<T> trimatu(cmat m, int k = 0);//nope
-	templ Matrix<T> trimatl(cmat m, int k = 0);//nope
+	templ Matrix<T> trimatl(cmat m, int k = 0);
 	templ Matrix<T> unique(cmat m);
 	templ Matrix<T> vectorise(cmat m, uchar dim=0);
 
