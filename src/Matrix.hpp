@@ -1775,13 +1775,13 @@ inline Matrix<T> Matrix<T>::submat(size_t r1, size_t c1, size_t r2, size_t c2)
 template<typename T>
 inline Matrix<T> Matrix<T>::head_cols(size_t c1)
 {
-	return this->get_cols(0, c1);
+	return this->get_cols(0, c1-1);
 }
 
 template<typename T>
 inline Matrix<T> Matrix<T>::head_rows(size_t r1)
 {
-	return this->get_rows(0, r1);
+	return this->get_rows(0, r1-1);
 }
 
 template<typename T>
