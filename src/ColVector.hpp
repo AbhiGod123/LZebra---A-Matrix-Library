@@ -93,4 +93,10 @@ inline ColVector<T>::ColVector(size_t size, const T * list) : Matrix<T>(size, 1,
 
 }
 
+template<typename T>
+inline ColVector<T>::ColVector(const Matrix<T>& mat) : Matrix<T>(mat.getCols() == 1 ? mat : tenseopr::vectorise(mat, 0))
+{
+	
+}
+
 #endif // !COL_VECTOR_HPP

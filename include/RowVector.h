@@ -24,6 +24,7 @@ public:
 	inline RowVector(const std::initializer_list<T>& list);
 	inline RowVector(const std::vector<T>& list);
 	inline RowVector(size_t size, const T* list);
+	inline RowVector(const Matrix<T>& mat);
 	inline RowVector();
 };
 

@@ -93,4 +93,10 @@ inline RowVector<T>::RowVector(size_t size, const T * list) : Matrix<T>(1, size,
 
 }
 
+template<typename T>
+inline RowVector<T>::RowVector(const Matrix<T>& mat) : Matrix<T>(mat.getRows() == 1 ? mat : tenseopr::vectorise(mat,1))
+{
+
+}
+
 #endif // !ROW_VECTOR_HPP

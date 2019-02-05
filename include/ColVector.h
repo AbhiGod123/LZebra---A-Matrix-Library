@@ -24,6 +24,7 @@ public:
 	inline ColVector(const std::initializer_list<T>& list);
 	inline ColVector(const std::vector<T>& list);
 	inline ColVector(size_t size, const T* list);
+	inline ColVector(const Matrix<T>& mat);
 	inline ColVector();
 };
 
