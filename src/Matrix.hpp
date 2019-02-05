@@ -1463,6 +1463,18 @@ inline typename Matrix<T>::const_iterator Matrix<T>::cbegin() const
 }
 
 template<typename T>
+inline typename Matrix<T>::iterator Matrix<T>::begin(const size_t index)
+{
+	return matrix.begin() + index;
+}
+
+template<typename T>
+inline typename Matrix<T>::const_iterator Matrix<T>::begin(const size_t index) const
+{
+	return matrix.begin() + index;
+}
+
+template<typename T>
 inline typename Matrix<T>::iterator Matrix<T>::end() {
 	return matrix.end();
 }
@@ -1654,6 +1666,134 @@ inline void Matrix<T>::insert_cols(size_t c1, size_t c2, const T val)
 	for (size_t i = c1;i <= c2;++i) {
 		this->insert_col(i, val);
 	}
+}
+
+template<typename T>
+inline ColVector<T> Matrix<T>::get_col(size_t c1)
+{
+	if (c1 >= cols)
+	{
+		std::cout << "Col out of range!" << '\n';
+	}
+	ColVector<T> vec(rows);
+
+	typename Matrix<T>::const_row_iterator itr = this->begin_col(c1);
+	
+	typename Matrix<T>::iterator itr1 = vec.begin();
+	typename Matrix<T>::const_iterator itrend = vec.end();
+
+	for (;itr1 != itrend;++itr, ++itr1) {
+		(*itr1) = (*itr);
+	}
+
+	return vec;
+}
+
+template<typename T>
+inline RowVector<T> Matrix<T>::get_row(size_t r1)
+{
+	if (r1 >= rows)
+	{
+		std::cout << "Row out of range!" << '\n';
+	}
+	RowVector<T> vec(cols);
+
+	typename Matrix<T>::const_col_iterator itr = this->begin_row(r1);
+
+	typename Matrix<T>::iterator itr1 = vec.begin();
+	typename Matrix<T>::const_iterator itrend = vec.end();
+
+	for (;itr1 != itrend;++itr, ++itr1) {
+		(*itr1) = (*itr);
+	}
+
+	return vec;
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::get_cols(size_t c1, size_t c2)
+{
+	if (c1 > c2)
+		std::swap(c1, c2);
+
+	if (c2 >= cols)
+	{
+		std::cout << "Col out of range!" << '\n';
+	}
+
+	if (c1 == c2)
+		return this->get_col(c1);
+
+	return this->submat(0, c1, rows - 1, c2);
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::get_rows(size_t r1, size_t r2)
+{
+	if (r1 > r2)
+		std::swap(r1, r2);
+
+	if (r2 >= rows)
+	{
+		std::cout << "Row out of range!" << '\n';
+	}
+
+	if (r1 == r2)
+		return this->get_row(r1);
+
+	return this->submat(r1, 0, r2, cols - 1);
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::submat(size_t r1, size_t c1, size_t r2, size_t c2)
+{
+	if (r1 > r2)
+		std::swap(r1, r2);
+	if (c1 > c2)
+		std::swap(c1, c2);
+
+	if (r2 >= rows) {
+		std::cout << "Row out of range!" << '\n';
+	}
+
+	if (c2 >= cols)
+	{
+		std::cout << "Col out of range!" << '\n';
+	}
+
+	Matrix<T> mat(r2 - r1 + 1, c2 - c1 + 1);
+
+	for (size_t i = r1;i <= r2;++i) {
+		for (size_t f = c1;f <= c2;++f) {
+			mat(i - r1, f - c1) = (*this)(i, f);
+		}
+	}
+
+	return mat;
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::head_cols(size_t c1)
+{
+	return this->get_cols(0, c1);
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::head_rows(size_t r1)
+{
+	return this->get_rows(0, r1);
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::tail_cols(size_t c1)
+{
+	return this->get_cols(cols-c1, cols-1);
+}
+
+template<typename T>
+inline Matrix<T> Matrix<T>::tail_rows(size_t r1)
+{
+	return this->get_rows(rows - r1, rows - 1);
 }
 
 template<typename T>

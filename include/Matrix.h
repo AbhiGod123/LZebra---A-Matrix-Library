@@ -47,14 +47,14 @@ public:
 
 	//CHECKS ROWS-COLS OF ELEMENT
 	inline bool is_same_row(size_t r1, const T val) const;
-	inline bool is_same_col(size_t c1, const T val) const;
+	inline bool is_same_col(size_t r1, const T val) const;
 
 	inline bool is_same_rows(size_t r1, size_t r2, const T val) const;
-	inline bool is_same_cols(size_t c1, size_t c2, const T val) const;
+	inline bool is_same_cols(size_t r1, size_t c2, const T val) const;
 
 	//EQUAL ROWS-COLS
 	inline bool is_equal_rows(size_t r1, size_t r2) const;
-	inline bool is_equal_cols(size_t c1, size_t c2) const;
+	inline bool is_equal_cols(size_t r1, size_t c2) const;
 
 	//SIZE MANIPULATION
 	inline void reset();
@@ -83,7 +83,7 @@ public:
 	inline void fill_row(const size_t in_rows, const T val);
 	inline void fill_col(const size_t in_cols, const T val);
 	inline void fill_rows(size_t r1, size_t r2, const T val);
-	inline void fill_cols(size_t c1, size_t c2, const T val);
+	inline void fill_cols(size_t r1, size_t c2, const T val);
 
 	//FLOATING-POINT ONLY
 	inline void randu();
@@ -111,13 +111,13 @@ public:
 	inline void fill_row(const size_t in_rows, const lambdaT val);
 	inline void fill_col(const size_t in_cols, const lambdaT val);
 	inline void fill_rows(size_t r1, size_t r2, const lambdaT val);
-	inline void fill_cols(size_t c1, size_t c2, const lambdaT val);
+	inline void fill_cols(size_t r1, size_t c2, const lambdaT val);
 	//FUNCTOR FUNCTION
 	inline void fill(const func_p val);
 	inline void fill_row(const size_t in_rows, const func_p val);
 	inline void fill_col(const size_t in_cols, const func_p val);
 	inline void fill_rows(size_t r1, size_t r2, const func_p val);
-	inline void fill_cols(size_t c1, size_t c2, const func_p val);
+	inline void fill_cols(size_t r1, size_t c2, const func_p val);
 
 	//OPERATIONS
 		//MATRIX - MATRIX
@@ -180,10 +180,10 @@ public:
 	inline size_t indexmin_row(size_t r1) const;
 	inline size_t indexmax_row(size_t r1) const;
 
-	inline T min_col(size_t c1) const;
-	inline T max_col(size_t c1) const;
-	inline size_t indexmin_col(size_t c1) const;
-	inline size_t indexmax_col(size_t c1) const;
+	inline T min_col(size_t r1) const;
+	inline T max_col(size_t r1) const;
+	inline size_t indexmin_col(size_t r1) const;
+	inline size_t indexmax_col(size_t r1) const;
 
 	//ITERATOR CLASSES
 	typedef typename std::vector<T>::iterator              iterator;
@@ -263,6 +263,9 @@ public:
 	inline       iterator  begin();
 	inline const_iterator  begin() const;
 	inline const_iterator cbegin() const;
+	
+	inline       iterator  begin(const size_t index);
+	inline const_iterator  begin(const size_t index) const;
 
 	inline       iterator  end();
 	inline const_iterator  end() const;
@@ -283,28 +286,39 @@ public:
 	//SWAP
 	inline void swap(Matrix<T>& m);
 	inline void swap_rows(size_t r1, size_t r2);
-	inline void swap_cols(size_t c1, size_t c2);
+	inline void swap_cols(size_t r1, size_t c2);
 
 	//INSERT 
 	inline void insert_row(size_t r1, const Matrix<T>& m);
-	inline void insert_col(size_t c1, const Matrix<T>& m);
+	inline void insert_col(size_t r1, const Matrix<T>& m);
 
 	inline void insert_rows(size_t r1, const Matrix<T>& m);
-	inline void insert_cols(size_t c1, const Matrix<T>& m);
+	inline void insert_cols(size_t r1, const Matrix<T>& m);
 
 	inline void insert_row(size_t r1, const T val);
-	inline void insert_col(size_t c1, const T val);
+	inline void insert_col(size_t r1, const T val);
 
 	inline void insert_rows(size_t r1, size_t r2, const T val);
-	inline void insert_cols(size_t c1, size_t c2, const T val);
+	inline void insert_cols(size_t r1, size_t c2, const T val);
 
 	//SUBVIEW
+	inline ColVector<T> get_col(size_t r1);
+	inline RowVector<T> get_row(size_t r1);
 
+	inline Matrix<T> get_cols(size_t r1, size_t c2);
+	inline Matrix<T> get_rows(size_t r1, size_t r2);
 
+	inline Matrix<T> submat(size_t r1, size_t c1, size_t r2, size_t c2);
+
+	inline Matrix<T> head_cols(size_t cols);
+	inline Matrix<T> head_rows(size_t rows);
+
+	inline Matrix<T> tail_cols(size_t cols);
+	inline Matrix<T> tail_rows(size_t rows);
 	//SHED 
 	inline void shed_row(size_t r1);
 	inline void shed_rows(size_t rbegin, size_t rend);
-	inline void shed_col(size_t c1);
+	inline void shed_col(size_t r1);
 	inline void shed_cols(size_t cbegin, size_t cend);
 
 	//PRINT-SAVE MATRIX
