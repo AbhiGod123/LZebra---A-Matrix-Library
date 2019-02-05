@@ -1,3 +1,6 @@
+#ifndef STANDALONE_HPP
+#define STANDALONE_HPP
+
 #include "Standalone.h"
 
 namespace random {
@@ -343,8 +346,11 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ Matrix<T> ref(cmat m1)
+	templ Matrix<double> ref(cmat m1, T* mp)
 	{
+		if (mp != nullptr)
+			*mp = 1;
+
 		Matrix<double> mat = tenseopr::conv_to<double>(m1);
 
 		size_t m = m1.getRows();
@@ -379,8 +385,11 @@ namespace tenseopr
 						break;
 					}
 				}//finds the pivot point
-
-				mat.swap_rows(prev_pivot, pivot);
+				if (prev_pivot != pivot) {
+					mat.swap_rows(prev_pivot, pivot);
+					if(mp != nullptr)
+					*mp *= -1;
+				}
 				pivot = prev_pivot;
 
 				double cur_elem = mat(prev_pivot, i);
@@ -400,37 +409,43 @@ namespace tenseopr
 			}
 		}
 		
-		return tenseopr::conv_to<T>(mat);
+		return mat;
 	}
 
 	templ T det(cmat m)
 	{
-
-		std::tuple<T, Matrix<T>> badtuple = std::make_tuple(0, Matrix<T>());
-
 		for (size_t i = 0;i < m.getRows();++i)
 			if (m.is_same_row(i, 0) || m.is_same_col(i, 0))
-				return badtuple;
+				return 0;
 		//A. IF AN ENTIRE ROW OR COL CONTAINS ZERO THEN DET = 0
 
 		for (size_t i = 0;i < m.getRows() - 1;++i)
 			for (size_t k = i + 1;k < m.getRows();++k)
 				if (m.is_equal_rows(i, k) || m.is_equal_cols(i, k))
-					return badtuple;
-
+					return 0;
 		//B. IF ANY 2 ROWS OR COLS ARE EQUAL THEN DET = 0
 
 
 		//C. IF 2 ROWS OR COLS ARE PROPORTIONAL TO EACH OTHER THEN DET = 0
 
+		T* detscale = new T(1);
 
-		std::tuple<T,Matrix<T>> tpref = ref(m); //performs the ref and returns that matrix with a scalar. Also checks if it's a square matrix
+		Matrix<double> gauss = tenseopr::ref(m,detscale);
+		double realdet = 1.0;
 
-		for (size_t i = 0;i < std::get<1>(tpref).getRows();++i) {
-			std::get<0>(tpref)*=std::get<1>(tpref)(i,i);
+		for (size_t i = 0;i < m.getRows();++i) {
+			
+			if (gauss(i, i))
+				realdet *= gauss(i, i);
+			else {
+				delete detscale;
+				return 0;
+			}
 		}
+		realdet /= *detscale;
+		delete detscale;
 
-		return std::get<0>(tpref);
+		return realdet;
 	}
 
 	templ Matrix<T> diagmat(cmat m, int val)
@@ -949,7 +964,7 @@ namespace tenseopr
 	{
 		size_t rank = 0;
 
-		Matrix<T> echelon = tenseopr::ref(m);
+		Matrix<double> echelon = tenseopr::ref(m);
 
 		for (size_t i = 0;i < m.getRows();++i) {
 			if (!echelon.is_same_row(i, 0))
@@ -1341,3 +1356,5 @@ namespace tenseopr
 	}
 
 }
+
+#endif // !STANDALONE_HPP
