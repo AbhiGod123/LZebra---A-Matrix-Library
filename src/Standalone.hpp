@@ -412,7 +412,7 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ T det(cmat m)
+	templ double det(cmat m)
 	{
 		for (size_t i = 0;i < m.getRows();++i)
 			if (m.is_same_row(i, 0) || m.is_same_col(i, 0))
@@ -424,8 +424,23 @@ namespace tenseopr
 				if (m.is_equal_rows(i, k) || m.is_equal_cols(i, k))
 					return 0;
 		//B. IF ANY 2 ROWS OR COLS ARE EQUAL THEN DET = 0
+		for (size_t i = 0;i < m.getRows() - 1;++i)
+			for (size_t k = i + 1;k < m.getRows();++k)
+			{
+				ColVector<T> coli = m.get_col(i);
+				ColVector<T> colk = m.get_col(k);
 
+				RowVector<T> rowi = m.get_row(i);
+				RowVector<T> rowk = m.get_row(k);
 
+				double coldot = tenseopr::norm_dot(coli, colk);
+				double rowdot = tenseopr::norm_dot(rowi, rowk);
+
+				const double tol = 1e-10;
+
+				if (1 - ::abs(coldot) < tol || 1 - ::abs(rowdot) < tol)
+					return 0;
+			}
 		//C. IF 2 ROWS OR COLS ARE PROPORTIONAL TO EACH OTHER THEN DET = 0
 
 		T* detscale = new T(1);
@@ -434,15 +449,15 @@ namespace tenseopr
 		double realdet = 1.0;
 
 		for (size_t i = 0;i < m.getRows();++i) {
-			
-			if (gauss(i, i))
+			if (gauss(i, i)){
 				realdet *= gauss(i, i);
+			}
 			else {
 				delete detscale;
 				return 0;
 			}
 		}
-		realdet /= *detscale;
+		realdet *= *detscale;
 		delete detscale;
 
 		return realdet;
@@ -979,7 +994,7 @@ namespace tenseopr
 		Matrix<T> mat(m);
 
 		for (size_t i = 0;i < rowcopy;++i) {
-			mat.insert_rows(mat.getRows(), mat);
+			mat.insert_rows(mat.getRows(), m);
 		}
 
 		for (size_t i = 0;i < colcopy;++i) {
@@ -999,6 +1014,14 @@ namespace tenseopr
 	}
 
 	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols)
+	{
+		Matrix<T> mat(m);
+		mat.reshape(n_rows, n_cols);
+
+		return mat;
+	}
+
+	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols)
 	{
 		Matrix<T> mat(m);
 		mat.resize(n_rows, n_cols);
@@ -1353,6 +1376,89 @@ namespace tenseopr
 
 		mat.fill(_func);
 		return mat;
+	}
+
+	templ Matrix<double> chol(cmat m)
+	{
+		if (!m.is_symmetric()) {
+			std::cout << "Non symmetric matrix" << '\n';
+		}
+
+		Matrix<double> mat(m.getRows(), m.getCols());
+
+		for (size_t i = 0;i < m.getRows();++i) {
+			for (size_t j = 0;j <=i;++j) {
+				if (i == j) {
+					double sum = 0.0;
+
+					for (size_t k = 0;k < j;++k) {
+						sum += mat(j, k) * mat(j, k);
+					}
+					mat(j, j) = pow((m(j,j) - sum), 0.5);
+				}
+				else if(i > j){
+					double sum = 0.0;
+
+					for (size_t k = 0;k < j;++k) {
+						sum += mat(i, k) * mat(j, k);
+					}
+					mat(i, j) = (1 / mat(j, j)) * (m(i, j) - sum);
+				}
+			}
+		}
+
+		return mat;
+	}
+
+	templ void lu(noncmat l, noncmat u, cmat m)
+	{
+		u.set_size(m.getRows(), m.getCols());
+		l.set_size(m.getRows(), m.getCols());
+
+		for (size_t i = 0; i < m.getRows(); i++)
+		{
+			for (size_t k = 0;k < m.getCols();++k) {
+				T sum = 0;
+				for (size_t j = 0; j < i; j++)
+					sum += l(i,j) * u(j,k);
+
+				u(i,k) = m(i,k) - sum;
+			}
+
+			for (size_t k = i; k < m.getRows(); ++k) {
+				if (i == k)
+					l(i,i) = 1;
+				else {
+					T sum = 0;
+					for (size_t j = 0; j < i; j++)
+						sum += l(k,j) * u(j,i);
+
+					l(k,i) = (m(k,i) - sum) / u(i,i);
+				}
+			}
+
+		}
+	}
+
+	templ Matrix<double> inv(cmat m)
+	{
+		T deter = tenseopr::det(m);
+
+		Matrix<double> inverse(m.getRows(),m.getCols());
+
+		for (size_t i = 0;i < m.getRows();++i) {
+			for (size_t j = 0;j < m.getCols();++j) {
+				Matrix<T> mat(m);
+
+				mat.shed_row(i);
+				mat.shed_col(j);
+
+				inverse(i, j) = pow(-1, i + j) * tenseopr::det(mat);
+			}
+		}
+		inverse *= 1.0/static_cast<double>(deter);
+
+		return inverse;
 	}
 
 }

@@ -4,6 +4,6 @@
 #include "Include.h"
 
 namespace decomp {
-	templ void eig_sym();
+	templ Matrix<double> chol(cmat m);
 }
 #endif // !DECOMP_H

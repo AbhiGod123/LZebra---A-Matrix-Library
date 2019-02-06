@@ -32,8 +32,8 @@ namespace tenseopr {
 	templ Matrix<T> cumprod(cmat m, size_t dim = 0);
 
 	templ Matrix<double> ref(cmat m, T* mp=nullptr);
-	templ T det(cmat m);//need sub vectors
-	templ Matrix<T> diagmat(cmat m, int val = 0);
+	templ double det(cmat m);
+	templ Matrix<T> diagmat(cmat m, int val = 0);	
 	templ Matrix<T> diagvec(cmat m, int val = 0);
  
 	templ Matrix<T> diff(cmat m1, size_t k=1, uchar dim = 0);
@@ -90,8 +90,8 @@ namespace tenseopr {
 	templ Matrix<T> repelem(cmat m, size_t rowcopy, size_t colcopy);//doesn't work
 	templ Matrix<T> repmat(cmat m, size_t rowcopy, size_t colcopy);//doesn't work
 
-	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols); //not sure
-	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols);//not sure
+	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols);
+	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols);
 
 	templ Matrix<T> reverse(cmat m,size_t dim=0);
 	templ ColVector<std::complex<T>> roots(cmat m); //eigen decomp
@@ -119,6 +119,12 @@ namespace tenseopr {
 	templ Matrix<T> vectorise(cmat m, uchar dim=0);
 
 	_fPtr Matrix<double> misc(cmat m);
+
+
+	//DECOMPOSITOIN
+	templ Matrix<double> chol(cmat m);
+	templ void lu(noncmat l, noncmat u, cmat m);
+	templ Matrix<double> inv(cmat m);
 }
 
 #endif
