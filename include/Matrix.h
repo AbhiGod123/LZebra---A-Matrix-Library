@@ -302,8 +302,8 @@ public:
 	inline void insert_cols(size_t r1, size_t c2, const T val);
 
 	//SUBVIEW
-	inline ColVector<T> get_col(size_t r1);
-	inline RowVector<T> get_row(size_t r1);
+	inline ColVector<T> get_col(size_t r1) const;
+	inline RowVector<T> get_row(size_t r1) const;
 
 	inline Matrix<T> get_cols(size_t r1, size_t c2);
 	inline Matrix<T> get_rows(size_t r1, size_t r2);

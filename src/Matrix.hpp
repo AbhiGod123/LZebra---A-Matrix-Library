@@ -174,7 +174,6 @@ inline bool Matrix<T>::is_equal_rows(size_t r1, size_t r2) const
 	Matrix<T>::const_col_iterator itr1 = this->begin_row(r1);
 	Matrix<T>::const_col_iterator itr1end = this->end_row(r1);
 	Matrix<T>::const_col_iterator itr2 = this->begin_row(r2);
-	Matrix<T>::const_col_iterator itr2end = this->end_row(r2);
 
 	for (; itr1 != itr1end;++itr1, ++itr2) {
 		if ((*itr1) != (*itr2))
@@ -197,7 +196,6 @@ inline bool Matrix<T>::is_equal_cols(size_t c1, size_t c2) const
 	Matrix<T>::const_row_iterator itr1 = this->begin_col(c1);
 	Matrix<T>::const_row_iterator itr1end = this->end_col(c1);
 	Matrix<T>::const_row_iterator itr2 = this->begin_col(c2);
-	Matrix<T>::const_row_iterator itr2end = this->end_col(c2);
 
 	for (; itr1 != itr1end;++itr1,++itr2) {
 		if ((*itr1) != (*itr2))
@@ -1669,7 +1667,7 @@ inline void Matrix<T>::insert_cols(size_t c1, size_t c2, const T val)
 }
 
 template<typename T>
-inline ColVector<T> Matrix<T>::get_col(size_t c1)
+inline ColVector<T> Matrix<T>::get_col(size_t c1) const
 {
 	if (c1 >= cols)
 	{
@@ -1690,7 +1688,7 @@ inline ColVector<T> Matrix<T>::get_col(size_t c1)
 }
 
 template<typename T>
-inline RowVector<T> Matrix<T>::get_row(size_t r1)
+inline RowVector<T> Matrix<T>::get_row(size_t r1) const
 {
 	if (r1 >= rows)
 	{
