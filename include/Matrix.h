@@ -163,7 +163,8 @@ public:
 	bool is_vec() const;
 	bool is_square() const;
 	bool is_sorted() const;
-	bool is_symmetric();
+	bool is_symmetric() const;
+	bool is_positive_definite() const;
 	//FLOATING-POINT ONLY
 	bool is_finite() const;
 	bool is_inf() const;
@@ -289,9 +290,6 @@ public:
 	inline void swap_cols(size_t r1, size_t c2);
 
 	//INSERT 
-	inline void insert_row(size_t r1, const Matrix<T>& m);
-	inline void insert_col(size_t r1, const Matrix<T>& m);
-
 	inline void insert_rows(size_t r1, const Matrix<T>& m);
 	inline void insert_cols(size_t r1, const Matrix<T>& m);
 
@@ -322,6 +320,10 @@ public:
 	inline void shed_cols(size_t cbegin, size_t cend);
 
 	//PRINT-SAVE MATRIX
+	#ifdef _DEBUG
+		inline void printInfo() const;
+	#endif // _DEBUG
+
 	inline void print() const; 
 	inline void save(const std::string& name);
 	inline void load(const std::string& name);

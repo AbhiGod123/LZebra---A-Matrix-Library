@@ -1005,11 +1005,35 @@ bool Matrix<T>::is_sorted() const
 }
 
 template<typename T>
-bool Matrix<T>::is_symmetric()
+bool Matrix<T>::is_symmetric() const
 {
-	Matrix<char> chars = (*this) == tenseopr::trans((*this));
+	if (rows != cols)
+		return false;
 
-	return std::all_of(chars.begin(), chars.end(), [](char i) {return i;});
+	for (size_t i = 0;i < rows;++i) {
+		for (size_t j = 0;j < cols;++j) {
+			if ((*this)(i, j) != (*this)(j, i))
+				return false;
+		}
+	}
+
+	return true;
+}
+
+template<typename T>
+inline bool Matrix<T>::is_positive_definite() const
+{
+	if (!this->is_symmetric())
+		return false;
+
+	Matrix<double> mat = tenseopr::ref((*this));
+
+	for (size_t i = 0;i < rows;++i) {
+		if (mat(i, i) <= 0)
+			return false;
+	}
+
+	return true;
 }
 
 template<typename T>
@@ -1875,6 +1899,24 @@ inline void Matrix<T>::print() const
 		std::cout << '\n';
 	}
 }
+
+#ifdef _DEBUG
+template<typename T>
+inline void Matrix<T>::printInfo() const
+{
+	std::cout << "Rows: " << rows << '\n';
+	std::cout << "Cols: " << cols << '\n';
+
+	for (size_t i = 0;i < rows;++i)
+	{
+		for (size_t f = 0;f < cols;++f)
+		{
+			std::cout << (*this)(i, f) << ' ';
+		}
+		std::cout << '\n';
+	}
+}
+#endif // _DEBUG
 
 template<typename T>
 inline void Matrix<T>::save(const std::string & name)
