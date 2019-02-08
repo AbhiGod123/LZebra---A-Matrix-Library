@@ -412,6 +412,90 @@ namespace tenseopr
 		return mat;
 	}
 
+	templ Matrix<double> gaussjordan(cmat m1)
+	{
+		Matrix<double> mat = tenseopr::conv_to<double>(m1);
+
+		size_t m = m1.getRows();
+		size_t n = m1.getCols();
+
+		size_t pivot = 0;
+		for (size_t i = 0;i < n - 1;++i) {
+
+			bool same_col = 1;
+
+			for (size_t c = i + pivot * m;c < mat.getSize();c += m) {
+
+				if (mat(c) != 0)
+				{
+					same_col = 0;
+					break;
+				}
+			}
+
+			if (same_col) //check if elem range also contains the value
+			{
+				continue;
+			}
+			else {
+				//we know the col doesn't contain all zeros. So there must be at least 1 number to use for the pivot point
+				size_t prev_pivot = pivot;
+
+				for (size_t j = prev_pivot;j < m;++j) {
+					if (mat(j, i) == 1)
+					{
+						pivot = j;
+						break;
+					}
+				}//Tries to find 1 as pivot
+
+				if (pivot == prev_pivot) {
+					for (size_t j = prev_pivot;j < m;++j) {
+						if (mat(j, i))
+						{
+							pivot = j;
+							break;
+						}
+					}//finds the pivot point
+				}
+
+				if (prev_pivot != pivot) {
+					mat.swap_rows(prev_pivot, pivot);
+				}
+
+				pivot = prev_pivot;
+
+				double cur_elem = mat(prev_pivot, i);
+
+				if (cur_elem != 1) {
+					for (size_t col = i;col < n;++col) {
+						mat(prev_pivot, col)/=cur_elem;
+					}
+					cur_elem = 1;
+				}
+
+				for (size_t row = 0;row < m;++row) {
+					if (row != prev_pivot) {
+						double multiplier = -1 * mat(row, i);
+
+						if (multiplier == 0)
+							continue;
+
+						for (size_t col = i;col < n;++col) {
+							mat(row, col) += mat(prev_pivot, col) * multiplier;
+						}
+					}
+				}
+
+
+
+				++pivot;
+			}
+		}
+
+		return mat;
+	}
+
 	templ double det(cmat m)
 	{
 		for (size_t i = 0;i < m.getRows();++i)
@@ -1442,23 +1526,8 @@ namespace tenseopr
 
 	templ Matrix<double> inv(cmat m)
 	{
-		T deter = tenseopr::det(m);
-
-		Matrix<double> inverse(m.getRows(),m.getCols());
-
-		for (size_t i = 0;i < m.getRows();++i) {
-			for (size_t j = 0;j < m.getCols();++j) {
-				Matrix<T> mat(m);
-
-				mat.shed_row(i);
-				mat.shed_col(j);
-
-				inverse(i, j) = pow(-1, i + j) * tenseopr::det(mat);
-			}
-		}
-		inverse *= 1.0/static_cast<double>(deter);
-
-		return inverse;
+		Matrix<T> newelem = 0;
+		Matrix<T> gauss = tenseopr::gaussjordan();
 	}
 
 }

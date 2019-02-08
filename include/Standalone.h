@@ -32,6 +32,7 @@ namespace tenseopr {
 	templ Matrix<T> cumprod(cmat m, size_t dim = 0);
 
 	templ Matrix<double> ref(cmat m, T* mp=nullptr);
+	templ Matrix<double> gaussjordan(cmat m);
 	templ double det(cmat m);
 	templ Matrix<T> diagmat(cmat m, int val = 0);	
 	templ Matrix<T> diagvec(cmat m, int val = 0);
@@ -124,7 +125,8 @@ namespace tenseopr {
 	//DECOMPOSITOIN
 	templ Matrix<double> chol(cmat m);
 	templ void lu(noncmat l, noncmat u, cmat m);
-	templ Matrix<double> inv(cmat m);
+	templ Matrix<double> inv(cmat m);//no workie
+
 }
 
 #endif
