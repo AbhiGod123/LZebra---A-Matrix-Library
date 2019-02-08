@@ -125,7 +125,7 @@ namespace tenseopr {
 	//DECOMPOSITOIN
 	templ Matrix<double> chol(cmat m);
 	templ void lu(noncmat l, noncmat u, cmat m);
-	templ Matrix<double> inv(cmat m);//no workie
+	templ Matrix<double> inv(cmat m);
 
 }
 

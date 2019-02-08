@@ -2,6 +2,7 @@
 #define STANDALONE_HPP
 
 #include "Standalone.h"
+#include "Generator.hpp"
 
 namespace random {
 	double gaussianRandom() {
@@ -357,7 +358,7 @@ namespace tenseopr
 		size_t n = m1.getCols();
 
 		size_t pivot = 0;
-		for (size_t i = 0;i < n-1;++i) {	
+		for (size_t i = 0;i < m - 1;++i) {	
 
 			bool same_col = 1;
 
@@ -420,7 +421,7 @@ namespace tenseopr
 		size_t n = m1.getCols();
 
 		size_t pivot = 0;
-		for (size_t i = 0;i < n - 1;++i) {
+		for (size_t i = 0;i < m ;++i) {
 
 			bool same_col = 1;
 
@@ -486,8 +487,6 @@ namespace tenseopr
 						}
 					}
 				}
-
-
 
 				++pivot;
 			}
@@ -1464,8 +1463,8 @@ namespace tenseopr
 
 	templ Matrix<double> chol(cmat m)
 	{
-		if (!m.is_symmetric()) {
-			std::cout << "Non symmetric matrix" << '\n';
+		if (!m.is_positive_definite()) {
+			std::cout << "Not positive definite" << '\n';
 		}
 
 		Matrix<double> mat(m.getRows(), m.getCols());
@@ -1526,8 +1525,13 @@ namespace tenseopr
 
 	templ Matrix<double> inv(cmat m)
 	{
-		Matrix<T> newelem = 0;
-		Matrix<T> gauss = tenseopr::gaussjordan();
+		Matrix<T> newelem(m);
+
+		newelem.insert_cols(newelem.getCols(), gen::eye<T>(m.getRows(), m.getRows()));
+		
+		Matrix<double> gauss = tenseopr::gaussjordan(newelem);
+
+		return gauss.tail_cols(m.getRows());
 	}
 
 }
