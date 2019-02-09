@@ -11,6 +11,7 @@
 #include <numeric>
 #include <tuple>
 #include <limits>
+#include <stdlib.h>
 #include <type_traits>
 
 #define templ template<typename T>
@@ -23,7 +24,8 @@
 #define _fPtr template<double(*_func)(double), typename T>
 
 #define ftempldec template<typename T, typename = typename std::enable_if<std::is_floating_point<T>::value>::type>
-#define ftempldef template<typename T, typename>
+#define itempldec template<typename T, typename = typename std::enable_if<std::is_integral<T>::value>::type>
+#define templdef template<typename T, typename>
 
 typedef unsigned char uchar;
 
