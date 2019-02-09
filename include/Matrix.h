@@ -187,11 +187,11 @@ public:
 	inline size_t indexmax_col(size_t r1) const;
 
 	//ITERATOR CLASSES
-	typedef typename std::vector<T>::iterator              iterator;
-	typedef typename std::vector<T>::const_iterator  const_iterator;
+	typedef typename T*              iterator;
+	typedef typename const T*  const_iterator;
 
-	typedef typename std::vector<T>::iterator              col_iterator;
-	typedef typename std::vector<T>::const_iterator  const_col_iterator;
+	typedef typename T*              col_iterator;
+	typedef typename const T*  const_col_iterator;
 
 	class const_row_iterator;
 	
@@ -225,13 +225,14 @@ public:
 		typedef T& reference;
 
 		Matrix<T>* mat;
-		iterator itr;
+		T* current_ptr;
 		size_t current_col;
 		size_t current_row;
 	};
 
 	class const_row_iterator {
 	public:
+		inline const_row_iterator();
 		inline const_row_iterator(const       row_iterator& X);
 		inline const_row_iterator(const const_row_iterator& X);
 		inline const_row_iterator(const Matrix<T>& in_M, const size_t in_row);
@@ -249,10 +250,11 @@ public:
 		inline bool operator!=(const const_row_iterator& X) const;
 		inline bool operator==(const const_row_iterator& X) const;
 
-		inline void print() const;
-
+		#ifdef _DEBUG
+				inline void print() const;
+		#endif // _DEBUG
 		const Matrix<T>* mat;
-		const_iterator itr;
+		const T* current_ptr;
 		size_t current_row;
 		size_t current_col;
 	};
