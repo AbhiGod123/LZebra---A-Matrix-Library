@@ -347,7 +347,7 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ Matrix<double> ref(cmat m1, T* mp)
+	templ Matrix<double> ref(cmat m1, std::string ones,T* mp)
 	{
 		if (mp != nullptr)
 			*mp = 1;
@@ -395,6 +395,15 @@ namespace tenseopr
 
 				double cur_elem = mat(prev_pivot, i);
 
+				if (ones == "ones" && cur_elem != 1) {
+					for (size_t col = i;col < n;++col) {
+						mat(prev_pivot, col) /= cur_elem;
+					}
+					if (mp != nullptr)
+						*mp *= 1/cur_elem;
+					cur_elem = 1;
+				}
+
 				for (size_t row = prev_pivot + 1;row < m;++row) {
 					//the goal is to make everything under the pivot zeros
 					double multiplier = -1 * mat(row, i) / cur_elem;
@@ -413,7 +422,7 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ Matrix<double> gaussjordan(cmat m1)
+	templ Matrix<double> rref(cmat m1, std::string ones)
 	{
 		Matrix<double> mat = tenseopr::conv_to<double>(m1);
 
@@ -468,7 +477,7 @@ namespace tenseopr
 
 				double cur_elem = mat(prev_pivot, i);
 
-				if (cur_elem != 1) {
+				if (ones == "ones" && cur_elem != 1) {
 					for (size_t col = i;col < n;++col) {
 						mat(prev_pivot, col)/=cur_elem;
 					}
@@ -477,7 +486,7 @@ namespace tenseopr
 
 				for (size_t row = 0;row < m;++row) {
 					if (row != prev_pivot) {
-						double multiplier = -1 * mat(row, i);
+						double multiplier = -1 * mat(row, i) / cur_elem;
 
 						if (multiplier == 0)
 							continue;
@@ -528,7 +537,7 @@ namespace tenseopr
 
 		T* detscale = new T(1);
 
-		Matrix<double> gauss = tenseopr::ref(m,detscale);
+		Matrix<double> gauss = tenseopr::ref(m,detscale,"");
 		double realdet = 1.0;
 
 		for (size_t i = 0;i < m.getRows();++i) {
@@ -1530,7 +1539,7 @@ namespace tenseopr
 
 		newelem.insert_cols(newelem.getCols(), gen::eye<T>(m.getRows(), m.getRows()));
 		
-		Matrix<double> gauss = tenseopr::gaussjordan(newelem);
+		Matrix<double> gauss = tenseopr::rref(newelem);
 
 		return gauss.tail_cols(m.getRows());
 	}
@@ -1556,6 +1565,18 @@ namespace tenseopr
 			}
 		}
 		return inverse;
+	}
+
+	templ Matrix<double> null(cmat m)
+	{
+		Matrix<T> newelem(m);
+
+		newelem.insert_col(newelem.getCols(), 0);
+
+		Matrix<double> gauss = tenseopr::rref(newelem,"");
+
+		std::cout << gauss << std::endl;
+		return gauss.tail_cols(1);
 	}
 
 }

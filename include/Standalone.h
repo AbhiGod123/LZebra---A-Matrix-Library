@@ -26,13 +26,13 @@ namespace tenseopr {
 	templ double cond(cmat m);//eigen values
 	templ Matrix<std::complex<T>> conj(cpmat complexmat);
 	template<typename C, typename T> Matrix<C> conv_to(cmat m);
-
+		
 	templ Matrix<T> cross(cmat m1, cmat m2);
 	templ Matrix<T> cumsum(cmat m, size_t dim = 0); 
 	templ Matrix<T> cumprod(cmat m, size_t dim = 0);
 
-	templ Matrix<double> ref(cmat m, T* mp=nullptr);
-	templ Matrix<double> gaussjordan(cmat m);
+	templ Matrix<double> ref(cmat m, std::string ones = "ones", T* mp=nullptr);
+	templ Matrix<double> rref(cmat m, std::string ones = "ones");
 	templ double det(cmat m);
 	templ Matrix<T> diagmat(cmat m, int val = 0);	
 	templ Matrix<T> diagvec(cmat m, int val = 0);
@@ -126,7 +126,7 @@ namespace tenseopr {
 	templ void lu(noncmat l, noncmat u, cmat m);
 	templ Matrix<double> inv(cmat m);
 	templ Matrix<double> inv_sympd(cmat m); //doesn't work yet
-
+	templ Matrix<double> null(cmat m);
 
 }
 
