@@ -18,6 +18,11 @@ public:
 	inline void insert_zeros(size_t s);
 	inline void insert_ones(size_t s);
 
+	//SUBVIEW
+	inline ColVector<T> get_col(size_t r1, size_t r2);
+	inline ColVector<T> tail_col(size_t r1);
+	inline ColVector<T> head_col(size_t r2);
+
 	//DEFAULT CONSTRUCTOR AND DESTRUCTOR
 	inline ColVector(size_t size);
 	inline ColVector(size_t size, T elem);

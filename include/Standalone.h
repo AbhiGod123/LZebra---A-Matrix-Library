@@ -41,7 +41,7 @@ namespace tenseopr {
 	templ double dot(cmat v1, cmat v2);
 	templ double norm_dot(cmat v1, cmat v2);
 	templ double magnitude(cmat v1);
-	
+		
 	templ Matrix<T> expmat(cmat m); //later
 	templ Matrix<T> expmat_sym(cmat m);//later
 
@@ -83,7 +83,7 @@ namespace tenseopr {
 	templ double pnorm(cmat m, uchar type=2); //need eigenvals
 	templ double pnorm(cmat m, std::string type); //need eigenvals
 
-	templ Matrix<T> normalise(cmat m, uchar type = 2, uchar dim = 0);//eigenvals
+	templ Matrix<double> normalise(cmat m, uchar type = 2, uchar dim = 0);//eigenvals
 	templ Matrix<T> prod(cmat m, uchar dim = 0);
 
 	templ size_t rank(cmat m);
@@ -127,6 +127,7 @@ namespace tenseopr {
 	templ Matrix<double> inv(cmat m);
 	templ Matrix<double> inv_sympd(cmat m); //doesn't work yet
 	templ Matrix<double> null(cmat m);
+
 
 }
 

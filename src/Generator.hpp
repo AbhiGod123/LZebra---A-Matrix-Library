@@ -12,6 +12,14 @@ namespace gen {
 
 		return identity;
 	}
+
+	templ ColVector<T> unit(size_t size, size_t index)
+	{
+		ColVector<T> vec(size);
+		vec(index) = 1;
+
+		return vec;
+	}
 }
 
 #endif // !GENERATOR_HPP

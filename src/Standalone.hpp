@@ -537,7 +537,7 @@ namespace tenseopr
 
 		T* detscale = new T(1);
 
-		Matrix<double> gauss = tenseopr::ref(m,detscale,"");
+		Matrix<double> gauss = tenseopr::ref(m,"",detscale);
 		double realdet = 1.0;
 
 		for (size_t i = 0;i < m.getRows();++i) {
@@ -1044,6 +1044,21 @@ namespace tenseopr
 		}
 
 		return ColVector<T>(std::move(values));
+	}
+
+	templ Matrix<double> normalise(cmat m, uchar type, uchar dim)
+	{
+		if (m.is_vec()) {
+			ColVector<double> vec = tenseopr::conv_to<double>(m);
+
+			double mag = tenseopr::magnitude(vec);
+
+			for (size_t i = 0;i < vec.getSize();++i) {
+				vec(i) /= mag;
+			}
+
+			return vec;
+		}
 	}
 
 	templ Matrix<T> prod(cmat m, uchar dim)
@@ -1573,7 +1588,7 @@ namespace tenseopr
 
 		newelem.insert_col(newelem.getCols(), 0);
 
-		Matrix<double> gauss = tenseopr::rref(newelem,"");
+		Matrix<double> gauss = tenseopr::rref(newelem);
 
 		std::cout << gauss << std::endl;
 		return gauss.tail_cols(1);
