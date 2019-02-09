@@ -52,7 +52,7 @@ namespace tenseopr {
 
 	templ Matrix<T> fliplr(cmat m);
 	templ Matrix<T> flipud(cmat m);
-	templ Matrix<T> real(cpmat m);
+	templ Matrix<T> real(cpmat m);	
 	templ Matrix<T> imag(cpmat m);
 	templ ColVector<size_t> ind2sub(cmat size, size_t index);
 	templ Matrix<size_t> ind2sub(size_t rows, size_t cols, cmat indices);

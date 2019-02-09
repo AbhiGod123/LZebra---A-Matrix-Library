@@ -186,7 +186,7 @@ namespace tenseopr
 		
 	}
 
-	ftempldef Matrix<T> round(cmat m1, T tol)
+	templdef Matrix<T> round(cmat m1, T tol)
 	{
 		Matrix<T> appmat(m1);
 
