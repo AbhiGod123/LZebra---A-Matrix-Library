@@ -111,20 +111,6 @@ namespace gen {
 
 		return mat;
 	}
-	templ Matrix<T> circ_toeplitz(ccvec vec)
-	{
-		Matrix<T> mat(vec.getSize(), vec.getSize());
-
-		for (size_t i = 0;i < mat.getRows();++i) {
-			for (size_t j = 0;j < mat.getCols();++j) {
-
-				std::cout << "I: " << i << " J: " << j << " Index: " << (i + j % vec.getSize()) << '\n';
-				mat(i, j) = vec((i * mat.getCols() + j) % vec.getSize());
-			}
-		}
-
-		return mat;
-	}
 	templ ColVector<T> zeros(size_t size)
 	{
 		return ColVector<T>(size, 0);

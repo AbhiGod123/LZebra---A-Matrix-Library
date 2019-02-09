@@ -18,7 +18,6 @@ namespace gen {
 	templ ColVector<T> regspace(size_t start, size_t end);
 	templ ColVector<T> regspace(size_t start, size_t delta, size_t end);
 	templ Matrix<T> toeplitz(ccvec vec);
-	templ Matrix<T> circ_toeplitz(ccvec vec);
 	templ ColVector<T> zeros(size_t size);
 	templ Matrix<T> zeros(size_t rows, size_t cols);
 }

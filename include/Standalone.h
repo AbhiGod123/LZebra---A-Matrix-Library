@@ -121,13 +121,12 @@ namespace tenseopr {
 
 	_fPtr Matrix<double> misc(cmat m);
 
-	//DECOMPOSITOIN
-	templ Matrix<double> chol(cmat m);
+	//DECOMPOSITION
 	templ void lu(noncmat l, noncmat u, cmat m);
+	templ Matrix<double> chol(cmat m);
 	templ Matrix<double> inv(cmat m);
 	templ Matrix<double> inv_sympd(cmat m); //doesn't work yet
 	templ Matrix<double> null(cmat m);
-
 
 }
 

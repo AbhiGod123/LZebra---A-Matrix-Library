@@ -1295,24 +1295,6 @@ inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator--(int)
 }
 
 template<typename T>
-inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator+(int inc)
-{
-	Matrix<T>::row_iterator itr(*this);
-
-	itr.itr += (inc * mat->getCols());
-	return itr;
-}
-
-template<typename T>
-inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator-(int inc)
-{
-	Matrix<T>::row_iterator itr(*this);
-
-	itr.itr -= (inc * mat->getCols());
-	return itr;
-}
-
-template<typename T>
 inline bool Matrix<T>::row_iterator::operator!=(const typename Matrix<T>::row_iterator & X) const
 {
 	return (itr != X.itr);

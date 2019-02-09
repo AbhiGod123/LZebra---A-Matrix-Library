@@ -209,9 +209,6 @@ public:
 		inline row_iterator& operator--();
 		inline row_iterator  operator--(int);
 
-		inline row_iterator operator+(int);
-		inline row_iterator operator-(int);
-
 		inline bool operator!=(const       row_iterator& X) const;
 		inline bool operator==(const       row_iterator& X) const;
 		inline bool operator!=(const const_row_iterator& X) const;
