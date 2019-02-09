@@ -114,18 +114,19 @@ namespace tenseopr {
 	templ Matrix<std::complex<T>> strans(cpmat m);
 	templ Matrix<T> trapz(cmat m, uchar dim = 0);
 
-	templ Matrix<T> trimatu(cmat m, int k = 0);//nope
+	templ Matrix<T> trimatu(cmat m, int k = 0);
 	templ Matrix<T> trimatl(cmat m, int k = 0);
 	templ Matrix<T> unique(cmat m);
 	templ Matrix<T> vectorise(cmat m, uchar dim=0);
 
 	_fPtr Matrix<double> misc(cmat m);
 
-
 	//DECOMPOSITOIN
 	templ Matrix<double> chol(cmat m);
 	templ void lu(noncmat l, noncmat u, cmat m);
 	templ Matrix<double> inv(cmat m);
+	templ Matrix<double> inv_sympd(cmat m); //doesn't work yet
+
 
 }
 

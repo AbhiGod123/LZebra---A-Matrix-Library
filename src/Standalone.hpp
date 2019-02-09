@@ -1385,27 +1385,28 @@ namespace tenseopr
 		mat.copysize(m);
 
 		if (val == 0) {
-			for (size_t i = 0;i < m.getRows()-m.getCols()-2;++i) {
-				for (size_t f = 1;f < mat.getCols();++f) {
-					mat(i, f) = m(i, f);
+			for (size_t i = 0;i < m.getRows();++i) {
+				for (size_t j = i + 1;j < m.getCols();++j) {
+					mat(i, j) = m(i, j);
 				}
 			}
+
 			return mat;
 		}
 
 		if (val > 0) {
-			for (size_t i = 0;i < m.getCols() - val - 1;++i) {
-				for (size_t f = val + i + 1;f < mat.getCols();++f) {
-					mat(i, f) = m(i, f);
+			for (size_t i = 0;i < m.getRows();++i) {
+				for (size_t j = i + val + 1;j < m.getCols();++j) {
+					mat(i, j) = m(i, j);
 				}
 			}
 
 			return mat;
 		}
 
-		for (size_t i = 0;i < m.getCols() - val && i < m.getRows();++i) {
-			for (size_t f = i;f <m.getCols();++f) {
-				mat(i, f) = m(i, f);
+		for (int i = 0;i < m.getRows();++i) {
+			for (int j = i + val < 0 ? 0 : val + i + 1;j < m.getCols();++j) {
+				mat(i, j) = m(i, j);
 			}
 		}
 
@@ -1532,6 +1533,29 @@ namespace tenseopr
 		Matrix<double> gauss = tenseopr::gaussjordan(newelem);
 
 		return gauss.tail_cols(m.getRows());
+	}
+
+	templ Matrix<double> inv_sympd(cmat m)
+	{
+		Matrix<double> lu = tenseopr::chol(m);
+		Matrix<double> inverse(m.getRows(),m.getCols());
+
+		lu.print();
+		printf("\n");
+
+		const size_t& n = m.getRows();
+
+		for (size_t i = 0;i < n;++i) {
+			for (size_t j = 0;j < n;++j) {
+				double sum = 0.0;
+
+				for (size_t k = 0;k < n;++k) {
+					sum += lu(j, k) * inverse(k, i);
+				}
+				inverse(j, i) = ((j == i ? 1 : 0) - sum) / lu(j, j);
+			}
+		}
+		return inverse;
 	}
 
 }
