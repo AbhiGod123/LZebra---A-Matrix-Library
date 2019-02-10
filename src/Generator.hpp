@@ -50,35 +50,35 @@ namespace gen {
 
 		return mat;
 	}
-	ftempldec ColVector<T> randu(size_t size)
+	templdef ColVector<T> randu(size_t size)
 	{
 		ColVector<T> vec(size);
 		vec.randu();
 
 		return vec;
 	}
-	ftempldec Matrix<T> randu(size_t rows, size_t cols)
+	templdef Matrix<T> randu(size_t rows, size_t cols)
 	{
 		Matrix<T> mat(rows, cols);
 		mat.randu();
 
 		return mat;
 	}
-	ftempldec ColVector<T> randn(size_t size)
+	templdef ColVector<T> randn(size_t size)
 	{
 		ColVector<T> vec(size);
 		vec.randn();
 
 		return vec;
 	}
-	ftempldec Matrix<T> randn(size_t rows, size_t cols)
+	templdef Matrix<T> randn(size_t rows, size_t cols)
 	{
 		Matrix<T> mat(rows, cols);
 		mat.randn();
 
 		return mat;
 	}
-	ftempldec ColVector<T> regspace(size_t start, size_t end)
+	templdef ColVector<T> regspace(size_t start, size_t end)
 	{
 		ColVector<T> vec(end);
 
@@ -88,7 +88,7 @@ namespace gen {
 
 		return vec;
 	}
-	ftempldec ColVector<T> regspace(size_t start, size_t delta, size_t end)
+	templdef ColVector<T> regspace(size_t start, size_t delta, size_t end)
 	{
 		ColVector<T> vec(end);
 
