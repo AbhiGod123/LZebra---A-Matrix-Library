@@ -35,5 +35,7 @@ template<typename T>
 class ColVector;
 template<typename T>
 class RowVector;
+template<typename T>
+class SubView;
 
 #endif // !INCLUDE_H

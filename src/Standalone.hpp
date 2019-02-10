@@ -1164,7 +1164,7 @@ namespace tenseopr
 
 	templ Matrix<T> shift(cmat m, int c, uchar dim)
 	{
-		if (!c)
+		if (c == 0)
 			return m;
 
 		if (m.is_vec()) {
@@ -1203,7 +1203,7 @@ namespace tenseopr
 		}
 		else {
 			for (size_t i = 0;i < mat.getCols();++i) {
-				std::rotate(mat.begin_col(i), mat.begin_col(i) - c, mat.end_col(i));
+				std::rotate(mat.begin_col(i), mat.begin_col(i) + ::abs(c), mat.end_col(i));
 			}
 		}
 

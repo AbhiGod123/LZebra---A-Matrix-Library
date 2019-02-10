@@ -96,9 +96,9 @@ namespace tenseopr {
 
 	templ Matrix<T> reverse(cmat m,size_t dim=0);
 	templ ColVector<std::complex<T>> roots(cmat m); //eigen decomp
-	templ Matrix<T> shift(cmat m, int c, uchar dim = 0);//failed iterator
+	templ Matrix<T> shift(cmat m, int c, uchar dim = 0);
 	templ Matrix<T> shuffle(cmat m, uchar dim=0);//failed iterator
-	templ Matrix<T> sort(cmat m, std::string type, uchar dim = 0);//need random-access iterator
+	templ Matrix<T> sort(cmat m, std::string type="ascend", uchar dim = 0);//need random-access iterator
 
 	templ Matrix<std::complex<T>> sqrtmat(cmat m);
 	templ Matrix<T> sqrtmat_sympd(cmat m);

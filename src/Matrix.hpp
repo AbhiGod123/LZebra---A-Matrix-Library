@@ -963,7 +963,6 @@ inline Matrix<T> operator/(const T val, const Matrix<T>& m)
 
 	for (typename Matrix<T>::iterator itr = mat.begin();itr != mat.end();++itr) {
 		*itr = val / *itr;
-		std::cout << *itr << std::endl;
 	}
 
 	return mat;
@@ -1279,8 +1278,8 @@ inline typename Matrix<T>::row_iterator& Matrix<T>::row_iterator::operator++()
 		current_row = 0;
 		current_col++;
 
-		if (current_col == mat->getCols())
-			current_col = 0;
+		//if (current_col == mat->getCols())
+			//current_col = 0;
 
 		current_ptr = &mat->at(0) + current_col;
 	}
@@ -1332,6 +1331,27 @@ inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator--(int)
 	--(*this);
 
 	return temp;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator  Matrix<T>::row_iterator::operator+(const T n)
+{
+	Matrix<T>::row_iterator itr(*this);
+
+	for (size_t i = 0;i < n;++i) {
+		itr++;
+	}
+	return itr;
+}
+template<typename T>
+inline typename Matrix<T>::row_iterator  Matrix<T>::row_iterator::operator-(const T n)
+{
+	Matrix<T>::row_iterator itr(*this);
+
+	for (size_t i = 0;i < n;++i) {
+		itr--;
+	}
+	return itr;
 }
 
 template<typename T>

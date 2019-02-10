@@ -155,9 +155,6 @@ public:
 	inline Matrix<T>& operator-=(const T val);
 	inline Matrix<T>& operator*=(const T val);
 	inline Matrix<T>& operator/=(const T val);
-
-	
-
 	inline Matrix<T>& operator++();
 	inline Matrix<T>& operator--();
 	inline Matrix<T> operator++(int);
@@ -215,6 +212,9 @@ public:
 
 		inline row_iterator& operator--();
 		inline row_iterator  operator--(int);
+
+		inline row_iterator operator+(const T n);
+		inline row_iterator operator-(const T n);
 
 		inline bool operator!=(const       row_iterator& X) const;
 		inline bool operator==(const       row_iterator& X) const;
