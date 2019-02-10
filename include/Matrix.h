@@ -257,9 +257,16 @@ public:
 		inline bool operator!=(const const_row_iterator& X) const;
 		inline bool operator==(const const_row_iterator& X) const;
 
+		typedef std::bidirectional_iterator_tag iterator_category;
+		typedef T value_type;
+		typedef std::ptrdiff_t difference_type;
+		typedef T* pointer;
+		typedef T& reference;
+
 		#ifdef _DEBUG
 				inline void print() const;
 		#endif // _DEBUG
+
 		const Matrix<T>* mat;
 		const T* current_ptr;
 		size_t current_row;
