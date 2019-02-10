@@ -1,7 +1,6 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include "Standalone.hpp"
 #include <utility>
 #include <functional>
 #include <iostream>
@@ -9,6 +8,11 @@
 #include <vector>
 #include <initializer_list>
 #include <string>
+
+template<typename T>
+class ColVector;
+template<typename T>
+class RowVector;
 
 template<typename T>
 class Matrix
@@ -151,6 +155,9 @@ public:
 	inline Matrix<T>& operator-=(const T val);
 	inline Matrix<T>& operator*=(const T val);
 	inline Matrix<T>& operator/=(const T val);
+
+	
+
 	inline Matrix<T>& operator++();
 	inline Matrix<T>& operator--();
 	inline Matrix<T> operator++(int);
@@ -346,8 +353,16 @@ public:
 
 template<typename T>
 inline std::ostream& operator<<(std::ostream& o, const Matrix<T>& m); 
-
 template<typename T>
 inline std::ostream& operator<<(std::ostream& o, const typename Matrix<T>::row_iterator& m); 
+
+template<typename T>
+inline Matrix<T> operator+ (const T val, const Matrix<T>& m);
+template<typename T>
+inline Matrix<T> operator- (const T val, const Matrix<T>& m);
+template<typename T>
+inline Matrix<T> operator* (const T val, const Matrix<T>& m);
+template<typename T>
+inline Matrix<T> operator/ (const T val, const Matrix<T>& m);
 
 #endif // !MATRIX

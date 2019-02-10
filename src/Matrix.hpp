@@ -930,6 +930,46 @@ inline Matrix<T>& Matrix<T>::operator/=(const T val)
 }
 
 template<typename T>
+inline Matrix<T> operator+(const T val, const Matrix<T>& m)
+{
+	Matrix<T> result(m);
+	result += val;
+
+	return result;
+}
+
+template<typename T>
+inline Matrix<T> operator-(const T val, const Matrix<T>& m)
+{
+	Matrix<T> result(m);
+	result -= val;
+
+	return -1 * result;
+}
+
+template<typename T>
+inline Matrix<T> operator*(const T val, const Matrix<T>& m)
+{
+	Matrix<T> result(m);
+	result *= val;
+
+	return result;
+}
+
+template<typename T>
+inline Matrix<T> operator/(const T val, const Matrix<T>& m)
+{
+	Matrix<T> mat(m);
+
+	for (typename Matrix<T>::iterator itr = mat.begin();itr != mat.end();++itr) {
+		*itr = val / *itr;
+		std::cout << *itr << std::endl;
+	}
+
+	return mat;
+}
+
+template<typename T>
 inline Matrix<T>& Matrix<T>::operator++()
 {
 	(*this) += 1;
@@ -1488,19 +1528,19 @@ inline typename Matrix<T>::const_iterator Matrix<T>::begin(const size_t index) c
 
 template<typename T>
 inline typename Matrix<T>::iterator Matrix<T>::end() {
-	return &matrix.at(size - 1);
+	return &matrix.at(size - 1) + 1;
 }
 
 template<typename T>
 inline typename Matrix<T>::const_iterator Matrix<T>::end() const
 {
-	return &matrix.at(size - 1);
+	return &matrix.at(size - 1) + 1;
 }
 
 template<typename T>
 inline typename Matrix<T>::const_iterator Matrix<T>::cend() const
 {
-	return &matrix.at(size - 1);
+	return &matrix.at(size - 1) + 1;
 }
 
 template<typename T>
