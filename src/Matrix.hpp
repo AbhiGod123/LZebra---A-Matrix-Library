@@ -1334,7 +1334,7 @@ inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator--(int)
 }
 
 template<typename T>
-inline typename Matrix<T>::row_iterator  Matrix<T>::row_iterator::operator+(const T n)
+inline typename Matrix<T>::row_iterator  Matrix<T>::row_iterator::operator+(const size_t n)
 {
 	Matrix<T>::row_iterator itr(*this);
 
@@ -1343,8 +1343,9 @@ inline typename Matrix<T>::row_iterator  Matrix<T>::row_iterator::operator+(cons
 	}
 	return itr;
 }
+
 template<typename T>
-inline typename Matrix<T>::row_iterator  Matrix<T>::row_iterator::operator-(const T n)
+inline typename Matrix<T>::row_iterator  Matrix<T>::row_iterator::operator-(const size_t n)
 {
 	Matrix<T>::row_iterator itr(*this);
 
@@ -1352,6 +1353,48 @@ inline typename Matrix<T>::row_iterator  Matrix<T>::row_iterator::operator-(cons
 		itr--;
 	}
 	return itr;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator>(const row_iterator & X)
+{
+	return current_ptr > X.current_ptr;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator<(const row_iterator & X)
+{
+	return current_ptr < X.current_ptr;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator>=(const row_iterator & X)
+{
+	return current_ptr >= X.current_ptr;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator Matrix<T>::row_iterator::operator<=(const row_iterator & X)
+{
+	return current_ptr <= X.current_ptr;
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator&  Matrix<T>::row_iterator::operator+=(const size_t n)
+{
+	for (size_t i = 0;i < n;++i) {
+		(*this)++;
+	}
+	return (*this);
+}
+
+template<typename T>
+inline typename Matrix<T>::row_iterator&  Matrix<T>::row_iterator::operator-=(const size_t n)
+{
+	for (size_t i = 0;i < n;++i) {
+		(*this)--;
+	}
+	return (*this);
 }
 
 template<typename T>

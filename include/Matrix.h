@@ -213,8 +213,16 @@ public:
 		inline row_iterator& operator--();
 		inline row_iterator  operator--(int);
 
-		inline row_iterator operator+(const T n);
-		inline row_iterator operator-(const T n);
+		inline row_iterator operator+(const size_t n);
+		inline row_iterator operator-(const size_t n);
+
+		inline row_iterator operator>(const row_iterator& X);
+		inline row_iterator operator<(const row_iterator& X);
+		inline row_iterator operator>=(const row_iterator& X);
+		inline row_iterator operator<=(const row_iterator& X);
+
+		inline row_iterator& operator+=(const size_t n);
+		inline row_iterator& operator-=(const size_t n);
 
 		inline bool operator!=(const       row_iterator& X) const;
 		inline bool operator==(const       row_iterator& X) const;
@@ -225,7 +233,7 @@ public:
 				inline void print() const;
 		#endif // _DEBUG
 
-		typedef std::bidirectional_iterator_tag iterator_category;
+		typedef std::random_access_iterator_tag iterator_category;
 		typedef T value_type;
 		typedef std::ptrdiff_t difference_type;
 		typedef T* pointer;
