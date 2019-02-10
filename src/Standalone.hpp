@@ -1237,7 +1237,7 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ Matrix<T> sort(cmat m, std::string type, uchar dim)
+	templ Matrix<T> sort(cmat m, uchar dim, std::string type)
 	{
 		if (m.is_vec()) {
 			Matrix<T> mat(m);
