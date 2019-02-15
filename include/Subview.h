@@ -40,16 +40,16 @@ public:
 	inline void randn();
 
 	inline T& operator[](const size_t ii);
-	inline T  operator[](const size_t ii) const;
+	inline T operator[](const size_t ii) const;
 
 	inline T& operator()(const size_t ii);
-	inline T  operator()(const size_t ii) const;
+	inline T operator()(const size_t ii) const;
 
 	inline T& operator()(const size_t in_row, const size_t in_col);
-	inline T  operator()(const size_t in_row, const size_t in_col) const;
+	inline T operator()(const size_t in_row, const size_t in_col) const;
 
-	inline T&         at(const size_t in_row, const size_t in_col);
-	inline T          at(const size_t in_row, const size_t in_col) const;
+	inline T& at(const size_t in_row, const size_t in_col);
+	inline T  at(const size_t in_row, const size_t in_col) const;
 
 	inline bool is_vec()    const;
 	inline bool is_finite() const;
@@ -57,8 +57,8 @@ public:
 	inline bool is_inf() const;
 	inline bool is_nan() const;
 
-	inline       subview_row<T> row(const size_t row_num);
-	inline const subview_row<T> row(const size_t row_num) const;
+	inline       SubViewRow<T> row(const size_t row_num);
+	inline const SubViewRow<T> row(const size_t row_num) const;
 
 	inline       SubViewCol<T> col(const size_t col_num);
 	inline const SubViewCol<T> col(const size_t col_num) const;
@@ -75,6 +75,13 @@ public:
 	inline void swap_rows(const size_t in_row1, const size_t in_row2);
 	inline void swap_cols(const size_t in_col1, const size_t in_col2);
 
+	//ITERATOR CLASSES
+	typedef typename T*              iterator;
+	typedef typename const T*  const_iterator;
+
+	typedef typename T*              col_iterator;
+	typedef typename const T*  const_col_iterator;
+
 	class const_row_iterator;
 
 	class row_iterator
@@ -84,15 +91,15 @@ public:
 		inline row_iterator(const row_iterator& X);
 		inline row_iterator(SubView<T>& in_sv, const size_t in_row, const size_t in_col);
 
-		inline arma_warn_unused T& operator* ();
+		inline T& operator* ();
 
-		inline                  row_iterator& operator++();
-		inline arma_warn_unused row_iterator  operator++(int);
+		inline row_iterator& operator++();
+		inline row_iterator  operator++(int);
 
-		inline arma_warn_unused bool operator!=(const       row_iterator& X) const;
-		inline arma_warn_unused bool operator==(const       row_iterator& X) const;
-		inline arma_warn_unused bool operator!=(const const_row_iterator& X) const;
-		inline arma_warn_unused bool operator==(const const_row_iterator& X) const;
+		inline bool operator!=(const       row_iterator& X) const;
+		inline bool operator==(const       row_iterator& X) const;
+		inline bool operator!=(const const_row_iterator& X) const;
+		inline bool operator==(const const_row_iterator& X) const;
 
 		typedef std::forward_iterator_tag iterator_category;
 		typedef T                        value_type;
@@ -100,7 +107,7 @@ public:
 		typedef T*                       pointer;
 		typedef T&                       reference;
 
-		Mat<T>* M;
+		Matrix<T>* M;
 		T*      current_ptr;
 		size_t    current_row;
 		size_t    current_col;
@@ -118,15 +125,15 @@ public:
 		inline const_row_iterator(const const_row_iterator& X);
 		inline const_row_iterator(const SubView<T>& in_sv, const size_t in_row, const size_t in_col);
 
-		inline arma_warn_unused const T& operator*() const;
+		inline const T& operator*() const;
 
-		inline                  const_row_iterator& operator++();
-		inline arma_warn_unused const_row_iterator  operator++(int);
+		inline const_row_iterator& operator++();
+		inline const_row_iterator  operator++(int);
 
-		inline arma_warn_unused bool operator!=(const       row_iterator& X) const;
-		inline arma_warn_unused bool operator==(const       row_iterator& X) const;
-		inline arma_warn_unused bool operator!=(const const_row_iterator& X) const;
-		inline arma_warn_unused bool operator==(const const_row_iterator& X) const;
+		inline bool operator!=(const       row_iterator& X) const;
+		inline bool operator==(const       row_iterator& X) const;
+		inline bool operator!=(const const_row_iterator& X) const;
+		inline bool operator==(const const_row_iterator& X) const;
 
 		typedef std::forward_iterator_tag iterator_category;
 		typedef T                        value_type;
@@ -134,13 +141,13 @@ public:
 		typedef const T*                 pointer;
 		typedef const T&                 reference;
 
-		arma_aligned const Mat<T>* M;
-		arma_aligned const T*      current_ptr;
-		arma_aligned       size_t    current_row;
-		arma_aligned       size_t    current_col;
+		const Matrix<T>* M;
+		const T*      current_ptr;
+		size_t    current_row;
+		size_t    current_col;
 
-		arma_aligned const size_t aux_col1;
-		arma_aligned const size_t aux_col2_p1;
+		const size_t aux_col1;
+		const size_t aux_col2_p1;
 	};
 
 	inline       iterator  begin();
@@ -151,8 +158,9 @@ public:
 	inline const_iterator  end() const;
 	inline const_iterator cend() const;
 
-	 private:
-		 SubView();
+	private:
+		friend class Matrix<T>;
+		SubView();
 };
 
 template<typename T>

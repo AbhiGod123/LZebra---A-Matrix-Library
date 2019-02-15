@@ -13,6 +13,12 @@ template<typename T>
 class ColVector;
 template<typename T>
 class RowVector;
+template<typename T>
+class SubView;
+template<typename T>
+class SubViewCol;
+template<typename T>
+class SubViewRow;
 
 template<typename T>
 class Matrix
@@ -327,7 +333,7 @@ public:
 	inline Matrix<T> get_cols(size_t r1, size_t c2);
 	inline Matrix<T> get_rows(size_t r1, size_t r2);
 
-	inline Matrix<T> submat(size_t r1, size_t c1, size_t r2, size_t c2);
+	inline SubView<T> submat(size_t r1, size_t c1, size_t r2, size_t c2);
 
 	inline Matrix<T> head_cols(size_t cols);
 	inline Matrix<T> head_rows(size_t rows);

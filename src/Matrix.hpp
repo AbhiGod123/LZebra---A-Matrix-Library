@@ -1860,7 +1860,7 @@ inline Matrix<T> Matrix<T>::get_rows(size_t r1, size_t r2)
 }
 
 template<typename T>
-inline Matrix<T> Matrix<T>::submat(size_t r1, size_t c1, size_t r2, size_t c2)
+inline SubView<T> Matrix<T>::submat(size_t r1, size_t c1, size_t r2, size_t c2)
 {
 	if (r1 > r2)
 		std::swap(r1, r2);
@@ -1870,21 +1870,11 @@ inline Matrix<T> Matrix<T>::submat(size_t r1, size_t c1, size_t r2, size_t c2)
 	if (r2 >= rows) {
 		std::cout << "Row out of range!" << '\n';
 	}
-
-	if (c2 >= cols)
-	{
+	if (c2 >= cols){
 		std::cout << "Col out of range!" << '\n';
 	}
 
-	Matrix<T> mat(r2 - r1 + 1, c2 - c1 + 1);
-
-	for (size_t i = r1;i <= r2;++i) {
-		for (size_t f = c1;f <= c2;++f) {
-			mat(i - r1, f - c1) = (*this)(i, f);
-		}
-	}
-
-	return mat;
+	return SubView<T>((*this), r1, c1, r2 - r1 + 1, c2 - c1 + 1);
 }
 
 template<typename T>

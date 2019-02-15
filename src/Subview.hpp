@@ -66,7 +66,7 @@ inline void SubView<T>::operator=(const SubView & x)
 	this->aux_col1 = x.aux_col1;
 	this->n_rows = x.n_rows;
 	this->n_cols = x.n_cols;
-	this->n_elem = x.n_elem
+	this->n_elem = x.n_elem;
 }
 
 template<typename T>
@@ -104,7 +104,7 @@ inline void SubView<T>::replace(const T old_val, const T new_val)
 {
 	for (size_t i = 0;i < n_rows;++i) {
 		for (size_t j = 0;j < n_cols;++j) {
-			if ((*this)(i, j) == oldval) {
+			if ((*this)(i, j) == old_val) {
 				(*this)(i, j) = new_val;
 			}
 		}
@@ -126,6 +126,7 @@ inline void SubView<T>::zeros()
 {
 	for (size_t i = 0;i < n_rows;++i) {
 		for (size_t j = 0;j < n_cols;++j) {
+			std::cout << (*this)(i, j)<<std::endl;
 			(*this)(i, j) = 0;
 		}
 	}
@@ -172,49 +173,84 @@ inline void SubView<T>::randn()
 template<typename T>
 inline T & SubView<T>::operator[](const size_t ii)
 {
-	return m[(aux_row1 * aux_col1) + ii * n_cols = n_rows];
+	const size_t in_col = ii % n_cols;
+	const size_t in_row = ii / n_cols;
+
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+
+	return const_cast<Matrix<T>&>(m)[index];
 }
 
 template<typename T>
 inline T SubView<T>::operator[](const size_t ii) const
 {
-	return m[(aux_row1 * aux_col1) + ii * n_cols = n_rows];
+	const size_t in_col = ii % n_cols;
+	const size_t in_row = ii / n_cols;
+
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+
+	return m[index];
 }
 
 template<typename T>
 inline T & SubView<T>::operator()(const size_t ii)
 {
-	return m((aux_row1 * aux_col1) + ii * n_cols = n_rows);
+	const size_t in_col = ii % n_cols;
+	const size_t in_row = ii / n_cols;
+
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+
+	return const_cast<Matrix<T>&>(m)(index);
 }
 
 template<typename T>
 inline T SubView<T>::operator()(const size_t ii) const
 {
-	return m((aux_row1 * aux_col1) + ii * n_cols = n_rows);
+	const size_t in_col = ii % n_cols;
+	const size_t in_row = ii / n_cols;
+
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+
+	return m(index);
 }
 
 template<typename T>
 inline T & SubView<T>::operator()(const size_t in_row, const size_t in_col)
 {
-	return m(aux_row1 + in_row, aux_col1 + in_col);
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+
+	return const_cast<Matrix<T>&>(m)(index);
 }
 
 template<typename T>
 inline T SubView<T>::operator()(const size_t in_row, const size_t in_col) const
 {
-	return m(aux_row1 + in_row, aux_col1 + in_col);
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+
+	return m(index);
 }
 
 template<typename T>
 inline T & SubView<T>::at(const size_t in_row, const size_t in_col)
 {
-	return m.at(aux_row1 + in_row, aux_col1 + in_col);
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+
+	if (index >= n_elem) {
+		std::cout << "Index out of bounds!" << '\n';
+	}
+
+	return const_cast<Matrix<T>&>(m).at(index);
 }
 
 template<typename T>
 inline T SubView<T>::at(const size_t in_row, const size_t in_col) const
 {
-	return m.at(aux_row1 + in_row, aux_col1 + in_col);
+	if (index >= n_elem) {
+		std::cout << "Index out of bounds!" << '\n';
+	}
+
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+	return m.at(index);
 }
 
 template<typename T>
