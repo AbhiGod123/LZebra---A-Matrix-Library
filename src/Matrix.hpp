@@ -2140,7 +2140,7 @@ inline Matrix<T>::Matrix(size_t rows, size_t cols, const T * const * list)
 }
 
 template<typename T>
-inline Matrix<T>::Matrix(const Matrix& m) : matrix(m.matrix), rows(m.rows), cols(m.cols), size(m.size) {
+inline Matrix<T>::Matrix(const Matrix<T>& m) : matrix(m.matrix), rows(m.rows), cols(m.cols), size(m.size) {
 	
 }
 

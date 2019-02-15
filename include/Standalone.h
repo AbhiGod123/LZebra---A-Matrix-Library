@@ -33,7 +33,7 @@ namespace tenseopr {
 
 	templ Matrix<double> ref(cmat m, std::string ones = "ones", T* mp=nullptr);
 	templ Matrix<double> rref(cmat m, std::string ones = "ones");
-	templ double det(cmat m);
+	templ double dT(cmat m);
 	templ Matrix<T> diagmat(cmat m, int val = 0);	
 	templ Matrix<T> diagvec(cmat m, int val = 0);
  
@@ -71,8 +71,8 @@ namespace tenseopr {
 	templ Matrix<T> join_vert(cmat m1, cmat m2);
 
 	templ Matrix<T> kron(cmat m1, cmat m2);
-	templ void log_det(double &val, double& sign, cmat m); //need trace
-	templ Matrix<std::complex<T>> log_det(cmat m);//need trace
+	templ void log_dT(double &val, double& sign, cmat m); //need trace
+	templ Matrix<std::complex<T>> log_dT(cmat m);//need trace
 	templ Matrix<T> logmat(cmat m);//need to diagonalize first
 	templ Matrix<T> logmat_sympd(cmat m);//need to diagonalize first
 
@@ -125,7 +125,7 @@ namespace tenseopr {
 	templ void lu(noncmat l, noncmat u, cmat m);
 	templ Matrix<double> chol(cmat m);
 	templ Matrix<double> inv(cmat m);
-	templ Matrix<double> inv_sympd(cmat m); //doesn't work yet
+	templ Matrix<double> inv_sympd(cmat m); //doesn't work yT
 	templ Matrix<double> null(cmat m);
 
 }

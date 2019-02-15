@@ -5,6 +5,7 @@
 
 template<typename T>
 class SubView {
+public:
 	const Matrix<T>& m;
 
 	const size_t aux_row1;
@@ -14,16 +15,20 @@ class SubView {
 	const size_t n_cols;
 	const size_t n_elem;
 
+protected:
+	SubView(const Matrix<T>& in_m, const size_t in_row1, const size_t in_col1, const size_t in_n_rows, const size_t in_n_cols);
+
+public:
 	inline void operator=  (const T val);
 	inline void operator+= (const T val);
 	inline void operator-= (const T val);
 	inline void operator*= (const T val);
 	inline void operator/= (const T val);
 
-	inline void operator=  (const subview& x);
-	inline void operator+= (const subview& x);
-	inline void operator-= (const subview& x);
-	inline void operator%= (const subview& x);
+	inline void operator=  (const SubView& x);
+	inline void operator+= (const SubView& x);
+	inline void operator-= (const SubView& x);
+	inline void operator%= (const SubView& x);
 
 	inline void replace(const T old_val, const T new_val);
 
@@ -46,26 +51,26 @@ class SubView {
 	inline T&         at(const size_t in_row, const size_t in_col);
 	inline T          at(const size_t in_row, const size_t in_col) const;
 
-	inline arma_warn_unused bool is_vec()    const;
-	inline arma_warn_unused bool is_finite() const;
-
-	inline arma_warn_unused bool has_inf() const;
-	inline arma_warn_unused bool has_nan() const;
+	inline bool is_vec()    const;
+	inline bool is_finite() const;
+		   
+	inline bool is_inf() const;
+	inline bool is_nan() const;
 
 	inline       subview_row<T> row(const size_t row_num);
 	inline const subview_row<T> row(const size_t row_num) const;
 
 	inline       SubViewCol<T> col(const size_t col_num);
 	inline const SubViewCol<T> col(const size_t col_num) const;
+	
+	inline       SubView<T> rows(const size_t in_row1, const size_t in_row2);
+	inline const SubView<T> rows(const size_t in_row1, const size_t in_row2) const;
 
-	inline       subview<T> rows(const size_t in_row1, const size_t in_row2);
-	inline const subview<T> rows(const size_t in_row1, const size_t in_row2) const;
+	inline       SubView<T> cols(const size_t in_col1, const size_t in_col2);
+	inline const SubView<T> cols(const size_t in_col1, const size_t in_col2) const;
 
-	inline       subview<T> cols(const size_t in_col1, const size_t in_col2);
-	inline const subview<T> cols(const size_t in_col1, const size_t in_col2) const;
-
-	inline       subview<T> submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2);
-	inline const subview<T> submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2) const;
+	inline       SubView<T> submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2);
+	inline const SubView<T> submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2) const;
 
 	inline void swap_rows(const size_t in_row1, const size_t in_row2);
 	inline void swap_cols(const size_t in_col1, const size_t in_col2);
@@ -75,10 +80,9 @@ class SubView {
 	class row_iterator
 	{
 	public:
-
 		inline row_iterator();
 		inline row_iterator(const row_iterator& X);
-		inline row_iterator(subview<T>& in_sv, const size_t in_row, const size_t in_col);
+		inline row_iterator(SubView<T>& in_sv, const size_t in_row, const size_t in_col);
 
 		inline arma_warn_unused T& operator* ();
 
@@ -112,7 +116,7 @@ class SubView {
 		inline const_row_iterator();
 		inline const_row_iterator(const       row_iterator& X);
 		inline const_row_iterator(const const_row_iterator& X);
-		inline const_row_iterator(const subview<T>& in_sv, const size_t in_row, const size_t in_col);
+		inline const_row_iterator(const SubView<T>& in_sv, const size_t in_row, const size_t in_col);
 
 		inline arma_warn_unused const T& operator*() const;
 
@@ -146,6 +150,9 @@ class SubView {
 	inline       iterator  end();
 	inline const_iterator  end() const;
 	inline const_iterator cend() const;
+
+	 private:
+		 SubView();
 };
 
 template<typename T>
@@ -215,3 +222,4 @@ public:
 };
 
 #endif // !SUBVIEW_H
+
