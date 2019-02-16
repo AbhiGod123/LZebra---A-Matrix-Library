@@ -53,7 +53,7 @@ inline void SubView<T>::operator/=(const T val)
 {
 	for (size_t i = aux_row1;i < n_rows;++i) {
 		for (size_t j = aux_col1;j < n_cols;++j) {
-			m(i, j) /= val;
+			(*this)(i, j) /= val;
 		}
 	}
 }
@@ -61,12 +61,11 @@ inline void SubView<T>::operator/=(const T val)
 template<typename T>
 inline void SubView<T>::operator=(const SubView & x)
 {
-	this->m = x.m;
-	this->aux_row1 = x.aux_row1;
-	this->aux_col1 = x.aux_col1;
-	this->n_rows = x.n_rows;
-	this->n_cols = x.n_cols;
-	this->n_elem = x.n_elem;
+	for (size_t i = aux_row1;i < n_rows;++i) {
+		for (size_t j = aux_col1;j < n_cols;++j) {
+			(*this)(i, j) /= x.m(i,j);
+		}
+	}
 }
 
 template<typename T>
@@ -245,11 +244,12 @@ inline T & SubView<T>::at(const size_t in_row, const size_t in_col)
 template<typename T>
 inline T SubView<T>::at(const size_t in_row, const size_t in_col) const
 {
+	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
+
 	if (index >= n_elem) {
 		std::cout << "Index out of bounds!" << '\n';
 	}
 
-	const size_t index = (in_row + aux_row1)*m.getCols() + aux_col1 + in_col;
 	return m.at(index);
 }
 
@@ -295,5 +295,28 @@ inline bool SubView<T>::is_nan() const
 	return true;
 }
 
+template<typename T>
+inline SubViewRow<T> SubView<T>::row(const size_t row_num)
+{
+	return SubView<T>(m,row_num,n_cols,1,n_cols);
+}
+
+template<typename T>
+inline const SubViewRow<T> SubView<T>::row(const size_t row_num) const
+{
+	return SubViewRow<T>(m, row_num, n_cols, 1, n_cols);
+}
+
+template<typename T>
+inline SubViewCol<T> SubView<T>::col(const size_t col_num)
+{
+	return SubView<T>(m,n_rows,col_num,n_rows,1);
+}
+
+template<typename T>
+inline const SubViewCol<T> SubView<T>::col(const size_t col_num) const
+{
+	return SubViewCol<T>(m, n_rows, col_num, n_rows, 1);
+}
 
 #endif // !SUBVIEW_HPP

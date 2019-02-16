@@ -167,18 +167,6 @@ template<typename T>
 class SubViewCol : public SubView<T> {
 public:
 	inline void operator= (const SubView<T>& x);
-	inline void operator= (const SubViewCol& x);
-	inline void operator= (const T val);
-
-	inline void fill(const T val);
-	inline void zeros();
-	inline void ones();
-
-	T& operator[](const size_t i);
-	T  operator[](const size_t i) const;
-
-	inline T& operator()(const size_t i);
-	inline T  operator()(const size_t i) const;
 
 	inline       SubViewCol<T> subvec(const size_t in_row1, const size_t in_row2);
 	inline const SubViewCol<T> subvec(const size_t in_row1, const size_t in_row2) const;
@@ -189,11 +177,13 @@ public:
 	inline       SubViewCol<T> tail(const size_t N);
 	inline const SubViewCol<T> tail(const size_t N) const;
 
-	inline T min() const;
-	inline T max() const;
+protected:
+	friend class Matrix<T>;
+	friend class ColVector<T>;
+	friend class SubView<T>;
 
-	inline size_t index_min() const;
-	inline size_t index_max() const;
+	inline SubViewCol(const Matrix<T>& in_m, const size_t in_col);
+	inline SubViewCol(const Matrix<T>& in_m, const size_t in_col, const size_t in_row1, const size_t in_n_rows);
 };
 
 template<typename T>
@@ -230,4 +220,3 @@ public:
 };
 
 #endif // !SUBVIEW_H
-
