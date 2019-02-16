@@ -66,6 +66,12 @@ inline void RowVector<T>::insert_ones(size_t s)
 }
 
 template<typename T>
+inline void RowVector<T>::operator=(const Matrix<T>& x)
+{
+	Matrix<T>::operator= (x.getRows() == 1 ? x : tenseopr::vectorise(x, 1));
+}
+
+template<typename T>
 inline RowVector<T>::RowVector(size_t size) : Matrix<T>(1, size) {
 
 }

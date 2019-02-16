@@ -18,6 +18,9 @@ public:
 	inline void insert_zeros(size_t s);
 	inline void insert_ones(size_t s);
 
+	//OPERATOR
+	inline void operator=(const Matrix<T>& x);
+
 	//DEFAULT CONSTRUCTOR AND DESTRUCTOR
 	inline RowVector(size_t size);
 	inline RowVector(size_t size, T elem);

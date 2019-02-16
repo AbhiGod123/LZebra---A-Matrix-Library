@@ -100,6 +100,12 @@ inline ColVector<T> ColVector<T>::head_col(size_t r2)
 }
 
 template<typename T>
+inline void ColVector<T>::operator=(const Matrix<T>& x)
+{
+	Matrix<T>::operator= (x.getCols() == 1 ? x : tenseopr::vectorise(x, 0));
+}
+
+template<typename T>
 inline ColVector<T>::ColVector(size_t size) : Matrix<T>(size, 1) {
 
 }
