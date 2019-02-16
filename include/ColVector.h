@@ -19,9 +19,9 @@ public:
 	inline void insert_ones(size_t s);
 
 	//SUBVIEW
-	inline ColVector<T> get_col(size_t r1, size_t r2);
-	inline ColVector<T> tail_col(size_t r1);
-	inline ColVector<T> head_col(size_t r2);
+	inline SubViewCol<T> get_col(size_t r1, size_t r2);
+	inline SubViewCol<T> tail_col(size_t r1);
+	inline SubViewCol<T> head_col(size_t r2);
 
 	//OPERATOR
 	inline void operator=(const Matrix<T>& x);

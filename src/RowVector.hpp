@@ -66,6 +66,33 @@ inline void RowVector<T>::insert_ones(size_t s)
 }
 
 template<typename T>
+inline SubViewRow<T> RowVector<T>::get_row(size_t c1, size_t c2)
+{
+	if (c1 > c2)
+		std::swap(c1, c2);
+
+	if (c1 >= Matrix<T>::size || c2 >= Matrix<T>::size) {
+		std::cout << "Col out of range!" << '\n';
+	}
+
+	const size_t subview_n_cols = c2 - c1 + 1;
+
+	return SubViewRow<T>(m, c1, 0, subview_n_cols);
+}
+
+template<typename T>
+inline SubViewRow<T> RowVector<T>::tail_row(size_t c1)
+{
+	return this->get_row(Matrix<T>::size - 1, Matrix<T>::size - c1);
+}
+
+template<typename T>
+inline SubViewRow<T> RowVector<T>::head_row(size_t c2)
+{
+	return this->get_row(c2 - 1, 0);
+}
+
+template<typename T>
 inline void RowVector<T>::operator=(const Matrix<T>& x)
 {
 	Matrix<T>::operator= (x.getRows() == 1 ? x : tenseopr::vectorise(x, 1));

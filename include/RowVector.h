@@ -18,6 +18,11 @@ public:
 	inline void insert_zeros(size_t s);
 	inline void insert_ones(size_t s);
 
+	//SUBVIEW
+	inline SubViewRow<T> get_row(size_t r1, size_t r2);
+	inline SubViewRow<T> tail_row(size_t r1);
+	inline SubViewRow<T> head_row(size_t r2);
+
 	//OPERATOR
 	inline void operator=(const Matrix<T>& x);
 

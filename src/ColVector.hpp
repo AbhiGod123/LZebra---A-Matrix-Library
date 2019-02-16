@@ -66,35 +66,28 @@ inline void ColVector<T>::insert_ones(size_t s)
 }
 
 template<typename T>
-inline ColVector<T> ColVector<T>::get_col(size_t r1, size_t r2)
+inline SubViewCol<T> ColVector<T>::get_col(size_t r1, size_t r2)
 {
 	if (r1 > r2)
 		std::swap(r1, r2);
-
-	if (r1 == r2)
-		return ColVector<T>(1, (*this)(r1));
 
 	if (r1 >= Matrix<T>::size || r2 >= Matrix<T>::size) {
 		std::cout << "Col out of range!" << '\n';
 	}
 
-	ColVector<T> vec(r2-r1+1);
+	const size_t subview_n_rows = r2 - r1 + 1;
 
-	for (size_t i = r1;i <= r2;++i) {
-		vec(i-r1) = (*this)(i);
-	}
-
-	return vec;
+	return SubViewCol<T>(m, 0, r1, subview_n_rows);
 }
 
 template<typename T>
-inline ColVector<T> ColVector<T>::tail_col(size_t r1)
+inline SubViewCol<T> ColVector<T>::tail_col(size_t r1)
 {
 	return this->get_col(Matrix<T>::size - r1, Matrix<T>::size - 1);
 }
 
 template<typename T>
-inline ColVector<T> ColVector<T>::head_col(size_t r2)
+inline SubViewCol<T> ColVector<T>::head_col(size_t r2)
 {
 	return this->get_col(0, r2-1);
 }

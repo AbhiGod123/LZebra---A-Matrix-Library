@@ -1784,49 +1784,27 @@ inline void Matrix<T>::insert_cols(size_t c1, size_t c2, const T val)
 }
 
 template<typename T>
-inline ColVector<T> Matrix<T>::get_col(size_t c1) const
+inline SubViewCol<T> Matrix<T>::get_col(size_t c1) const
 {
 	if (c1 >= cols)
 	{
 		std::cout << "Col out of range!" << '\n';
 	}
-	ColVector<T> vec(rows);
-
-	typename Matrix<T>::const_row_iterator itr = this->begin_col(c1);
-	
-	typename Matrix<T>::iterator itr1 = vec.begin();
-	typename Matrix<T>::const_iterator itrend = vec.end();
-
-	for (;itr1 != itrend;++itr, ++itr1) {
-		(*itr1) = (*itr);
-	}
-
-	return vec;
+	return SubViewCol<T>((*this), c1);
 }
 
 template<typename T>
-inline RowVector<T> Matrix<T>::get_row(size_t r1) const
+inline SubViewRow<T> Matrix<T>::get_row(size_t r1) const
 {
 	if (r1 >= rows)
 	{
 		std::cout << "Row out of range!" << '\n';
 	}
-	RowVector<T> vec(cols);
-
-	typename Matrix<T>::const_col_iterator itr = this->begin_row(r1);
-
-	typename Matrix<T>::iterator itr1 = vec.begin();
-	typename Matrix<T>::const_iterator itrend = vec.end();
-
-	for (;itr1 != itrend;++itr, ++itr1) {
-		(*itr1) = (*itr);
-	}
-
-	return vec;
+	return SubViewRow<T>((*this), r1);
 }
 
 template<typename T>
-inline Matrix<T> Matrix<T>::get_cols(size_t c1, size_t c2)
+inline SubView<T> Matrix<T>::get_cols(size_t c1, size_t c2)
 {
 	if (c1 > c2)
 		std::swap(c1, c2);
@@ -1836,14 +1814,11 @@ inline Matrix<T> Matrix<T>::get_cols(size_t c1, size_t c2)
 		std::cout << "Col out of range!" << '\n';
 	}
 
-	if (c1 == c2)
-		return this->get_col(c1);
-
 	return this->submat(0, c1, rows - 1, c2);
 }
 
 template<typename T>
-inline Matrix<T> Matrix<T>::get_rows(size_t r1, size_t r2)
+inline SubView<T> Matrix<T>::get_rows(size_t r1, size_t r2)
 {
 	if (r1 > r2)
 		std::swap(r1, r2);
@@ -1852,9 +1827,6 @@ inline Matrix<T> Matrix<T>::get_rows(size_t r1, size_t r2)
 	{
 		std::cout << "Row out of range!" << '\n';
 	}
-
-	if (r1 == r2)
-		return this->get_row(r1);
 
 	return this->submat(r1, 0, r2, cols - 1);
 }
@@ -1878,25 +1850,25 @@ inline SubView<T> Matrix<T>::submat(size_t r1, size_t c1, size_t r2, size_t c2)
 }
 
 template<typename T>
-inline Matrix<T> Matrix<T>::head_cols(size_t c1)
+inline SubView<T> Matrix<T>::head_cols(size_t c1)
 {
 	return this->get_cols(0, c1-1);
 }
 
 template<typename T>
-inline Matrix<T> Matrix<T>::head_rows(size_t r1)
+inline SubView<T> Matrix<T>::head_rows(size_t r1)
 {
 	return this->get_rows(0, r1-1);
 }
 
 template<typename T>
-inline Matrix<T> Matrix<T>::tail_cols(size_t c1)
+inline SubView<T> Matrix<T>::tail_cols(size_t c1)
 {
 	return this->get_cols(cols-c1, cols-1);
 }
 
 template<typename T>
-inline Matrix<T> Matrix<T>::tail_rows(size_t r1)
+inline SubView<T> Matrix<T>::tail_rows(size_t r1)
 {
 	return this->get_rows(rows - r1, rows - 1);
 }

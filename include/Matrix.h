@@ -327,19 +327,19 @@ public:
 	inline void insert_cols(size_t r1, size_t c2, const T val);
 
 	//SUBVIEW
-	inline ColVector<T> get_col(size_t r1) const;
-	inline RowVector<T> get_row(size_t r1) const;
+	inline SubViewCol<T> get_col(size_t r1) const;
+	inline SubViewRow<T> get_row(size_t r1) const;
 
-	inline Matrix<T> get_cols(size_t r1, size_t c2);
-	inline Matrix<T> get_rows(size_t r1, size_t r2);
+	inline SubView<T> get_cols(size_t r1, size_t c2);
+	inline SubView<T> get_rows(size_t r1, size_t r2);
 
 	inline SubView<T> submat(size_t r1, size_t c1, size_t r2, size_t c2);
 
-	inline Matrix<T> head_cols(size_t cols);
-	inline Matrix<T> head_rows(size_t rows);
-
-	inline Matrix<T> tail_cols(size_t cols);
-	inline Matrix<T> tail_rows(size_t rows);
+	inline SubView<T> head_cols(size_t cols);
+	inline SubView<T> head_rows(size_t rows);
+		   
+	inline SubView<T> tail_cols(size_t cols);
+	inline SubView<T> tail_rows(size_t rows);
 	//SHED 
 	inline void shed_row(size_t r1);
 	inline void shed_rows(size_t rbegin, size_t rend);

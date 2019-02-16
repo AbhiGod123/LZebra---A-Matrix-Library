@@ -25,10 +25,10 @@ public:
 	inline void operator*= (const T val);
 	inline void operator/= (const T val);
 
-	inline void operator=  (const SubView& x);
-	inline void operator+= (const SubView& x);
-	inline void operator-= (const SubView& x);
-	inline void operator%= (const SubView& x);
+	inline void operator=  (const SubView<T>& x);
+	inline void operator+= (const SubView<T>& x);
+	inline void operator-= (const SubView<T>& x);
+	inline void operator%= (const SubView<T>& x);
 
 	inline void replace(const T old_val, const T new_val);
 
@@ -72,92 +72,6 @@ public:
 	inline       SubView<T> submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2);
 	inline const SubView<T> submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2) const;
 
-	inline void swap_rows(const size_t in_row1, const size_t in_row2);
-	inline void swap_cols(const size_t in_col1, const size_t in_col2);
-
-	//ITERATOR CLASSES
-	typedef typename T*              iterator;
-	typedef typename const T*  const_iterator;
-
-	typedef typename T*              col_iterator;
-	typedef typename const T*  const_col_iterator;
-
-	class const_row_iterator;
-
-	class row_iterator
-	{
-	public:
-		inline row_iterator();
-		inline row_iterator(const row_iterator& X);
-		inline row_iterator(SubView<T>& in_sv, const size_t in_row, const size_t in_col);
-
-		inline T& operator* ();
-
-		inline row_iterator& operator++();
-		inline row_iterator  operator++(int);
-
-		inline bool operator!=(const       row_iterator& X) const;
-		inline bool operator==(const       row_iterator& X) const;
-		inline bool operator!=(const const_row_iterator& X) const;
-		inline bool operator==(const const_row_iterator& X) const;
-
-		typedef std::forward_iterator_tag iterator_category;
-		typedef T                        value_type;
-		typedef std::ptrdiff_t            difference_type;  // TODO: not certain on this one
-		typedef T*                       pointer;
-		typedef T&                       reference;
-
-		Matrix<T>* M;
-		T*      current_ptr;
-		size_t    current_row;
-		size_t    current_col;
-
-		const size_t aux_col1;
-		const size_t aux_col2_p1;
-	};
-
-	class const_row_iterator
-	{
-	public:
-
-		inline const_row_iterator();
-		inline const_row_iterator(const       row_iterator& X);
-		inline const_row_iterator(const const_row_iterator& X);
-		inline const_row_iterator(const SubView<T>& in_sv, const size_t in_row, const size_t in_col);
-
-		inline const T& operator*() const;
-
-		inline const_row_iterator& operator++();
-		inline const_row_iterator  operator++(int);
-
-		inline bool operator!=(const       row_iterator& X) const;
-		inline bool operator==(const       row_iterator& X) const;
-		inline bool operator!=(const const_row_iterator& X) const;
-		inline bool operator==(const const_row_iterator& X) const;
-
-		typedef std::forward_iterator_tag iterator_category;
-		typedef T                        value_type;
-		typedef std::ptrdiff_t           difference_type;  // TODO: not certain on this one
-		typedef const T*                 pointer;
-		typedef const T&                 reference;
-
-		const Matrix<T>* M;
-		const T*      current_ptr;
-		size_t    current_row;
-		size_t    current_col;
-
-		const size_t aux_col1;
-		const size_t aux_col2_p1;
-	};
-
-	inline       iterator  begin();
-	inline const_iterator  begin() const;
-	inline const_iterator cbegin() const;
-
-	inline       iterator  end();
-	inline const_iterator  end() const;
-	inline const_iterator cend() const;
-
 	private:
 		friend class Matrix<T>;
 		SubView();
@@ -166,8 +80,6 @@ public:
 template<typename T>
 class SubViewCol : public SubView<T> {
 public:
-	inline void operator= (const SubView<T>& x);
-
 	inline       SubViewCol<T> subvec(const size_t in_row1, const size_t in_row2);
 	inline const SubViewCol<T> subvec(const size_t in_row1, const size_t in_row2) const;
 
@@ -189,20 +101,6 @@ protected:
 template<typename T>
 class SubViewRow : public SubView<T> {
 public:
-	inline void operator= (const SubView<T>& x);
-	inline void operator= (const SubViewRow& x);
-	inline void operator= (const T val);
-
-	inline void fill(const T val);
-	inline void zeros();
-	inline void ones();
-
-	T& operator[](const size_t i);
-	T  operator[](const size_t i) const;
-
-	inline T& operator()(const size_t i);
-	inline T  operator()(const size_t i) const;
-
 	inline       SubViewRow<T> subvec(const size_t in_row1, const size_t in_row2);
 	inline const SubViewRow<T> subvec(const size_t in_row1, const size_t in_row2) const;
 						
@@ -212,11 +110,13 @@ public:
 	inline       SubViewRow<T> tail(const size_t N);
 	inline const SubViewRow<T> tail(const size_t N) const;
 
-	inline T min() const;
-	inline T max() const;
+protected:
+	friend class Matrix<T>;
+	friend class RowVector<T>;
+	friend class SubView<T>;
 
-	inline size_t index_min() const;
-	inline size_t index_max() const;
+	inline SubViewRow(const Matrix<T>& in_m, const size_t in_col);
+	inline SubViewRow(const Matrix<T>& in_m, const size_t in_col, const size_t in_row1, const size_t in_n_rows);
 };
 
 #endif // !SUBVIEW_H
