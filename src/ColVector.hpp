@@ -77,7 +77,7 @@ inline SubViewCol<T> ColVector<T>::get_col(size_t r1, size_t r2)
 
 	const size_t subview_n_rows = r2 - r1 + 1;
 
-	return SubViewCol<T>(m, 0, r1, subview_n_rows);
+	return SubViewCol<T>(Matrix<T>::matrix, 0, r1, subview_n_rows);
 }
 
 template<typename T>

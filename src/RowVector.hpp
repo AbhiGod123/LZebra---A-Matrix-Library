@@ -77,7 +77,7 @@ inline SubViewRow<T> RowVector<T>::get_row(size_t c1, size_t c2)
 
 	const size_t subview_n_cols = c2 - c1 + 1;
 
-	return SubViewRow<T>(m, c1, 0, subview_n_cols);
+	return SubViewRow<T>(Matrix<T>::matrix, c1, 0, subview_n_cols);
 }
 
 template<typename T>

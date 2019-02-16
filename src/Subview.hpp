@@ -51,8 +51,8 @@ inline void SubView<T>::operator*=(const T val)
 template<typename T>
 inline void SubView<T>::operator/=(const T val)
 {
-	for (size_t i = aux_row1;i < n_rows;++i) {
-		for (size_t j = aux_col1;j < n_cols;++j) {
+	for (size_t i = 0;i < n_rows;++i) {
+		for (size_t j = 0;j < n_cols;++j) {
 			(*this)(i, j) /= val;
 		}
 	}
@@ -61,9 +61,9 @@ inline void SubView<T>::operator/=(const T val)
 template<typename T>
 inline void SubView<T>::operator=(const SubView & x)
 {
-	for (size_t i = aux_row1;i < n_rows;++i) {
-		for (size_t j = aux_col1;j < n_cols;++j) {
-			(*this)(i, j) /= x.m(i,j);
+	for (size_t i = 0;i < n_rows;++i) {
+		for (size_t j = 0;j < n_cols;++j) {
+			(*this)(i, j) = x(i,j);
 		}
 	}
 }
@@ -96,6 +96,40 @@ inline void SubView<T>::operator%=(const SubView & x)
 			(*this)(i, j) *= x(i, j);
 		}
 	}
+}
+
+template<typename T>
+inline void SubView<T>::operator/=(const SubView<T>& x)
+{
+	for (size_t i = 0;i < n_rows;++i) {
+		for (size_t j = 0;j < n_cols;++j) {
+			(*this)(i, j) /= x(i, j);
+		}
+	}
+}
+
+template<typename T>
+inline void SubView<T>::operator++()
+{
+	(*this) += 1;
+}
+
+template<typename T>
+inline void SubView<T>::operator++(int)
+{
+	(*this) += 1;
+}
+
+template<typename T>
+inline void SubView<T>::operator--()
+{
+	(*this) -= 1;
+}
+
+template<typename T>
+inline void SubView<T>::operator--(int)
+{
+	(*this) -= 1;
 }
 
 template<typename T>
@@ -276,7 +310,7 @@ inline bool SubView<T>::is_inf() const
 {
 	for (size_t i = 0;i < n_rows;++i) {
 		for (size_t j = 0;j < n_cols;++j) {
-			if (std::isinf((*this)(i,j)))
+			if (std::isinf(static_cast<float>((*this)(i, j))))
 				return false;
 		}
 	}
@@ -288,7 +322,7 @@ inline bool SubView<T>::is_nan() const
 {
 	for (size_t i = 0;i < n_rows;++i) {
 		for (size_t j = 0;j < n_cols;++j) {
-			if (std::isnan((*this)(i, j)))
+			if (std::isnan(static_cast<float>((*this)(i, j))))
 				return false;
 		}
 	}
@@ -320,7 +354,7 @@ inline const SubViewCol<T> SubView<T>::col(const size_t col_num) const
 }
 
 template<typename T>
-inline SubView<T> SubView<T>::rows(const size_t in_row1, const size_t in_row2)
+inline SubView<T> SubView<T>::rows(size_t in_row1, size_t in_row2)
 {
 	if (in_row2 > in_row2)
 		std::swap(in_row1, in_row2);
@@ -330,11 +364,13 @@ inline SubView<T> SubView<T>::rows(const size_t in_row1, const size_t in_row2)
 		std::cout << "Row out of range!" << '\n';
 	}
 
-	return SubView<T>(m, in_row1, aux_col1, in_row2 - in_row1 + 1, n_cols);
+	std::cout << "fdsfs" << std::endl;
+
+	return SubView<T>(m, in_row1 + aux_row1, aux_col1, in_row2 - in_row1 + 1, n_cols);
 }
 
 template<typename T>
-inline const SubView<T> SubView<T>::rows(const size_t in_row1, const size_t in_row2) const
+inline const SubView<T> SubView<T>::rows(size_t in_row1, size_t in_row2) const
 {
 	if (in_row2 > in_row2)
 		std::swap(in_row1, in_row2);
@@ -344,11 +380,11 @@ inline const SubView<T> SubView<T>::rows(const size_t in_row1, const size_t in_r
 		std::cout << "Row out of range!" << '\n';
 	}
 
-	return SubView<T>(m, in_row1, aux_col1, in_row2 - in_row1 + 1, n_cols);
+	return SubView<T>(m, in_row1 + aux_row1, aux_col1, in_row2 - in_row1 + 1, n_cols);
 }
 
 template<typename T>
-inline SubView<T> SubView<T>::cols(const size_t in_col1, const size_t in_col2)
+inline SubView<T> SubView<T>::cols(size_t in_col1, size_t in_col2)
 {
 	if (in_col2 > in_col2)
 		std::swap(in_col1, in_col2);
@@ -358,57 +394,70 @@ inline SubView<T> SubView<T>::cols(const size_t in_col1, const size_t in_col2)
 		std::cout << "Row out of range!" << '\n';
 	}
 
-	return SubView<T>(m, aux_row1, in-col1, n_rows, in_col2 - in_col1 + 1);
+	return SubView<T>(m, aux_row1, in_col1 + aux_col1, n_rows, in_col2 - in_col1 + 1);
 }
 
 template<typename T>
-inline const SubView<T> SubView<T>::cols(const size_t in_col1, const size_t in_col2) const
+inline const SubView<T> SubView<T>::cols(size_t in_col1, size_t in_col2) const
 {
 	if (in_col2 > in_col2)
 		std::swap(in_col1, in_col2);
 
-	if in_col1 > n_cols || in_col2 > n_cols)
+	if (in_col1 > n_cols || in_col2 > n_cols)
 	{
 		std::cout << "Row out of range!" << '\n';
 	}
 
-	return SubView<T>(m, aux_row1, in - col1, n_rows, in_col2 - in_col1 + 1);
+	return SubView<T>(m, aux_row1, in_col1 + aux_col1, n_rows, in_col2 - in_col1 + 1);
 }
 
 template<typename T>
-inline SubView<T> SubView<T>::submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2)
+inline SubView<T> SubView<T>::submat(size_t r1, size_t c1, size_t r2, size_t c2)
 {
 	if (r1 > r2)
 		std::swap(r1, r2);
 	if (c1 > c2)
 		std::swap(c1, c2);
 
-	if (r1 >= rows || r2>=rows) {
+	if (r1 >= n_rows || r2>= n_rows) {
 		std::cout << "Row out of range!" << '\n';
 	}
-	if (c1 >= cols || c2>=cols) {
+	if (c1 >= n_cols || c2>= n_cols) {
 		std::cout << "Col out of range!" << '\n';
 	}
 
-	return SubView<T>((*this), r1, c1, r2 - r1 + 1, c2 - c1 + 1);
+	return SubView<T>(m, r1, c1, r2 - r1 + 1, c2 - c1 + 1);
 }
 
 template<typename T>
-inline const SubView<T> SubView<T>::submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2) const
+inline const SubView<T> SubView<T>::submat(size_t r1, size_t c1, size_t r2, size_t c2) const
 {
 	if (r1 > r2)
 		std::swap(r1, r2);
 	if (c1 > c2)
 		std::swap(c1, c2);
 
-	if (r1 >= rows || r2 >= rows) {
+	if (r1 >= n_rows || r2 >= n_rows) {
 		std::cout << "Row out of range!" << '\n';
 	}
-	if (c1 >= cols || c2 >= cols) {
+	if (c1 >= n_cols || c2 >= n_cols) {
 		std::cout << "Col out of range!" << '\n';
 	}
 
-	return SubView<T>((*this), r1, c1, r2 - r1 + 1, c2 - c1 + 1);
+	return SubView<T>(m, r1, c1, r2 - r1 + 1, c2 - c1 + 1);
+}
+
+template<typename T>
+inline void SubView<T>::print() const
+{
+	for (size_t i = 0;i < n_rows;++i)
+	{
+		for (size_t f = 0;f < n_cols;++f)
+		{
+			std::cout << (*this)(i, f) << ' ';
+		}
+		std::cout << '\n';
+	}
 }
 
 template<typename T>
@@ -422,9 +471,9 @@ inline SubViewCol<T> SubViewCol<T>::subvec(const size_t in_row1, const size_t in
 {
 	const size_t subview_n_rows = in_row2 - in_row1 + 1;
 
-	const size_t base_row1 = aux_row1 + in_row1;
+	const size_t base_row1 = SubView<T>::aux_row1 + in_row1;
 
-	return SubViewCol<T>(m, aux_col1, base_row1, subview_n_rows);
+	return SubViewCol<T>(SubView<T>::m, SubView<T>::aux_col1, base_row1, subview_n_rows);
 }
 
 template<typename T>
@@ -432,21 +481,21 @@ inline const SubViewCol<T> SubViewCol<T>::subvec(const size_t in_row1, const siz
 {
 	const size_t subview_n_rows = in_row2 - in_row1 + 1;
 
-	const size_t base_row1 = aux_row1 + in_row1;
+	const size_t base_row1 = SubView<T>::aux_row1 + in_row1;
 
-	return SubViewCol<T>(m, aux_col1, base_row1, subview_n_rows);
+	return SubViewCol<T>(SubView<T>::m, SubView<T>::aux_col1, base_row1, subview_n_rows);
 }
 
 template<typename T>
 inline SubViewCol<T> SubViewCol<T>::head(const size_t N)
 {
-	return SubViewCol<T>(m, aux_col1, aux_row1, N);
+	return SubViewCol<T>(SubView<T>::m, SubView<T>::aux_col1, SubView<T>::aux_row1, N);
 }
 
 template<typename T>
 inline const SubViewCol<T> SubViewCol<T>::head(const size_t N) const
 {
-	return SubViewCol<T>(m, aux_col1, aux_row1, N);
+	return SubViewCol<T>(SubView<T>::m, SubView<T>::aux_col1, SubView<T>::aux_row1, N);
 }
 
 template<typename T>
@@ -454,7 +503,7 @@ inline SubViewCol<T> SubViewCol<T>::tail(const size_t N)
 {
 	const size_t start_row = SubView<T>::aux_row1 + SubView<T>::n_rows - N;
 
-	return SubViewCol<T>(this->m, this->aux_col1, start_row, N);
+	return SubViewCol<T>(SubView<T>::m, SubView<T>::aux_col1, start_row, N);
 }
 
 template<typename T>
@@ -462,7 +511,7 @@ inline const SubViewCol<T> SubViewCol<T>::tail(const size_t N) const
 {
 	const size_t start_row = SubView<T>::aux_row1 + SubView<T>::n_rows - N;
 
-	return SubViewCol<T>(this->m, this->aux_col1, start_row, N);
+	return SubViewCol<T>(SubView<T>::m, SubView<T>::aux_col1, start_row, N);
 }
 
 template<typename T>
@@ -472,36 +521,36 @@ inline SubViewCol<T>::SubViewCol(const Matrix<T>& in_m, const size_t in_col) : S
 }
 
 template<typename T>
-inline SubViewRow<T> SubViewRow<T>::subvec(const size_t in_row1, const size_t in_row2)
+inline SubViewRow<T> SubViewRow<T>::subvec(const size_t in_col1, const size_t in_col2)
 {
 	const size_t subview_n_cols = in_col2 - in_col1 + 1;
 
-	const size_t base_col1 = this->aux_col1 + in_col1;
+	const size_t base_col1 = SubView<T>::aux_col1 + in_col1;
 
-	return SubViewRow<T>(this->m, this->aux_row1, base_col1, subview_n_cols);
+	return SubViewRow<T>(SubView<T>::m, SubView<T>::aux_row1, base_col1, subview_n_cols);
 }
 
 template<typename T>
-inline const SubViewRow<T> SubViewRow<T>::subvec(const size_t in_row1, const size_t in_row2) const
+inline const SubViewRow<T> SubViewRow<T>::subvec(const size_t in_col1, const size_t in_col2) const
 {
 	const size_t subview_n_cols = in_col2 - in_col1 + 1;
 
-	const size_t base_col1 = this->aux_col1 + in_col1;
+	const size_t base_col1 = SubView<T>::aux_col1 + in_col1;
 
-	return SubViewRow<T>(this->m, this->aux_row1, base_col1, subview_n_cols);
+	return SubViewRow<T>(SubView<T>::m, SubView<T>::aux_row1, base_col1, subview_n_cols);
 
 }
 
 template<typename T>
 inline SubViewRow<T> SubViewRow<T>::head(const size_t N)
 {
-	return SubViewRow<T>(this->m, this->aux_row1, this->aux_col1, N);
+	return SubViewRow<T>(SubView<T>::m, SubView<T>::aux_row1, SubView<T>::aux_col1, N);
 }
 
 template<typename T>
 inline const SubViewRow<T> SubViewRow<T>::head(const size_t N) const
 {
-	return SubViewRow<T>(this->m, this->aux_row1, this->aux_col1, N);
+	return SubViewRow<T>(SubView<T>::m, SubView<T>::aux_row1, SubView<T>::aux_col1, N);
 }
 
 template<typename T>
@@ -509,7 +558,7 @@ inline SubViewRow<T> SubViewRow<T>::tail(const size_t N)
 {
 	const size_t start_col = SubView<T>::aux_col1 + SubView<T>::n_cols - N;
 
-	return SubViewRow<T>(this->m, this->aux_row1, start_col, N);
+	return SubViewRow<T>(SubView<T>::m, SubView<T>::aux_row1, start_col, N);
 }
 
 template<typename T>
@@ -517,7 +566,7 @@ inline const SubViewRow<T> SubViewRow<T>::tail(const size_t N) const
 {
 	const size_t start_col = SubView<T>::aux_col1 + SubView<T>::n_cols - N;
 
-	return SubViewRow<T>(this->m, this->aux_row1, start_col, N);
+	return SubViewRow<T>(SubView<T>::m, SubView<T>::aux_row1, start_col, N);
 }
 
 template<typename T>
@@ -531,6 +580,20 @@ inline SubViewRow<T>::SubViewRow(const Matrix<T>& in_m, const size_t in_col, con
 	SubView<T>(in_m, in_row1, in_col, 1, in_n_cols)
 {
 
+}
+
+template<typename T>
+inline std::ostream & operator<<(std::ostream & stream, const SubView<T>& mat)
+{
+	for (size_t i = 0;i < mat.n_rows;++i)
+	{
+		for (size_t f = 0;f < mat.n_cols;++f)
+		{
+			stream << mat(i, f) << ' ';
+		}
+		stream << '\n';
+	}
+	return stream;
 }
 
 #endif // !SUBVIEW_HPP

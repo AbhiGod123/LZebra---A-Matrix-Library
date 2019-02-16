@@ -29,6 +29,11 @@ public:
 	inline void operator+= (const SubView<T>& x);
 	inline void operator-= (const SubView<T>& x);
 	inline void operator%= (const SubView<T>& x);
+	inline void operator/= (const SubView<T>& x);
+	inline void operator++();
+	inline void operator++(int);
+	inline void operator--();
+	inline void operator--(int);
 
 	inline void replace(const T old_val, const T new_val);
 
@@ -63,14 +68,16 @@ public:
 	inline       SubViewCol<T> col(const size_t col_num);
 	inline const SubViewCol<T> col(const size_t col_num) const;
 	
-	inline       SubView<T> rows(const size_t in_row1, const size_t in_row2);
-	inline const SubView<T> rows(const size_t in_row1, const size_t in_row2) const;
+	inline const SubView<T> rows(size_t in_row1, size_t in_row2) const;
+	inline       SubView<T> rows(size_t in_row1, size_t in_row2);
 
-	inline       SubView<T> cols(const size_t in_col1, const size_t in_col2);
-	inline const SubView<T> cols(const size_t in_col1, const size_t in_col2) const;
+	inline       SubView<T> cols(size_t in_col1, size_t in_col2);
+	inline const SubView<T> cols(size_t in_col1, size_t in_col2) const;
 
-	inline       SubView<T> submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2);
-	inline const SubView<T> submat(const size_t in_row1, const size_t in_col1, const size_t in_row2, const size_t in_col2) const;
+	inline       SubView<T> submat(size_t in_row1, size_t in_col1, size_t in_row2, size_t in_col2);
+	inline const SubView<T> submat(size_t in_row1, size_t in_col1, size_t in_row2, size_t in_col2) const;
+
+	inline void print() const;
 
 	private:
 		friend class Matrix<T>;
@@ -118,5 +125,8 @@ protected:
 	inline SubViewRow(const Matrix<T>& in_m, const size_t in_col);
 	inline SubViewRow(const Matrix<T>& in_m, const size_t in_col, const size_t in_row1, const size_t in_n_rows);
 };
+
+template<typename T>
+inline std::ostream& operator<<(std::ostream& o, const SubView<T>& m);
 
 #endif // !SUBVIEW_H
