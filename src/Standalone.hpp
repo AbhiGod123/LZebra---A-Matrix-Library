@@ -23,9 +23,9 @@ namespace random {
 		return static_cast<double>(rand() % 10000) / (10000);
 	}
 
-	int uniformIntRandom(int max)
+	int uniformIntRandom(int min, int max)
 	{
-		return rand() % max;
+		return rand() % max + min;
 	}
 }
 
@@ -245,6 +245,18 @@ namespace tenseopr
 			casted(i) = static_cast<C>(m(i));
 		}
 		return casted;
+	}
+
+	template<typename C>
+	double dot(const C & v1, const C & v2)
+	{
+		double sum = 0;
+
+		for (size_t i = 0;i < v1.getSize();++i) {
+			sum += v1(i) * v2(i);
+		}
+		
+		return sum;
 	}
 
 	templ Matrix<T> cross(cmat m1, cmat m2)
@@ -659,18 +671,12 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ double dot(cmat v1, cmat v2)
+	templ double dot(ccvec v1, ccvec v2)
 	{
-		double sum = 0;
+		double sum = 0.0;
 
-		if (!v1.is_vec() || !v2.is_vec())
-		{
-			std::cout << "Not a vector" << '\n';
-		}
-		else {
-			for (size_t i = 0;i < v1.getSize();++i) {
-				sum += v1(i) * v2(i);
-			}
+		for (size_t i = 0;i < v1.getSize();++i) {
+			sum += v1(i) * v2(i);
 		}
 
 		return sum;
@@ -1096,30 +1102,6 @@ namespace tenseopr
 		return rank;
 	}
 
-	templ Matrix<T> repelem(cmat m, size_t rowcopy, size_t colcopy)
-	{
-		Matrix<T> mat(m);
-
-		for (size_t i = 0;i < rowcopy;++i) {
-			mat.insert_rows(mat.getRows(), m);
-		}
-
-		for (size_t i = 0;i < colcopy;++i) {
-			mat.insert_cols(mat.getCols(), mat);
-		}
-
-		return mat;
-	}
-
-	templ Matrix<T> repmat(cmat m, size_t rowcopy, size_t colcopy)
-	{
-		Matrix<T> mat(m);
-
-		
-
-		return mat;
-	}
-
 	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols)
 	{
 		Matrix<T> mat(m);
@@ -1237,37 +1219,13 @@ namespace tenseopr
 		return mat;
 	}
 
-	templ Matrix<T> sort(cmat m, uchar dim, std::string type)
+	templ Matrix<T> sort(ccvec m, std::string type)
 	{
-		if (m.is_vec()) {
-			Matrix<T> mat(m);
-			if(type == "ascend")
-			std::sort(mat.begin(), mat.end());
-			else
-				std::sort(mat.begin(), mat.end(), std::greater<T>());
-
-			return mat;
-		}
-		else if (!dim) {
-			Matrix<T> mat(m);
-
-			for (size_t i = 0;i < mat.getCols();++i){
-				if (type == "ascend")
-					std::sort(mat.begin_row(i), mat.end_row(i));
-				else
-					std::sort(mat.begin_row(i), mat.end_row(i), std::greater<T>());
-			}
-
-			return mat;
-		}
 		Matrix<T> mat(m);
-
-		for (size_t i = 0;i < mat.getRows();++i) {
-			if (type == "ascend")
-				std::sort(mat.begin_col(i), mat.end_col(i));
-			else
-				std::sort(mat.begin_col(i), mat.end_col(i), std::greater<T>());
-		}
+		if(type == "ascend")
+		std::sort(mat.begin(), mat.end());
+		else
+			std::sort(mat.begin(), mat.end(), std::greater<T>());
 
 		return mat;
 	}
@@ -1559,29 +1517,6 @@ namespace tenseopr
 		return gauss.tail_cols(m.getRows());
 	}
 
-	templ Matrix<double> inv_sympd(cmat m)
-	{
-		Matrix<double> lu = tenseopr::chol(m);
-		Matrix<double> inverse(m.getRows(),m.getCols());
-
-		lu.print();
-		printf("\n");
-
-		const size_t& n = m.getRows();
-
-		for (size_t i = 0;i < n;++i) {
-			for (size_t j = 0;j < n;++j) {
-				double sum = 0.0;
-
-				for (size_t k = 0;k < n;++k) {
-					sum += lu(j, k) * inverse(k, i);
-				}
-				inverse(j, i) = ((j == i ? 1 : 0) - sum) / lu(j, j);
-			}
-		}
-		return inverse;
-	}
-
 	templ Matrix<double> null(cmat m)
 	{
 		Matrix<T> newelem(m);
@@ -1592,6 +1527,91 @@ namespace tenseopr
 
 		std::cout << gauss << std::endl;
 		return gauss.tail_cols(1);
+	}
+
+	templ ColVector<T> conv(noncvec vec1, ccvec vec2, size_t stride, std::string shape)
+	{
+		//ASSUMES VEC2 IS OF LESS SIZE
+		size_t vecsize = 0;
+		size_t pad = 0;
+
+		if (shape == "same") {
+			pad	= (vec2.getSize() - 1) / 2;
+
+			vec1.insert(0, pad, 0);
+			vec1.insert_zeros(pad);
+		}
+		vecsize = (vec1.getSize() - vec2.getSize()) / stride + 1;
+		
+		ColVector<T> outvec(vecsize);
+
+		for (size_t i = 0;i < vecsize;i++) {
+			for (size_t f = i * stride;f < vec2.getSize() + i * stride;++f) {
+				outvec(i) += vec1(f) * vec2(f - i);
+			}
+		}
+		
+		vec1.shed_head(pad);		
+		vec1.shed_tail(pad);
+
+		return outvec;
+	}
+
+	templ ColVector<T> conv2(noncmat mat1, cmat mat2, size_t stride, std::string shape)
+	{
+		//ASSUMES MAT IS OF LESS SIZE
+		size_t sizex = 0;
+		size_t sizey = 0;
+		size_t pad = 0;
+
+		if (shape == "same") {
+			pad = (mat2.getSize() - 1) / 2;
+
+			mat1.insert_rows(0, pad);
+			mat1.insert_rows(mat1.getRows(), pad);
+			mat1.insert_cols(0, pad);
+			mat1.insert_cols(mat1.getCols(), pad);
+		}
+
+		sizex = (mat1.getRows() - mat2.getRows()) / stride + 1;
+		sizey = (mat1.getCols() - mat2.getCols()) / stride + 1;
+
+		Matrix<T> outmat(sizex, sizey);
+
+		std::cout << "fds";
+		for (size_t i = 0;i < sizex;++i) {
+			for (size_t j = 0;j < sizey;++j) {
+
+				for (size_t f = i * stride;f < mat2.getCols() + i * stride;++f) {
+					for (size_t k = f * stride;k < mat2.getRows() + j * stride;++k) {
+						outmat(i, j) += mat1(f, k) * mat2(f - i, k - j);
+					}
+				}
+			}
+		}
+
+
+
+		return outmat;
+	}
+
+	templ ColVector<std::complex<double>> dft(ccvec x)
+	{
+		const size_t N = x.getSize();
+
+		ColVector<T> n = gen::regspace<T>(N);
+		RowVector<T> k = n;
+
+		std::complex<double> e(0, -2 * M_PI * static_cast<double>((k * n)(0)) / N);
+		e = pow(M_E, e);
+
+		ColVector<std::complex<double>> cmplx(N);
+
+		for (size_t i = 0;i < N;++i) {
+			cmplx(i) = e * static_cast<double>(x(i));
+		}
+
+		return cmplx;
 	}
 
 }

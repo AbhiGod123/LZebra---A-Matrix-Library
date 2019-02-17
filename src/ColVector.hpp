@@ -45,6 +45,15 @@ inline void ColVector<T>::insert(size_t s, const T val)
 }
 
 template<typename T>
+inline void ColVector<T>::insert(size_t index, size_t s, const T val)
+{
+	auto& mat = Matrix<T>::matrix;
+	mat.insert(mat.begin() + index, s, val);
+
+	this->reshape(s + Matrix<T>::size);
+}
+
+template<typename T>
 inline void ColVector<T>::insert(const T val)
 {
 	auto& mat = Matrix<T>::matrix;
@@ -90,6 +99,28 @@ template<typename T>
 inline SubViewCol<T> ColVector<T>::head_col(size_t r2)
 {
 	return this->get_col(0, r2-1);
+}
+
+template<typename T>
+inline void ColVector<T>::shed(size_t i1, size_t i2)
+{
+	auto& mat = Matrix<T>::matrix;
+
+	mat.erase(mat.begin() + i1, mat.begin() + i2);
+
+	this->reshape(Matrix<T>::size - (i2 - i1));
+}
+
+template<typename T>
+inline void ColVector<T>::shed_head(size_t i)
+{
+	this->shed(0, i);
+}
+
+template<typename T>
+inline void ColVector<T>::shed_tail(size_t i)
+{
+	this->shed(Matrix<T>::size - i, Matrix<T>::size);
 }
 
 template<typename T>

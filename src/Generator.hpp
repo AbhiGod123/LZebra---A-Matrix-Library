@@ -20,6 +20,7 @@ namespace gen {
 
 		return vec;
 	}
+
 	templ ColVector<T> linspace(size_t start, size_t end, size_t size)
 	{
 		ColVector<T> vec(size);
@@ -36,20 +37,23 @@ namespace gen {
 	{
 		return Matrix<T>(rows, cols, 1);
 	}
-	templdef ColVector<T> randi(size_t size)
+
+	templdef ColVector<T> randi(size_t size, T min, T max)
 	{
 		ColVector<T> vec(size);
-		vec.randi();
+		vec.randi(min, max);
 
 		return vec;
 	}
-	templdef Matrix<T> randi(size_t rows, size_t cols)
+
+	templdef Matrix<T> randi(size_t rows, size_t cols, T min, T max)
 	{
 		Matrix<T> mat(rows, cols);
-		mat.randi();
+		mat.randi(min, max);
 
 		return mat;
 	}
+
 	templdef ColVector<T> randu(size_t size)
 	{
 		ColVector<T> vec(size);
@@ -57,6 +61,7 @@ namespace gen {
 
 		return vec;
 	}
+
 	templdef Matrix<T> randu(size_t rows, size_t cols)
 	{
 		Matrix<T> mat(rows, cols);
@@ -64,6 +69,7 @@ namespace gen {
 
 		return mat;
 	}
+
 	templdef ColVector<T> randn(size_t size)
 	{
 		ColVector<T> vec(size);
@@ -71,6 +77,7 @@ namespace gen {
 
 		return vec;
 	}
+
 	templdef Matrix<T> randn(size_t rows, size_t cols)
 	{
 		Matrix<T> mat(rows, cols);
@@ -78,19 +85,20 @@ namespace gen {
 
 		return mat;
 	}
-	templdef ColVector<T> regspace(size_t start, size_t end)
+
+	templ ColVector<T> regspace(size_t start)
 	{
-		ColVector<T> vec(end);
-
-		for (size_t i = 0;i < vec.getSize();++i) {
-			vec(i) = start + i * 1;
-		}
-
-		return vec;
+		return gen::regspace<T>(0, start);
 	}
-	templdef ColVector<T> regspace(size_t start, size_t delta, size_t end)
+
+	templ ColVector<T> regspace(size_t start, size_t end)
 	{
-		ColVector<T> vec(end);
+		return start <= end ? gen::regspace<T>(start, 1, end) : gen::regspace<T>(start, -1, end);
+	}
+
+	templ ColVector<T> regspace(size_t start, size_t delta, size_t end)
+	{
+		ColVector<T> vec((end-start)/delta);
 
 		for (size_t i = 0;i < vec.getSize();++i) {
 			vec(i) = start + i * delta;
@@ -98,6 +106,7 @@ namespace gen {
 
 		return vec;
 	}
+
 	templ Matrix<T> toeplitz(ccvec vec)
 	{
 		Matrix<T> mat(vec.getSize(),vec.getSize());
@@ -111,10 +120,12 @@ namespace gen {
 
 		return mat;
 	}
+
 	templ ColVector<T> zeros(size_t size)
 	{
 		return ColVector<T>(size, 0);
 	}
+
 	templ Matrix<T> zeros(size_t rows, size_t cols)
 	{
 		return Matrix<T>(rows, cols, 0);

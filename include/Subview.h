@@ -44,6 +44,10 @@ public:
 	inline void randu();
 	inline void randn();
 
+	inline size_t getRows() const;
+	inline size_t getCols() const;
+	inline size_t getSize() const;
+
 	inline T& operator[](const size_t ii);
 	inline T operator[](const size_t ii) const;
 

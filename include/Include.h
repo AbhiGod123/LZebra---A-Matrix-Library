@@ -4,6 +4,7 @@
 #define _USE_MATH_DEFINES
 
 #include <vector>
+#include <math.h>
 #include <cmath>
 #include <complex>
 #include <random>
@@ -19,6 +20,7 @@
 #define noncmat Matrix<T>&
 #define ccvec const ColVector<T>& 
 #define crvec const RowVector<T>& 
+#define noncvec ColVector<T>&
 #define cpmat const Matrix<std::complex<T>>&
 #define noncpmat Matrix<std::complex<T>>&
 #define _fPtr template<double(*_func)(double), typename T>

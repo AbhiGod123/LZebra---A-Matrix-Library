@@ -204,6 +204,24 @@ inline void SubView<T>::randn()
 }
 
 template<typename T>
+inline size_t SubView<T>::getRows() const
+{
+	return n_rows;
+}
+
+template<typename T>
+inline size_t SubView<T>::getCols() const
+{
+	return n_cols;
+}
+
+template<typename T>
+inline size_t SubView<T>::getSize() const
+{
+	return n_elem;
+}
+
+template<typename T>
 inline T & SubView<T>::operator[](const size_t ii)
 {
 	const size_t in_col = ii % n_cols;
@@ -538,7 +556,6 @@ inline const SubViewRow<T> SubViewRow<T>::subvec(const size_t in_col1, const siz
 	const size_t base_col1 = SubView<T>::aux_col1 + in_col1;
 
 	return SubViewRow<T>(SubView<T>::m, SubView<T>::aux_row1, base_col1, subview_n_cols);
-
 }
 
 template<typename T>

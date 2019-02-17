@@ -6,7 +6,7 @@
 namespace random {
 	double gaussianRandom();
 	double uniformFloatRandom();
-	int uniformIntRandom(int max = INT_MAX);
+	int uniformIntRandom(int min = 0,int max = INT_MAX);
 }
 
 namespace tenseopr {
@@ -37,11 +37,11 @@ namespace tenseopr {
 	templ Matrix<T> diagmat(cmat m, int val = 0);	
 	templ Matrix<T> diagvec(cmat m, int val = 0);
  
-	templ Matrix<T> diff(cmat m1, size_t k=1, uchar dim = 0);
-	templ double dot(cmat v1, cmat v2);
+	templ Matrix<T> diff(cmat m1, size_t k = 1, uchar dim = 0);
+	templ double dot(ccvec v1, ccvec v2);
 	templ double norm_dot(cmat v1, cmat v2);
 	templ double magnitude(cmat v1);
-		
+
 	templ Matrix<T> expmat(cmat m); //later
 	templ Matrix<T> expmat_sym(cmat m);//later
 
@@ -71,10 +71,6 @@ namespace tenseopr {
 	templ Matrix<T> join_vert(cmat m1, cmat m2);
 
 	templ Matrix<T> kron(cmat m1, cmat m2);
-	templ void log_det(double &val, double& sign, cmat m); //need trace
-	templ Matrix<std::complex<T>> log_det(cmat m);//need trace
-	templ Matrix<T> logmat(cmat m);//need to diagonalize first
-	templ Matrix<T> logmat_sympd(cmat m);//need to diagonalize first
 
 	templ Matrix<T> max(cmat m, uchar dim = 0);
 	templ Matrix<T> min(cmat m, uchar dim = 0);
@@ -88,8 +84,6 @@ namespace tenseopr {
 
 	templ size_t rank(cmat m);
 	templ double rcond(cmat m);//eigen stuff
-	templ Matrix<T> repelem(cmat m, size_t rowcopy, size_t colcopy);//doesn't work
-	templ Matrix<T> repmat(cmat m, size_t rowcopy, size_t colcopy);//doesn't work
 
 	templ Matrix<T> reshape(cmat m, size_t n_rows, size_t n_cols);
 	templ Matrix<T> resize(cmat m, size_t n_rows, size_t n_cols);
@@ -98,7 +92,7 @@ namespace tenseopr {
 	templ ColVector<std::complex<T>> roots(cmat m); //eigen decomp
 	templ Matrix<T> shift(cmat m, int c, uchar dim = 0);
 	templ Matrix<T> shuffle(cmat m, uchar dim=0);
-	templ Matrix<T> sort(cmat m, uchar dim = 0,std::string type="ascend");//need random-access iterator
+	templ ColVector<T> sort(ccvec m, std::string type="ascend");
 
 	templ Matrix<std::complex<T>> sqrtmat(cmat m);
 	templ Matrix<T> sqrtmat_sympd(cmat m);
@@ -125,9 +119,12 @@ namespace tenseopr {
 	templ void lu(noncmat l, noncmat u, cmat m);
 	templ Matrix<double> chol(cmat m);
 	templ Matrix<double> inv(cmat m);
-	templ Matrix<double> inv_sympd(cmat m); //doesn't work yet
 	templ Matrix<double> null(cmat m);
 
+	//PROCESSING
+	templ ColVector<T> conv(noncvec vec1, ccvec vec2, size_t stride=1, std::string shape = "same");
+	templ ColVector<T> conv2(noncmat mat1, cmat mat2, size_t stride = 1, std::string shape = "same");
+	templ ColVector<std::complex<double>> dft(ccvec x);
 }
 
 #endif

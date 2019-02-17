@@ -107,10 +107,10 @@ public:
 	inline void randn(const size_t in_rows, const size_t in_cols);
 
 	//FOR INTEGERS
-	inline void randi();
-	inline void row_randi(const size_t in_rows);
-	inline void col_randi(const size_t in_cols);
-	inline void randi(const size_t in_rows, const size_t in_cols);
+	inline void randi(T min=0, T max = std::numeric_limits<T>::max);
+	inline void row_randi(const size_t in_rows, T min = 0, T max = std::numeric_limits<T>::max);
+	inline void col_randi(const size_t in_cols, T min = 0, T max = std::numeric_limits<T>::max);
+	inline void randi(const size_t in_rows, const size_t in_cols, T min = 0, T max = std::numeric_limits<T>::max);
 
 	typedef std::function<T(T)> lambdaT;
 	typedef T(*func_p)(T);

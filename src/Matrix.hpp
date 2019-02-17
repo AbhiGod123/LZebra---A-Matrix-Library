@@ -483,15 +483,15 @@ inline void Matrix<T>::randn(const size_t in_rows, const size_t in_cols)
 }
 
 template<typename T>
-inline void Matrix<T>::randi()
+inline void Matrix<T>::randi(T min, T max)
 {
 	for (T& i : matrix) {
-		i = random::uniformIntRandom();
+		i = random::uniformIntRandom(min, max);
 	}
 }
 
 template<typename T>
-inline void Matrix<T>::row_randi(const size_t in_rows)
+inline void Matrix<T>::row_randi(const size_t in_rows, T min, T max)
 {
 	if (in_rows >= rows)
 	{
@@ -500,12 +500,12 @@ inline void Matrix<T>::row_randi(const size_t in_rows)
 	Matrix<T>::col_iterator itrend = this->end_row(in_rows);
 
 	for (Matrix<T>::col_iterator itr = this->begin_row(in_rows); itr != itrend;itr++) {
-		*itr = random::uniformIntRandom();
+		*itr = random::uniformIntRandom(min, max);
 	}
 }
 
 template<typename T>
-inline void Matrix<T>::col_randi(const size_t in_cols)
+inline void Matrix<T>::col_randi(const size_t in_cols, T min, T max)
 {
 	if (in_cols >= cols)
 	{
@@ -514,16 +514,16 @@ inline void Matrix<T>::col_randi(const size_t in_cols)
 	Matrix<T>::row_iterator itrend = this->end_col(in_cols);
 
 	for (Matrix<T>::row_iterator itr = this->begin_col(in_cols); itr != itrend;itr++) {
-		*itr = random::uniformIntRandom();
+		*itr = random::uniformIntRandom(min, max);
 	}
 }
 
 template<typename T>
-inline void Matrix<T>::randi(const size_t in_rows, const size_t in_cols)
+inline void Matrix<T>::randi(const size_t in_rows, const size_t in_cols, T min, T max)
 {
 	this->set_size(in_rows, in_cols);
 	for (T& i : matrix) {
-		i = random::uniformIntRandom();
+		i = random::uniformIntRandom(min,max);
 	}
 }
 

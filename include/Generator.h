@@ -9,12 +9,13 @@ namespace gen {
 	templ ColVector<T> logspace(size_t start, size_t end, size_t size = 50);
 	templ ColVector<T> ones(size_t size);
 	templ Matrix<T> ones(size_t rows, size_t cols);
-	itempldec ColVector<T> randi(size_t size);
-	itempldec Matrix<T> randi(size_t rows, size_t cols);
+	itempldec ColVector<T> randi(size_t size, T min = 0, T max = std::numeric_limits<T>::max);
+	itempldec Matrix<T> randi(size_t rows, size_t cols, T min = 0, T max = std::numeric_limits<T>::max);
 	ftempldec ColVector<T> randu(size_t size);
 	ftempldec Matrix<T> randu(size_t rows, size_t cols);
 	ftempldec ColVector<T> randn(size_t size);
 	ftempldec Matrix<T> randn(size_t rows, size_t cols);
+	templ ColVector<T> regspace(size_t start);
 	templ ColVector<T> regspace(size_t start, size_t end);
 	templ ColVector<T> regspace(size_t start, size_t delta, size_t end);
 	templ Matrix<T> toeplitz(ccvec vec);
