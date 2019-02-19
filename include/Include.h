@@ -23,6 +23,7 @@
 #define noncvec ColVector<T>&
 #define cpmat const Matrix<std::complex<T>>&
 #define noncpmat Matrix<std::complex<T>>&
+#define cpvec const ColVector<std::complex<T>>&
 #define _fPtr template<double(*_func)(double), typename T>
 
 #define ftempldec template<typename T, typename = typename std::enable_if<std::is_floating_point<T>::value>::type>
